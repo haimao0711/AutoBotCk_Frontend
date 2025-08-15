@@ -1,0 +1,272 @@
+import React, { useState, useEffect, useContext } from 'react';
+import type { NextPage } from 'next';
+import { GetStaticProps } from 'next';
+import Head from 'next/head';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import PageWrapper from '../../layout/PageWrapper/PageWrapper';
+import Page from '../../layout/Page/Page';
+import useDarkMode from '../../hooks/useDarkMode';
+import Profile from './profile';
+import Statics from './statics';
+import TableActiveLog from './tableActiveLog';
+import TradingView from './tradingView';
+import RunBot from './runBots';
+import ModalConfirm from './ModalCofirmSession';
+import ModalDelete from './ModalDelete';
+import TableData from './components/TableData';
+import Button from '@components/bootstrap/Button';
+import useUserLogin from '@hooks/useUserLogin';
+import { authService } from '@services/index';
+import { useToasts } from 'react-toast-notifications';
+import Toasts from '@components/bootstrap/Toasts';
+import AuthContext from '@context/authContext';
+
+const buttonStyle = {
+	backgroundColor: '#4CAF50',
+	color: 'white',
+	padding: '10px 20px',
+	border: 'none',
+	borderRadius: '5px',
+	fontSize: '16px',
+	cursor: 'pointer',
+	transition: 'background-color 0.3s ease',
+	outline: 'none',
+};
+const Index: NextPage = () => {
+	const { userName, email } = useUserLogin();
+	const { darkModeStatus, setDarkModeStatus } = useDarkMode();
+	const { addToast } = useToasts();
+	const [isOpen, setIsOpen] = useState(false);
+	const [isBlockBuy, setIsBlockBuy] = useState(false);
+	const [isBlockSell, setIsBlockSell] = useState(false);
+	const [isOpenDelete, setIsOpenDelete] = useState<boolean>(false);
+	const [info, setInfo] = useState();
+	const [isOpenEdit, setIsOpenEdit] = useState(false);
+	const [isOptions, setIsOptions] = useState({
+		isOpen: false,
+		isBuy: false,
+		isSell: false,
+		isTrade: false,
+	});
+	const [isTrading, setIsTrading] = useState(false);
+	const {
+		isLogin,
+		setLimitNumberStocks,
+		setCashAvailable,
+		setTotalMarketValue,
+		setAccountName,
+		setAccountNum,
+		setTotalEquity,
+	} = useContext(AuthContext);
+	const handleChangeStatusTrading = () => {
+		setIsTrading(!isTrading);
+	};
+	const handleSetIsOpen = () => {
+		setIsOpen(!isOpen);
+	};
+	const handleStopTrade = async (type: string) => {
+		const data =
+			type === 'B'
+				? {
+						is_block_buy: !isBlockBuy,
+						is_block_sell: isBlockSell,
+						type: 'B',
+				  }
+				: {
+						is_block_buy: isBlockBuy,
+						is_block_sell: !isBlockSell,
+						type: 'S',
+				  };
+		const response = await authService.openBlockTrading(data);
+		if (response) {
+			setIsBlockBuy(response?.is_block_buy);
+			setIsBlockSell(response?.is_block_sell);
+			addToast(
+				<Toasts title='Create notifications' iconColor='success' icon='TaskAlt' isDismiss>
+					{`Đổi trạng thái ${type === 'B' ? 'MUA' : 'BÁN'} thành công!`}
+				</Toasts>,
+				{
+					autoDismiss: true,
+				},
+			);
+		} else {
+			addToast(
+				<Toasts title='Create notifications' iconColor='danger' icon='Error' isDismiss>
+					{`Đổi trạng thái ${type === 'B' ? 'MUA' : 'BÁN'} không thành công!`}
+				</Toasts>,
+				{
+					autoDismiss: true,
+				},
+			);
+		}
+	};
+	useEffect(() => {
+		async function checkIsTrading() {
+			try {
+				const response = await authService.getIsTrading();
+				// console.log('check response checkIsTrading: ', response);
+				if (response) {
+					setIsTrading(response.is_trading);
+					setTotalEquity(response.total_equity);
+					setCashAvailable(response.cash_available);
+					setTotalMarketValue(response.total_market_value);
+					setAccountName(response.account_name);
+					setAccountNum(response.account_num);
+					setLimitNumberStocks(response.limit_number_stocks);
+				} else {
+					setIsTrading(false);
+				}
+			} catch (error) {
+				console.error('getIsTrading error:', error);
+				setIsTrading(false);
+			}
+		}
+		checkIsTrading();
+		const intervalId = setInterval(checkIsTrading, 5000);
+		return () => clearInterval(intervalId);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+	useEffect(() => {
+		async function getIsBlockBuy() {
+			try {
+				const response = await authService.getIsBlockBuy();
+				if (response) {
+					setIsBlockBuy(response?.is_block_buy);
+					setIsBlockSell(response?.is_block_sell);
+				}
+			} catch (error) {
+				console.error('getIsBlockBuy error:', error);
+			}
+		}
+		getIsBlockBuy();
+	}, []);
+
+	return (
+		<PageWrapper className='page-overview'>
+			<Head>
+				<title>Overview</title>
+			</Head>
+			<ModalConfirm
+				isOpen={isOpen}
+				setIsOpen={handleSetIsOpen}
+				account={'abc'}
+				isTrading={isTrading}
+				onChangeStatusTrading={handleChangeStatusTrading}
+			/>
+			<ModalDelete
+				isOpen={isOpenDelete}
+				isOpenEdit={isOpenEdit}
+				info={info}
+				setIsOpen={setIsOpenDelete}
+				options={isOptions}
+				setIsOptions={setIsOptions}
+			/>
+			<Page>
+				<div className='containerProfile'>
+					<div className='wrap-profile'>
+						<Profile />
+					</div>
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'column',
+							alignItems: 'center',
+						}}>
+						<div
+							style={{
+								display: 'flex',
+								flexDirection: 'column',
+								alignItems: 'center',
+								marginBottom: '10px',
+							}}>
+							<h5>TRẠNG THÁI HOẠT ĐỘNG CỦA BOT</h5>
+							<span>( Click để thay đổi trạng thái)</span>
+						</div>
+						<div className='topBuySell' style={{ display: 'flex', gap: '10px' }}>
+							<Button
+								style={{ ...buttonStyle }} // Thêm khoảng cách bên dưới
+								onClick={(e) => {
+									setIsOpen(!isOpen);
+								}}>
+								{!isTrading ? 'Đang Dừng Bot' : 'Đang Chạy Bot'}
+							</Button>
+							<Button
+								style={{
+									...buttonStyle,
+									transition: 'transform 0.1s ease',
+								}}
+								onMouseDown={(e) =>
+									(e.currentTarget.style.transform = 'scale(0.9)')
+								}
+								onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+								onClick={() => handleStopTrade('B')}>
+								{isBlockBuy ? 'Đang chặn MUA' : 'Đang MUA'}
+							</Button>
+							<Button
+								style={{
+									...buttonStyle,
+									transition: 'transform 0.1s ease',
+								}}
+								onMouseDown={(e) =>
+									(e.currentTarget.style.transform = 'scale(0.9)')
+								}
+								onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+								onClick={() => handleStopTrade('S')}>
+								{isBlockSell ? 'Đang chặn BÁN' : 'Đang BÁN'}
+							</Button>
+						</div>
+					</div>
+				</div>
+				{/* <TradingView /> */}
+				<div className='wrap-statics'>
+					<RunBot
+						isExistStock={true}
+						setIsOpenEdit={setIsOpenEdit}
+						isBlockBuy={isBlockBuy}
+						isBlockSell={isBlockSell}
+						setInfo={setInfo}
+						isOpen={isOpenDelete}
+						setIsOpenDelete={setIsOpenDelete}
+						isOptions={isOptions}
+						setIsOptions={setIsOptions}
+					/>
+				</div>
+				<div className='wrap-statics'>
+					<RunBot
+						isExistStock={false}
+						setIsOpenEdit={setIsOpenEdit}
+						isBlockBuy={isBlockBuy}
+						isBlockSell={isBlockSell}
+						setInfo={setInfo}
+						isOpen={isOpenDelete}
+						setIsOpenDelete={setIsOpenDelete}
+						isOptions={isOptions}
+						setIsOptions={setIsOptions}
+					/>
+				</div>
+				{/* <div className='wrap-statics'>
+					<TableData
+						setIsOpenEdit={setIsOpenEdit}
+						setInfo={setInfo}
+						isOpen={isOpenDelete}
+						setIsOpenDelete={setIsOpenDelete}
+						setIsOptions={setIsOptions}
+					/>
+				</div> */}
+
+				{/* <div className='wrap-table_active_log'>
+					<TableActiveLog />
+				</div> */}
+			</Page>
+		</PageWrapper>
+	);
+};
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+	props: {
+		// @ts-ignore
+		...(await serverSideTranslations(locale, ['common', 'menu'])),
+	},
+});
+
+export default Index;

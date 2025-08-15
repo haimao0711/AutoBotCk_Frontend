@@ -1,0 +1,33 @@
+//
+// Page Liquidity Management
+//
+
+.page-liquidity {
+	position: relative;
+	height: 100%;
+
+	p {
+		&:last-child {
+			margin: 0;
+		}
+	}
+
+	.wrap-statics {
+		.card-body {
+			> div {
+				> div {
+					cursor: pointer;
+
+					&:hover {
+						svg {
+							--translateX: 0%;
+							--translateY: 0%;
+							--diffetence: 5px;
+							animation: 1s upAndDownDynamic linear infinite;
+						}
+					}
+				}
+			}
+		}
+	}
+}

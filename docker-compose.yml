@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  stock-cms-client:
+    image: '${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}'
+    ports:
+      - '5300:3000'
+    dns:
+      - 8.8.8.8

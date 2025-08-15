@@ -1,0 +1,29 @@
+//
+// Page Overview
+//
+
+.page-account {
+	position: relative;
+	height: 100%;
+
+	.card {
+		height: 100%;
+	}
+}
+
+.modal-create-account {
+	.form-check {
+		margin-right: 13px;
+		padding-right: 13px;
+
+		@media (min-width: 576px) {
+			&:not(:last-child) {
+				border-right: 1px solid rgba($color: #ffffff, $alpha: 0.1);
+			}
+		}
+
+		label {
+			cursor: pointer;
+		}
+	}
+}

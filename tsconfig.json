@@ -1,0 +1,31 @@
+{
+	"compilerOptions": {
+		"target": "es5",
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"allowJs": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"noEmit": true,
+		"esModuleInterop": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"jsx": "preserve",
+		"incremental": true,
+		"paths": {
+			"@layout/*": ["./layout/*"],
+			"@context/*": ["./context/*"],
+			"@constants/*": ["./constants/*"],
+			"@hooks/*": ["./hooks/*"],
+			"@components/*": ["./components/*"],
+			"@services/*": ["./services/*"],
+			"@helpers/*": ["./helpers/*"],
+			"@common/*": ["./common/*"],
+			"@utils/*": ["./utils/*"]
+		}
+	},
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/TradingView.js"],
+	"exclude": ["node_modules"]
+}

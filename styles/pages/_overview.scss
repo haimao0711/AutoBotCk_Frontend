@@ -1,0 +1,56 @@
+//
+// Page Overview
+//
+
+.containerProfile {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	justify-content: space-between;
+	
+}
+
+/* Khi màn hình nhỏ hơn 768px, đổi sang hiển thị theo hàng dọc */
+@media (max-width: 768px) {
+	.containerProfile {
+		flex-direction: column;
+		align-items: center;
+		gap: 20px;
+	}
+	.topBuySell {
+		display: flex;
+		flex-direction: row;
+		gap: 10px;
+		margin-bottom: 20px;
+	}
+}
+
+.page-overview {
+	position: relative;
+	height: 100%;
+ 
+	p {
+		&:last-child {
+			margin: 0;
+		}
+	}
+
+	.wrap-statics {
+		.card-body {
+			> div {
+				> div {
+					cursor: pointer;
+
+					&:hover {
+						svg {
+							--translateX: 0%;
+							--translateY: 0%;
+							--diffetence: 5px;
+							animation: 1s upAndDownDynamic linear infinite;
+						}
+					}
+				}
+			}
+		}
+	}
+}

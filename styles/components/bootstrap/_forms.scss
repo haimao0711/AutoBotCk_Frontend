@@ -1,0 +1,11 @@
+@import 'forms/form-control';
+@import 'forms/form-select';
+@import 'forms/form-check';
+@import 'forms/form-range';
+@import 'forms/input-group';
+@import 'forms/floating-labels';
+
+.invalid-feedback,
+.valid-feedback {
+	margin-left: 5px;
+}
