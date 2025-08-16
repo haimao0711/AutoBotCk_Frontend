@@ -1,11 +1,14 @@
 
+
 services:
-  stock-frontend:
-    image: "${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
+  stock-cms-client:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: stock-cms-client
     ports:
-      - "80:3000"
+      - '5300:3000'
+    dns:
+      - 8.8.8.8
     env_file:
       - .env.production

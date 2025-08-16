@@ -1,38 +1,32 @@
-# ==========================
-# Stage 1: Build the Next.js app
-# ==========================
-FROM node:16-alpine AS builder
+# Stage 1: Build
+FROM node:16-alpine AS build
 
-# Set working directory
 WORKDIR /app
 
-# Cài git để clone các package private nếu cần
 RUN apk add --no-cache git openssh-client
 
-# Copy package.json và yarn.lock để cài dependencies
-COPY package.json yarn.lock ./
+# Copy package.json & yarn.lock
+COPY package*.json yarn.lock ./
 
-# Cài dependencies với frozen-lockfile, giảm concurrency để tránh timeout
-RUN yarn install --frozen-lockfile --network-concurrency 1
+RUN yarn install --frozen-lockfile
 
-# Copy toàn bộ source code
+# Copy source code & env.production
 COPY . .
+COPY .env.production .env
 
-# Build Next.js SSR
+# Build using .env.production
 RUN yarn build
 
-# ==========================
-# Stage 2: Production image
-# ==========================
-FROM node:16-alpine
+# Stage 2: Production
+FROM node:16-alpine AS production
 
 WORKDIR /app
 
-# Copy từ builder
-COPY --from=builder /app ./
+COPY --from=build /app/package*.json ./
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/.next ./.next
+COPY --from=build /app/public ./public
+COPY .env.production .env
 
-# Chỉ expose port 3000
 EXPOSE 3000
-
-# Chạy SSR Next.js
 CMD ["yarn", "start"]
