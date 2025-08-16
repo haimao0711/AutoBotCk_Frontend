@@ -49,11 +49,14 @@ const Page404 = () => {
 	);
 };
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-	props: {
-		// @ts-ignore
-		...(await serverSideTranslations(locale, ['common', 'menu'])),
-	},
-});
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+	const lng = locale || 'en-US'; // fallback nếu locale undefined
+
+	return {
+		props: {
+			...(await serverSideTranslations(lng, ['common', 'menu'])),
+		},
+	};
+};
 
 export default Page404;
