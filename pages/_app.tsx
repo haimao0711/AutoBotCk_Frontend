@@ -16,7 +16,7 @@ import steps, { styles } from '../steps';
 import Portal from '../layout/Portal/Portal';
 import { ReactNotifications } from 'react-notifications-component';
 import Wrapper from '../layout/Wrapper/Wrapper';
-import { appWithTranslation } from 'next-i18next';
+import nextI18NextConfig from '../next-i18next.config';
 import App from '../layout/App/App';
 import AsideRoutes from '../layout/Aside/AsideRoutes';
 import { CookiesProvider } from 'react-cookie';
@@ -81,4 +81,4 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }: AppProps) =>
 	);
 };
 
-export default appWithTranslation(MyApp /*, nextI18NextConfig */);
+export default appWithTranslation(MyApp, nextI18NextConfig);
