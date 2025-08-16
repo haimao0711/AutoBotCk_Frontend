@@ -1,4 +1,4 @@
-const { i18n } = require('./next-i18next.config');
+// const { i18n } = require('./next-i18next.config');
 const withImages = require('next-images');
 const withInterceptStdout = require('next-intercept-stdout');
 
@@ -24,7 +24,7 @@ const nextConfig = withInterceptStdout(
 			},
 			reactStrictMode: true,
 			swcMinify: true,
-			i18n
+			// i18n
 		})
 	,
 	(log) => (hideWarn.some((warn) => log.includes(warn)) ? '' : log),
