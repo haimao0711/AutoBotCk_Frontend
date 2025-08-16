@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import type { NextPage } from 'next';
-import { GetStaticProps } from 'next';
 import Head from 'next/head';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import PageWrapper from '../../layout/PageWrapper/PageWrapper';
 import Page from '../../layout/Page/Page';
 import useDarkMode from '../../hooks/useDarkMode';
@@ -60,11 +58,5 @@ const TemplateConfiguration: NextPage = () => {
 		</PageWrapper>
 	);
 };
-
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-	props: {
-		...(await serverSideTranslations(locale || '', ['common', 'menu'])),
-	},
-});
 
 export default TemplateConfiguration;

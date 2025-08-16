@@ -1,9 +1,7 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable @next/next/no-img-element */
 import type { NextPage } from 'next';
-import next, { GetStaticProps } from 'next';
 import Head from 'next/head';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import PageWrapper from '../../layout/PageWrapper/PageWrapper';
 import Icon from '../../components/icon/Icon';
@@ -174,15 +172,4 @@ const Index: NextPage = () => {
 		</PageWrapper>
 	);
 };
-
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-	const lng = locale || 'en-US'; // fallback nếu locale undefined
-
-	return {
-		props: {
-			...(await serverSideTranslations(lng, ['common', 'menu'])),
-		},
-	};
-};
-
 export default Index;

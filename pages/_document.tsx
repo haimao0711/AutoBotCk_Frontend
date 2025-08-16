@@ -1,7 +1,5 @@
 import type { DocumentProps } from 'next/document';
 import { Head, Html, Main, NextScript } from 'next/document';
-import { GetStaticProps } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const Document = ({}: DocumentProps) => {
 	return (
@@ -16,12 +14,5 @@ const Document = ({}: DocumentProps) => {
 		</Html>
 	);
 };
-
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-	props: {
-		// @ts-ignore
-		...(await serverSideTranslations(locale, ['translation', 'menu'])),
-	},
-});
 
 export default Document;

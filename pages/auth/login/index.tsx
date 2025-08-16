@@ -1,7 +1,5 @@
 import type { NextPage } from 'next';
-import { GetStaticProps } from 'next';
 import Head from 'next/head';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
 import { FC, useContext, useState, useEffect } from 'react';
 import AuthContext from '@context/authContext';
@@ -486,16 +484,6 @@ Login.propTypes = {
 };
 Login.defaultProps = {
 	isSignUp: false,
-};
-
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-	const lng = locale || 'en-US'; // fallback nếu locale undefined
-
-	return {
-		props: {
-			...(await serverSideTranslations(lng, ['common', 'menu'])),
-		},
-	};
 };
 
 export default Login;

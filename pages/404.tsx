@@ -5,8 +5,6 @@ import Page from '../layout/Page/Page';
 import Head from 'next/head';
 import Button from '../components/bootstrap/Button';
 import Humans from '../assets/img/scene4.png';
-import { GetStaticProps } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const Page404 = () => {
 	return (
@@ -47,16 +45,6 @@ const Page404 = () => {
 			</Page>
 		</PageWrapper>
 	);
-};
-
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-	const lng = locale || 'en-US'; // fallback nếu locale undefined
-
-	return {
-		props: {
-			...(await serverSideTranslations(lng, ['common', 'menu'])),
-		},
-	};
 };
 
 export default Page404;
