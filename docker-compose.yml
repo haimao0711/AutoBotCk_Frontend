@@ -1,4 +1,4 @@
-version: "3"
+version: "3.9"
 services:
   stock-frontend:
     build:
@@ -9,5 +9,3 @@ services:
       - "80:3000"
     env_file:
       - .env.production
-    depends_on:
-      - autobotck_backend-stock-predict-api-1
