@@ -1,13 +1,10 @@
-version: "3"
-
 services:
   stock-frontend:
-    image: "${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
     build:
       context: .
       dockerfile: Dockerfile
+    image: "${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
     ports:
       - "80:3000"
-    environment:
-      - NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
-      - NEXT_PUBLIC_MOBILE_BREAKPOINT_SIZE=${NEXT_PUBLIC_MOBILE_BREAKPOINT_SIZE}
+    env_file:
+      - .env.production
