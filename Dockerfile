@@ -1,29 +1,35 @@
-# Stage 1: Build the Next.js app
+# Stage 1: Build
 FROM node:16-alpine AS builder
-
 WORKDIR /app
 
-# Copy package files first to install deps
-COPY package*.json ./
-RUN apk add --no-cache git openssh-client \
-    && yarn install
+# Cài git để cài dependencies nếu cần
+RUN apk add --no-cache git openssh-client
 
-# Copy all source files
+# Copy package.json và yarn.lock để cài dependencies
+COPY package*.json ./
+RUN yarn install
+
+# Copy toàn bộ source
 COPY ./ ./
 
 # Build Next.js
 RUN yarn build
 
-# Stage 2: Production image
+# Stage 2: Production
 FROM node:16-alpine
-
 WORKDIR /app
 
-# Copy built files from builder
-COPY --from=builder /app/ ./
+# Copy package.json và chỉ cài dependencies production
+COPY package*.json ./
+RUN yarn install --production
 
-# Expose port
+# Copy thư mục build và public từ builder
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/next.config.js ./
+
+# Expose port Next.js
 EXPOSE 3000
 
-# Start the Next.js app
+# Start server SSR
 CMD ["yarn", "start"]
