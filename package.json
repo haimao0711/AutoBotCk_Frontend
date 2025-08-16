@@ -31,7 +31,7 @@
 		"jsx-to-string": "^1.4.0",
 		"next": "13.2.4",
 		"next-auth": "^4.22.1",
-		"next-i18next": "^13.2.2",
+		"next-i18next": "^15.4.2",
 		"next-images": "^1.8.4",
 		"pascalcase": "^2.0.0",
 		"payment": "^2.4.6",
