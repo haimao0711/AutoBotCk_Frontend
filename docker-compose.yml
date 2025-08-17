@@ -5,9 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: stock-cms-client
     expose:
-      - "3000"            # expose port nội bộ để nginx proxy, không cần publish ra ngoài
-    dns:
-      - 8.8.8.8
+      - "3000"
     env_file:
       - .env.production
 
@@ -15,9 +13,18 @@ services:
     image: nginx:alpine
     container_name: nginx-proxy
     ports:
-      - "80:80"           # public http
-      - "443:443"         # public https (nếu bạn cấu hình SSL)
+      - "80:80"
+      - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
     depends_on:
       - stock-cms-client
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
