@@ -30,15 +30,37 @@ interface IAuthContextProviderProps {
 }
 
 export const AuthContextProvider: FC<IAuthContextProviderProps> = ({ children }) => {
-	const [userName, setUserName] = useState<string>('');
-	const [email, setEmail] = useState<string>('');
-	const [isLogin, setIsLogin] = useState<string>('');
-	const [totalEquity, setTotalEquity] = useState<string>('');
-	const [totalMarketValue, setTotalMarketValue] = useState<string>('');
-	const [cashAvailable, setCashAvailable] = useState<string>('');
-	const [accountName, setAccountName] = useState<string>('');
-	const [accountNum, setAccountNum] = useState<string>('');
-	const [limitNumberStocks, setLimitNumberStocks] = useState<string>('');
+	const getLocalStorageItem = (key: string, defaultValue: string = ''): string => {
+		if (typeof window === 'undefined') return defaultValue;
+		return localStorage.getItem(key) || defaultValue;
+	};
+
+	const [userName, setUserName] = useState<string>(
+		() => getLocalStorageItem('facit_authUsername') || '',
+	);
+	const [email, setEmail] = useState<string>(() => getLocalStorageItem('facit_authEmail') || '');
+	const [isLogin, setIsLogin] = useState<string>(
+		() => getLocalStorageItem('facit_isLogin') || '',
+	);
+	const [totalEquity, setTotalEquity] = useState<string>(
+		() => getLocalStorageItem('facit_totalEquity') || '',
+	);
+	const [totalMarketValue, setTotalMarketValue] = useState<string>(
+		() => getLocalStorageItem('facit_totalMarketValue') || '',
+	);
+	const [cashAvailable, setCashAvailable] = useState<string>(
+		() => getLocalStorageItem('facit_cashAvailable') || '',
+	);
+	const [accountName, setAccountName] = useState<string>(
+		() => getLocalStorageItem('facit_accountName') || '',
+	);
+	const [accountNum, setAccountNum] = useState<string>(
+		() => getLocalStorageItem('facit_accountNum') || '',
+	);
+	const [limitNumberStocks, setLimitNumberStocks] = useState<string>(
+		() => getLocalStorageItem('facit_limitNumberStocks') || '',
+	);
+
 	const [userData, setUserData] = useState<Partial<IUserProps>>({});
 
 	// Load từ localStorage sau khi render client

@@ -146,8 +146,8 @@ const Form: FC<IFormProps> = ({
 	const updateConfig = useGetUpdateApiStock();
 	// Xử lý sắp xếp
 	const sortArrHandle = (arr: any, sortKey: string) => {
+		if (!Array.isArray(arr)) return [];
 		const sorted = [...arr];
-
 		sorted.sort((a, b) => {
 			const valA = a[sortKey];
 			const valB = b[sortKey];
