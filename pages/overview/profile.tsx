@@ -177,7 +177,10 @@ const Profile = () => {
 									borderRadius: '5px',
 								}}
 								className='w-100 fw-semibold'
-								onClick={() => router.push('/auth/login')}>
+								onClick={() =>
+									(window.location.href =
+										'https://autobotchungkhoan.pro.vn/auth/login')
+								}>
 								Đăng nhập ngay
 							</Button>
 						</CardBody>
