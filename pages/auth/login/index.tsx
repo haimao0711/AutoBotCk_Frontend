@@ -97,9 +97,9 @@ const Login: NextPage = () => {
 							autoDismiss: true,
 						},
 					);
-					setTimeout(() => {
-						router.push('/overview');
-					}, 0);
+					if (router.isReady) {
+						router.replace('/overview');
+					}
 				} else {
 					addToast(
 						<Toasts title='Thông báo ' icon='Cancel' iconColor='danger' isDismiss>
