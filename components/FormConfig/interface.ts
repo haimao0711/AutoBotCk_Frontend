@@ -189,11 +189,13 @@ export interface IStockBuyConfig {
 	stock_config_use_macd_obl_to_buy: boolean;
 	stock_config_use_buy_up_obl_to_buy: boolean;
 	stock_config_use_buy_foreign_obl_to_buy: boolean;
+	stock_config_use_volume_trade_obl_to_buy: boolean;
 	stock_config_use_macd_reversed_increase: boolean;
 	stock_config_value_macd_to_buy: number;
 	stock_config_value_macd_obl_to_buy: number;
 	stock_config_value_buy_up_obl_to_buy: number;
 	stock_config_value_buy_foreign_obl_to_buy: number;
+	stock_config_value_volume_trade_obl_to_buy: number;
 	stock_config_use_macd_increase: boolean;
 
 	stock_config_use_histogram_reversed_increase: boolean;

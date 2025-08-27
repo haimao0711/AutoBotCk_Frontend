@@ -85,6 +85,8 @@ const Login: NextPage = () => {
 					username: values.loginEmail,
 					password: values.loginPassword,
 				});
+				console.log('Login response:', data);
+				console.log('Cookies after login:', document.cookie);
 				if (data?.userName) {
 					setIsLogin('true');
 					setUserName(data?.userName);
@@ -97,8 +99,10 @@ const Login: NextPage = () => {
 							autoDismiss: true,
 						},
 					);
-					if (router.isReady) {
+					try {
 						router.replace('/overview');
+					} catch (e) {
+						window.location.href = '/overview';
 					}
 				} else {
 					addToast(

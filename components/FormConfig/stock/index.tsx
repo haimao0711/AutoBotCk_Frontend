@@ -146,19 +146,19 @@ const generateSelectRenders = (
 				isRender: true,
 			},
 		],
-		// [
-		// 	{
-		// 		key: `stock_config_use_buy_up_obl_to_${side}`,
-		// 		label: `% Mua chủ động >=`,
-		// 		name: `${vieSide} - BuyUp >= (CP)`,
-		// 		isRender: slug === 'following',
-		// 	},
-		// ],
 		[
 			{
 				key: `stock_config_use_buy_foreign_obl_to_${side}`,
 				label: `% Mua nước ngoài >=`,
 				name: `${vieSide} - Buyforeign >= (CP)`,
+				isRender: slug !== 'trading',
+			},
+		],
+		[
+			{
+				key: `stock_config_use_volume_trade_obl_to_${side}`,
+				label: `% KL đã về >=`,
+				name: `${vieSide} - VolumeTrade >= (CP)`,
 				isRender: slug !== 'trading',
 			},
 		],
@@ -218,6 +218,12 @@ const generateTypeRenders = (
 		{
 			keyRender: `stock_config_use_buy_foreign_obl_to_${side}`,
 			key: `stock_config_value_buy_foreign_obl_to_${side}`,
+			label: 'Nhập chỉ số',
+			isRender: slug !== 'trading',
+		},
+		{
+			keyRender: `stock_config_use_volume_trade_obl_to_${side}`,
+			key: `stock_config_value_volume_trade_obl_to_${side}`,
 			label: 'Nhập chỉ số',
 			isRender: slug !== 'trading',
 		},
