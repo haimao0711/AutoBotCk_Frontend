@@ -91,11 +91,13 @@ export const initialValueStockBuy: IStockBuyConfig = {
 	stock_config_use_macd_obl_to_buy: false,
 	stock_config_use_buy_up_obl_to_buy: false,
 	stock_config_use_buy_foreign_obl_to_buy: false,
+	stock_config_use_volume_trade_obl_to_buy: false,
 	stock_config_use_macd_reversed_increase: false,
 	stock_config_value_macd_to_buy: 0,
 	stock_config_value_macd_obl_to_buy: 0,
 	stock_config_value_buy_up_obl_to_buy: 0,
 	stock_config_value_buy_foreign_obl_to_buy: 0,
+	stock_config_value_volume_trade_obl_to_buy: 0,
 	stock_config_use_macd_increase: false,
 
 	stock_config_use_histogram_reversed_increase: false,

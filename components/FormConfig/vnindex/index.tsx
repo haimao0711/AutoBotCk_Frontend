@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useState } from 'react';
+import { useMemo, useCallback, useState, useEffect } from 'react';
 
 import Checks from '@components/bootstrap/forms/Checks';
 import styled from 'styled-components';
@@ -112,18 +112,6 @@ const generateSelectRenders = (
 			},
 		],
 		[
-			// {
-			// 	key: `vnindex_config_use_volume_to_${side}`,
-			// 	label: `VOLUME>VOLUME MA`,
-			// 	name: `${vieSide} - VOLUME>VOLUME MA (VNI)`,
-			// 	isRender: type === 'Buy',
-			// },
-			// {
-			// 	key: `vnindex_config_use_bolinger_to_${side}`,
-			// 	label: `CHẠM CẠNH ${viePos} BOLINGER`,
-			// 	name: `${vieSide} - CHẠM CẠNH ${viePos} BOLINGER (VNI)`,
-			// 	isRender: true,
-			// },
 			{
 				key: `vnindex_config_use_histogram_${trend}`,
 				label: `HISTOGRAM ${vieTrend}`,
@@ -275,10 +263,31 @@ const TypeItem: React.FC<TypeItemProps> = ({
 };
 
 const Module = (props: ModuleProps) => {
-	const columnStyle = {
-		flex: '0 0 20%',
-		maxWidth: '20%',
-	};
+	// const columnStyle = {
+	// 	flex: '0 0 20%',
+	// 	maxWidth: '20%',
+	// };
+	const [columnStyle, setColumnStyle] = useState({ flex: '0 0 50%', maxWidth: '50%' });
+	useEffect(() => {
+		const updateStyle = () => {
+			if (window.innerWidth < 400) {
+				setColumnStyle({ flex: '0 0 90%', maxWidth: '90%' });
+			} else if (window.innerWidth < 768) {
+				// Mobile: 2 cột
+				setColumnStyle({ flex: '0 0 50%', maxWidth: '50%' });
+			} else if (window.innerWidth < 992) {
+				// Tablet: 3 cột
+				setColumnStyle({ flex: '0 0 33.3333%', maxWidth: '33.3333%' });
+			} else {
+				// Desktop: 5 cột
+				setColumnStyle({ flex: '0 0 20%', maxWidth: '20%' });
+			}
+		};
+
+		updateStyle();
+		window.addEventListener('resize', updateStyle);
+		return () => window.removeEventListener('resize', updateStyle);
+	}, []);
 	const { type, label, formik, setValues } = props;
 	const { values } = formik;
 	const side = type === 'Buy' || type === 'BuyObl' ? 'buy' : 'sell';
