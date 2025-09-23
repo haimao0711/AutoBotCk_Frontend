@@ -221,8 +221,20 @@ const SwitchItem: React.FC<SwitchItemProps> = ({
 		setValues('vnindex', sideParams, key, e.target.checked);
 	};
 	return (
-		<div className={className}>
-			<FormGroup label={label}>
+		<div
+			className={className}
+			style={{
+				display: 'flex',
+				flexDirection: 'column',
+				flex: 1, // giúp SwitchItem lấp đầy chiều cao của grid-item
+			}}>
+			<FormGroup
+				label={label}
+				style={{
+					display: 'flex',
+					flexDirection: 'column',
+					flex: 1,
+				}}>
 				<Checks
 					id={id}
 					type='switch'
@@ -230,6 +242,7 @@ const SwitchItem: React.FC<SwitchItemProps> = ({
 					onChange={handleChange}
 					checked={checked}
 					ariaLabel='status'
+					style={{ marginTop: 'auto' }}
 				/>
 			</FormGroup>
 		</div>
@@ -263,17 +276,10 @@ const TypeItem: React.FC<TypeItemProps> = ({
 };
 
 const Module = (props: ModuleProps) => {
-	// const columnStyle = {
-	// 	flex: '0 0 20%',
-	// 	maxWidth: '20%',
-	// };
 	const [columnStyle, setColumnStyle] = useState({ flex: '0 0 50%', maxWidth: '50%' });
 	useEffect(() => {
 		const updateStyle = () => {
-			if (window.innerWidth < 400) {
-				setColumnStyle({ flex: '0 0 90%', maxWidth: '90%' });
-			} else if (window.innerWidth < 768) {
-				// Mobile: 2 cột
+			if (window.innerWidth < 768) {
 				setColumnStyle({ flex: '0 0 50%', maxWidth: '50%' });
 			} else if (window.innerWidth < 992) {
 				// Tablet: 3 cột
@@ -295,13 +301,13 @@ const Module = (props: ModuleProps) => {
 	const selectRenders = generateSelectRenders(type);
 	const typeRenders = generateTypeRenders(type);
 	return (
-		<FormGroup className='col-12 border-b border-gray-300 p-6 mb-6' label={label}>
-			<div className='d-flex flex-wrap justify-content-between container p-4'>
-				<div className='row w-100'>
+		<FormGroup className='col-12 border-b border-gray-300 py-6 px-1 mb-6' label={label}>
+			<div className='d-flex flex-wrap justify-content-between container py-4 px-2'>
+				<div className='row w-100' style={{ marginLeft: 0, marginRight: 0 }}>
 					{selectRenders.map((selectRender, idRow) => {
 						const itemId = typeRenders[idRow].keyRender;
 						return (
-							<div className='mb-4 gap-4 col' key={idRow} style={columnStyle}>
+							<div className='mb-2 gap-1 col' key={idRow} style={columnStyle}>
 								{selectRender.map((item, idCol) => {
 									return (
 										<div
@@ -312,7 +318,7 @@ const Module = (props: ModuleProps) => {
 											}}>
 											{
 												<SwitchItem
-													className='p-4'
+													className='py-4'
 													formik={formik}
 													label={item.label}
 													id={`vnindex.${
@@ -337,7 +343,7 @@ const Module = (props: ModuleProps) => {
 									itemId as keyof IVNIndexSharing
 								] && (
 									<TypeItem
-										className='p-4'
+										className='py-4'
 										formik={formik}
 										label={typeRenders[idRow].label}
 										id={`vnindex.${

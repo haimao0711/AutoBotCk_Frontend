@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useState } from 'react';
+import { useMemo, useCallback, useState, useEffect } from 'react';
 
 import Checks from '@components/bootstrap/forms/Checks';
 import styled from 'styled-components';
@@ -292,10 +292,24 @@ const TypeItem: React.FC<TypeItemProps> = ({
 };
 
 const Module = (props: ModuleProps) => {
-	const columnStyle = {
-		flex: '0 0 20%',
-		maxWidth: '20%',
-	};
+	const [columnStyle, setColumnStyle] = useState({ flex: '0 0 50%', maxWidth: '50%' });
+	useEffect(() => {
+		const updateStyle = () => {
+			if (window.innerWidth < 500) {
+				setColumnStyle({ flex: '0 0 50%', maxWidth: '50%' });
+			} else if (window.innerWidth < 992) {
+				// Tablet: 3 cột
+				setColumnStyle({ flex: '0 0 33.3333%', maxWidth: '33.3333%' });
+			} else {
+				// Desktop: 5 cột
+				setColumnStyle({ flex: '0 0 20%', maxWidth: '20%' });
+			}
+		};
+
+		updateStyle();
+		window.addEventListener('resize', updateStyle);
+		return () => window.removeEventListener('resize', updateStyle);
+	}, []);
 	const { type, label, setValues, formik, slug } = props;
 	const { values } = formik;
 	// console.log('check value Module Obl: ', values);
@@ -303,13 +317,13 @@ const Module = (props: ModuleProps) => {
 	const selectRenders = generateSelectRenders(type, slug);
 	const typeRenders = generateTypeRenders(type, slug);
 	return (
-		<FormGroup className='col-12 border-b border-gray-300 p-6 mb-6' label={label}>
-			<div className='d-flex flex-wrap justify-content-between container p-4'>
-				<div className='row w-100'>
+		<FormGroup className='col-12 border-b border-gray-300 py-3 px-1 mb-6' label={label}>
+			<div className='d-flex flex-wrap justify-content-between container py-4 px-2'>
+				<div className='row w-100' style={{ marginLeft: 0, marginRight: 0 }}>
 					{selectRenders.map((selectRender, idRow) => {
 						const itemId = typeRenders[idRow].keyRender;
 						return (
-							<div className='mb-4 gap-4 col' key={idRow} style={columnStyle}>
+							<div className='mb-2 gap-1 col' key={idRow} style={columnStyle}>
 								{selectRender.map((item, idCol) => (
 									<div
 										key={item.key}
@@ -319,7 +333,7 @@ const Module = (props: ModuleProps) => {
 										}}>
 										{
 											<SwitchItem
-												className='p-4'
+												className='py-4'
 												formik={formik}
 												label={item.label}
 												id={`stock.${
@@ -344,7 +358,7 @@ const Module = (props: ModuleProps) => {
 								] &&
 									typeRenders[idRow]?.isRender !== false && (
 										<TypeItem
-											className='p-4'
+											className='py-4'
 											formik={formik}
 											label={typeRenders[idRow].label}
 											id={`stock.${
