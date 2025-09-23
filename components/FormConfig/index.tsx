@@ -57,7 +57,7 @@ const FormStyled = styled.div`
 `;
 
 const BoxShadowStyled = styled.div`
-	padding: 24px;
+	padding: 12px;
 	border-radius: 12px;
 	box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px,
 		rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px,
