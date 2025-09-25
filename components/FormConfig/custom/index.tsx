@@ -626,32 +626,11 @@ const CustomConfig = ({ formik }: CustomConfigProps) => {
 										)}
 									</div>
 								</div>
-								{/* <div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
-									<div className='col-xl-3 col-lg-5 col-12 mb-4'>
-										<FormGroup label='BÁN HẾT KHI GIÁ HIỆN TẠI CHẠM CẠNH TRÊN BOLLINGER (CHART THEO DÕI) '>
-											<Checks
-												id='stock.other.stock_config_use_bolinger_to_take_profit'
-												type='switch'
-												label='Active'
-												style={{
-													display: 'flex',
-													alignItems: 'center',
-												}}
-												onChange={(e: any) => handleChange(e, formik)}
-												checked={
-													values.stock.other
-														.stock_config_use_bolinger_to_take_profit
-												}
-												ariaLabel='status'
-											/>
-										</FormGroup>
-									</div>
-								</div> */}
 							</div>
 						</div>
 					</FormGroup>
 
-					<FormGroup>
+					{/* <FormGroup>
 						<div className='col-12 d-flex flex-wrap gap-4'>
 							<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
 								<div className='col-xl-3 col-lg-5 col-12 mb-4'>
@@ -772,7 +751,7 @@ const CustomConfig = ({ formik }: CustomConfigProps) => {
 								</div>
 							</div>
 						</div>
-					</FormGroup>
+					</FormGroup> */}
 				</div>
 			</>
 		</div>
