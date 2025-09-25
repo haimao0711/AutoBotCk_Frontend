@@ -21,6 +21,7 @@ import ConfirmApplyAllModal from '../../overview/ModalCofirmApplyAll';
 import VNIndex from '@components/FormConfig/vnindex';
 import Stock from '@components/FormConfig/stock';
 import CustomConfig from '@components/FormConfig/custom';
+import CustomFollowingConfig from '@components/FormConfig/customFollowing';
 import ModalPrioritize from '@components/FormConfig/prioritize';
 import { IBaseConfig, IErrorBaseConfig, IPriorityBase } from '@components/FormConfig/interface';
 import { initialValuesBaseConfig } from '../../../utils/initialValue';
@@ -366,6 +367,11 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 								{slug === 'trading' && (
 									<BoxShadowStyled>
 										<CustomConfig formik={formik} />
+									</BoxShadowStyled>
+								)}
+								{slug === 'following' && (
+									<BoxShadowStyled>
+										<CustomFollowingConfig formik={formik} />
 									</BoxShadowStyled>
 								)}
 							</div>
