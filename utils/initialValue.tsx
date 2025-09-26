@@ -32,10 +32,14 @@ export const initialValueVNIndexBuy: IVNIndexBuyConfig = {
 	vnindex_config_use_stoch_rsi_increase: false,
 
 	vnindex_config_use_macd_to_buy: false,
+	vnindex_config_use_histogram_to_buy: false,
 	vnindex_config_use_macd_obl_to_buy: false,
+	vnindex_config_use_histogram_obl_to_buy: false,
 	vnindex_config_use_macd_reversed_increase: false,
 	vnindex_config_value_macd_to_buy: 0,
+	vnindex_config_value_histogram_to_buy: 0,
 	vnindex_config_value_macd_obl_to_buy: 0,
+	vnindex_config_value_histogram_obl_to_buy: 0,
 	vnindex_config_use_macd_increase: false,
 
 	vnindex_config_use_histogram_reversed_increase: false,
@@ -62,8 +66,10 @@ export const initialValueVNIndexSell: IVNIndexSellConfig = {
 	vnindex_config_use_stoch_rsi_decrease: false,
 
 	vnindex_config_use_macd_to_sell: false,
+	vnindex_config_use_histogram_to_sell: false,
 	vnindex_config_use_macd_reversed_decrease: false,
 	vnindex_config_value_macd_to_sell: 0,
+	vnindex_config_value_histogram_to_sell: 0,
 	vnindex_config_use_macd_decrease: false,
 
 	vnindex_config_use_histogram_reversed_decrease: false,
@@ -88,13 +94,17 @@ export const initialValueStockBuy: IStockBuyConfig = {
 	stock_config_use_stoch_rsi_increase: false,
 
 	stock_config_use_macd_to_buy: false,
+	stock_config_use_histogram_to_buy: false,
 	stock_config_use_macd_obl_to_buy: false,
+	stock_config_use_histogram_obl_to_buy: false,
 	stock_config_use_buy_up_obl_to_buy: false,
 	stock_config_use_buy_foreign_obl_to_buy: false,
 	stock_config_use_volume_trade_obl_to_buy: false,
 	stock_config_use_macd_reversed_increase: false,
 	stock_config_value_macd_to_buy: 0,
+	stock_config_value_histogram_to_buy: 0,
 	stock_config_value_macd_obl_to_buy: 0,
+	stock_config_value_histogram_obl_to_buy: 0,
 	stock_config_value_buy_up_obl_to_buy: 0,
 	stock_config_value_buy_foreign_obl_to_buy: 0,
 	stock_config_value_volume_trade_obl_to_buy: 0,
@@ -118,8 +128,10 @@ export const initialValueStockSell: IStockSellConfig = {
 	stock_config_use_stoch_rsi_decrease: false,
 
 	stock_config_use_macd_to_sell: false,
+	stock_config_use_histogram_to_sell: false,
 	stock_config_use_macd_reversed_decrease: false,
 	stock_config_value_macd_to_sell: 0,
+	stock_config_value_histogram_to_sell: 0,
 	stock_config_use_macd_decrease: false,
 
 	stock_config_use_histogram_reversed_decrease: false,
@@ -197,7 +209,9 @@ export const initialValuePriorityVNIndexBuy: IVNIndexBuyPriorityConfig = {
 	vnindex_config_stoch_rsi_increase_sufficient_condition: false,
 
 	vnindex_config_macd_to_buy_necessary_condition: false,
+	vnindex_config_histogram_to_buy_necessary_condition: false,
 	vnindex_config_macd_to_buy_sufficient_condition: false,
+	vnindex_config_histogram_to_buy_sufficient_condition: false,
 	vnindex_config_macd_reversed_increase_necessary_condition: false,
 	vnindex_config_macd_reversed_increase_sufficient_condition: false,
 	vnindex_config_macd_increase_necessary_condition: false,
@@ -236,7 +250,9 @@ export const initialValuePriorityVNIndexSell: IVNIndexSellPriorityConfig = {
 	vnindex_config_stoch_rsi_decrease_sufficient_condition: false,
 
 	vnindex_config_macd_to_sell_necessary_condition: false,
+	vnindex_config_histogram_to_sell_necessary_condition: false,
 	vnindex_config_macd_to_sell_sufficient_condition: false,
+	vnindex_config_histogram_to_sell_sufficient_condition: false,
 	vnindex_config_macd_reversed_decrease_necessary_condition: false,
 	vnindex_config_macd_reversed_decrease_sufficient_condition: false,
 	vnindex_config_macd_decrease_necessary_condition: false,
@@ -268,7 +284,9 @@ export const initialValuePriorityStockBuy: IStockBuyPriorityConfig = {
 	stock_config_stoch_rsi_increase_sufficient_condition: false,
 
 	stock_config_macd_to_buy_necessary_condition: false,
+	stock_config_histogram_to_buy_necessary_condition: false,
 	stock_config_macd_to_buy_sufficient_condition: false,
+	stock_config_histogram_to_buy_sufficient_condition: false,
 	stock_config_macd_reversed_increase_necessary_condition: false,
 	stock_config_macd_reversed_increase_sufficient_condition: false,
 	stock_config_macd_increase_necessary_condition: false,
@@ -299,7 +317,9 @@ export const initialValuePriorityStockSell: IStockSellPriorityConfig = {
 	stock_config_stoch_rsi_decrease_sufficient_condition: false,
 
 	stock_config_macd_to_sell_necessary_condition: false,
+	stock_config_histogram_to_sell_necessary_condition: false,
 	stock_config_macd_to_sell_sufficient_condition: false,
+	stock_config_histogram_to_sell_sufficient_condition: false,
 	stock_config_macd_reversed_decrease_necessary_condition: false,
 	stock_config_macd_reversed_decrease_sufficient_condition: false,
 	stock_config_macd_decrease_necessary_condition: false,

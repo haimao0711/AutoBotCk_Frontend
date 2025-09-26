@@ -91,9 +91,9 @@ const generateSelectRenders = (
 				isRender: true,
 			},
 			{
-				key: `vnindex_config_use_macd_to_${side}`,
-				label: `MACD ${comparasionOperator}`,
-				name: `${vieSide} - MACD <= (VNI)`,
+				key: `vnindex_config_use_histogram_to_${side}`,
+				label: `HISTOGRAM ${comparasionOperator}`,
+				name: `${vieSide} - HISTOGRAM <= (VNI)`,
 				isRender: true,
 			},
 		],
@@ -145,9 +145,9 @@ const generateSelectRenders = (
 		],
 		[
 			{
-				key: `vnindex_config_use_macd_obl_to_${side}`,
-				label: `MACD(VNI) ${comparasionOperator}`,
-				name: `${vieSide} - MACD <= (CP)`,
+				key: `vnindex_config_use_histogram_obl_to_${side}`,
+				label: `HISTOGRAM(VNI) ${comparasionOperator}`,
+				name: `${vieSide} - HISTOGRAM <= (CP)`,
 				isRender: true,
 			},
 		],
@@ -170,8 +170,8 @@ const generateTypeRenders = (type: 'Buy' | 'Sell' | 'BuyObl'): Array<TypeItemsRe
 			label: 'Nhập chỉ số',
 		},
 		{
-			keyRender: `vnindex_config_use_macd_to_${side}`,
-			key: `vnindex_config_value_macd_to_${side}`,
+			keyRender: `vnindex_config_use_histogram_to_${side}`,
+			key: `vnindex_config_value_histogram_to_${side}`,
 			label: 'Nhập chỉ số',
 		},
 		{
@@ -197,8 +197,8 @@ const generateTypeRenders = (type: 'Buy' | 'Sell' | 'BuyObl'): Array<TypeItemsRe
 			label: 'Nhập chỉ số',
 		},
 		{
-			keyRender: `vnindex_config_use_macd_obl_to_${side}`,
-			key: `vnindex_config_value_macd_obl_to_${side}`,
+			keyRender: `vnindex_config_use_histogram_obl_to_${side}`,
+			key: `vnindex_config_value_histogram_obl_to_${side}`,
 			label: 'Nhập chỉ số',
 		},
 	];

@@ -92,9 +92,9 @@ const generateSelectRenders = (
 				isRender: true,
 			},
 			{
-				key: `stock_config_use_macd_to_${side}`,
-				label: `MACD ${comparasionOperator}`,
-				name: `${vieSide} - MACD <= (VNI)`,
+				key: `stock_config_use_histogram_to_${side}`,
+				label: `HISTOGRAM ${comparasionOperator}`,
+				name: `${vieSide} - HISTOGRAM <= (VNI)`,
 				isRender: true,
 			},
 		],
@@ -140,9 +140,9 @@ const generateSelectRenders = (
 		],
 		[
 			{
-				key: `stock_config_use_macd_obl_to_${side}`,
-				label: `MACD(CP) ${comparasionOperator}`,
-				name: `${vieSide} - MACD <= (CP)`,
+				key: `stock_config_use_histogram_obl_to_${side}`,
+				label: `HISTOGRAM (CP) ${comparasionOperator}`,
+				name: `${vieSide} - HISTOGRAM <= (CP)`,
 				isRender: true,
 			},
 		],
@@ -183,8 +183,8 @@ const generateTypeRenders = (
 			label: 'Nhập chỉ số',
 		},
 		{
-			keyRender: `stock_config_use_macd_to_${side}`,
-			key: `stock_config_value_macd_to_${side}`,
+			keyRender: `stock_config_use_histogram_to_${side}`,
+			key: `stock_config_value_histogram_to_${side}`,
 			label: 'Nhập chỉ số',
 		},
 		{
@@ -211,8 +211,8 @@ const generateTypeRenders = (
 			label: 'Nhập chỉ số',
 		},
 		{
-			keyRender: `stock_config_use_macd_obl_to_${side}`,
-			key: `stock_config_value_macd_obl_to_${side}`,
+			keyRender: `stock_config_use_histogram_obl_to_${side}`,
+			key: `stock_config_value_histogram_obl_to_${side}`,
 			label: 'Nhập chỉ số',
 		},
 		{

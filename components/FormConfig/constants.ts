@@ -11,6 +11,9 @@ export const MAPING_NAME_ATTR: ConditionMappingTypes = {
 	vnindex_config_use_macd_to_buy: {
 		name: 'MUA - MACD<= (VNI)',
 	},
+	vnindex_config_use_histogram_to_buy: {
+		name: 'MUA - HISTOGRAM<= (VNI)',
+	},
 	vnindex_config_use_macd_reversed_increase: {
 		name: 'MUA - MACD ĐẢO CHIỀU TĂNG (VNI)',
 	},
@@ -59,6 +62,9 @@ export const MAPING_NAME_ATTR: ConditionMappingTypes = {
 	vnindex_config_use_macd_to_sell: {
 		name: 'BÁN - MACD>= (VNI)',
 	},
+	vnindex_config_use_histogram_to_sell: {
+		name: 'BÁN - HISTOGRAM>= (VNI)',
+	},
 	vnindex_config_use_macd_reversed_decrease: {
 		name: 'BÁN - MACD ĐẢO CHIỀU GIẢM  (VNI)',
 	},
@@ -96,6 +102,9 @@ export const MAPING_NAME_ATTR: ConditionMappingTypes = {
 	// stock
 	stock_config_use_macd_to_buy: {
 		name: 'MUA - MACD<= (CP)',
+	},
+	stock_config_use_histogram_to_buy: {
+		name: 'MUA - HISTOGRAM<= (CP)',
 	},
 	stock_config_use_macd_reversed_increase: {
 		name: 'MUA - MACD ĐẢO CHIỀU TĂNG(CP)',
@@ -150,6 +159,9 @@ export const MAPING_NAME_ATTR: ConditionMappingTypes = {
 	},
 	stock_config_use_macd_to_sell: {
 		name: 'BÁN - MACD >=(CP)',
+	},
+	stock_config_use_histogram_to_sell: {
+		name: 'BÁN - HISTOGRAM >=(CP)',
 	},
 	stock_config_use_macd_reversed_decrease: {
 		name: 'BÁN - MACD ĐẢO CHIỀU GIẢM(CP)',
