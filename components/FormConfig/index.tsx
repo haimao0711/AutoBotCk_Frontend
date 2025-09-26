@@ -84,7 +84,7 @@ type FormType = {
 export const handleChange = (e: any, formik: any) => {
 	const { value } = e.target;
 
-	if (/^\d*\.?\d*$/.test(value)) {
+	if (/^-?\d*\.?\d*$/.test(value)) {
 		formik?.handleChange(e);
 	}
 };
