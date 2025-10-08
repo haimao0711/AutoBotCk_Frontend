@@ -162,6 +162,14 @@ const generateSelectRenders = (
 				isRender: slug !== 'trading',
 			},
 		],
+		[
+			{
+				key: `stock_config_use_macd_obl_increase`,
+				label: `MACD (CP) tăng`,
+				name: `${vieSide} - MACD tăng (CP)`,
+				isRender: true,
+			},
+		],
 	];
 	return type === 'BuyObl' ? rendersObl : renders;
 };
@@ -226,6 +234,11 @@ const generateTypeRenders = (
 			key: `stock_config_value_volume_trade_obl_to_${side}`,
 			label: 'Nhập chỉ số',
 			isRender: slug !== 'trading',
+		},
+		{
+			keyRender: `stock_config_use_max_stock_${side}`,
+			key: `stock_config_max_stock_${side}`,
+			label: 'Nhập chỉ số',
 		},
 	];
 
