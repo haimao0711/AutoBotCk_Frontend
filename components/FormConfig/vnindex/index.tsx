@@ -151,6 +151,14 @@ const generateSelectRenders = (
 				isRender: true,
 			},
 		],
+		[
+			{
+				key: `vnindex_config_use_macd_obl_increase`,
+				label: `MACD(VNI) tăng`,
+				name: `${vieSide} - MACD(VNI) tăng`,
+				isRender: true,
+			},
+		],
 	];
 	return type === 'BuyObl' ? rendersObl : renders;
 };
@@ -199,6 +207,16 @@ const generateTypeRenders = (type: 'Buy' | 'Sell' | 'BuyObl'): Array<TypeItemsRe
 		{
 			keyRender: `vnindex_config_use_histogram_obl_to_${side}`,
 			key: `vnindex_config_value_histogram_obl_to_${side}`,
+			label: 'Nhập chỉ số',
+		},
+		{
+			keyRender: `vnindex_config_use_min_vnindex_${side}`,
+			key: `vnindex_config_min_vnindex_${side}`,
+			label: 'Nhập chỉ số',
+		},
+		{
+			keyRender: `vnindex_config_use_max_vnindex_${side}`,
+			key: `vnindex_config_max_vnindex_${side}`,
 			label: 'Nhập chỉ số',
 		},
 	];
@@ -305,7 +323,10 @@ const Module = (props: ModuleProps) => {
 			<div className='d-flex flex-wrap justify-content-between container py-4 px-2'>
 				<div className='row w-100' style={{ marginLeft: 0, marginRight: 0 }}>
 					{selectRenders.map((selectRender, idRow) => {
-						const itemId = typeRenders[idRow].keyRender;
+						console.log('selectRenders:', selectRenders);
+						console.log('typeRenders:', typeRenders);
+						const item = typeRenders?.[idRow];
+						const itemId = item?.keyRender || '';
 						return (
 							<div className='mb-2 gap-1 col' key={idRow} style={columnStyle}>
 								{selectRender.map((item, idCol) => {

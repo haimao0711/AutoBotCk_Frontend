@@ -59,6 +59,7 @@ export interface IVNIndexBuyConfig {
 	vnindex_config_use_histogram_to_buy: boolean;
 	vnindex_config_use_macd_obl_to_buy: boolean;
 	vnindex_config_use_histogram_obl_to_buy: boolean;
+	vnindex_config_use_macd_obl_increase: boolean;
 	vnindex_config_use_macd_reversed_increase: boolean;
 	vnindex_config_value_macd_to_buy: number;
 	vnindex_config_value_histogram_to_buy: number;
@@ -199,6 +200,7 @@ export interface IStockBuyConfig {
 	stock_config_use_histogram_to_buy: boolean;
 	stock_config_use_macd_obl_to_buy: boolean;
 	stock_config_use_histogram_obl_to_buy: boolean;
+	stock_config_use_macd_obl_increase: boolean;
 	stock_config_use_buy_up_obl_to_buy: boolean;
 	stock_config_use_buy_foreign_obl_to_buy: boolean;
 	stock_config_use_volume_trade_obl_to_buy: boolean;
