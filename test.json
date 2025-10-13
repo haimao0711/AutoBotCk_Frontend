@@ -147,6 +147,7 @@
 		"take_profit_percent": 0,
 		"use_take_profit_second_part": false,
 		"percent_take_profit_sell_second": 0,
+		"percent_take_profit_sell_second_two": 0,
 		"use_bolinger_to_take_profit": false,
 		"percent_bolinger_to_take_profit": 0,
 		"number_pid_buy_once_time": 4.95,
