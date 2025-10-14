@@ -625,6 +625,7 @@ const Form: FC<IFormProps> = ({
 													{item?.current_profit}
 												</th>
 												<th>
+													<div>{`${item?.following_chart_buy} - ${item?.trading_chart_buy}`}</div>
 													<Button
 														style={{
 															backgroundColor: item?.is_block_buy
@@ -645,6 +646,7 @@ const Form: FC<IFormProps> = ({
 													</Button>
 												</th>
 												<th>
+													<div>{`${item?.following_chart_sell} - ${item?.trading_chart_sell}`}</div>
 													<Button
 														style={{
 															backgroundColor: item?.is_block_sell
@@ -661,13 +663,11 @@ const Form: FC<IFormProps> = ({
 																!item?.is_block_sell,
 															);
 														}}>
-														{/* {isLoadingStatus && (
-															<Spinner isSmall inButton />
-														)} */}
 														{item?.is_block_sell ? 'OFF' : 'ON'}
 													</Button>
 												</th>
 												<th>
+													<div>{item?.trading_chart_buy}</div>
 													<Button
 														icon={isLoading ? undefined : 'Run'}
 														style={{
@@ -694,6 +694,7 @@ const Form: FC<IFormProps> = ({
 													</Button>
 												</th>
 												<th>
+													<div>{item?.trading_chart_sell}</div>
 													<Button
 														icon={isLoading ? undefined : 'Run'}
 														style={{
