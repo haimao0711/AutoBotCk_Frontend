@@ -542,26 +542,26 @@ const Form: FC<IFormProps> = ({
 											<th>STT</th>
 											<th>MÃ CHỨNG KHOÁN </th>
 											<th>TÀI KHOẢN VPS</th>
-											<th>KHỐI LƯỢNG MUA DỰ KIẾN </th>
+											<th>KL MUA DỰ KIẾN </th>
 											<th>LEVEL</th>
 											<th>
-												KHỐI LƯỢNG ĐÃ MUA
+												KL ĐÃ MUA
 												<span
 													style={{
 														color: '#02FF00',
 														whiteSpace: 'nowrap',
 													}}>
-													{` (${percentBuy} %)`}
+													{isExistStock ? ` (${percentBuy} %)` : ''}
 												</span>
 											</th>
 											<th>
-												KHỐI LƯỢNG ĐÃ VỀ
+												KL ĐÃ VỀ
 												<span
 													style={{
 														color: '#02FF00',
 														whiteSpace: 'nowrap',
 													}}>
-													{` (${percentTrade} %)`}
+													{isExistStock ? ` (${percentTrade} %)` : ''}
 												</span>
 											</th>
 											<th>GIÁ HIỆN TẠI </th>
