@@ -215,22 +215,44 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 				}>
 				<Card>
 					<CardHeader>
-						<CardLabel icon='Edit' iconColor='warning'>
-							<ButtonBack>
-								<CardTitle>
-									{title}{' '}
+						<ButtonBack>
+							<CardTitle>
+								<div className='d-flex flex-column flex-sm-row justify-content-center align-items-center w-100 gap-3'>
+									<CardLabel icon='Edit' iconColor='warning'>
+										<div className='mb-1'>
+											{`CHỈNH SỬA CẤU HÌNH ${
+												slug === 'following' ? 'THEO DÕI' : 'HÀNH ĐỘNG'
+											}`}
+										</div>
+									</CardLabel>
 									<Button
-										className='ml-3 button-absolute'
 										isLight
 										color={'warning'}
-										style={{ top: '18px', width: '172px' }}
+										style={{
+											width: '172px',
+										}}
 										isDisable={isLoading}
 										onClick={() => router.push('/overview')}>
 										Quay lại trang chủ
 									</Button>
-								</CardTitle>
-							</ButtonBack>
-						</CardLabel>{' '}
+									<Button
+										isLight
+										color={'warning'}
+										style={{ width: '172px' }}
+										isDisable={isLoading}
+										onClick={() => {
+											router.push(
+												`/edit-config/${
+													slug === 'following' ? 'trading' : 'following'
+												}?id=` + id,
+											);
+										}}>
+										Cấu hình
+										{slug === 'following' ? ' hành động' : ' theo dõi'}
+									</Button>
+								</div>
+							</CardTitle>
+						</ButtonBack>
 					</CardHeader>
 					<FormStyled>
 						<CardBody className='abc'>
