@@ -10,6 +10,7 @@ services:
       - .env.production
     networks:
       - frontend_net
+      - backend_net   # gắn cùng network với backend để Nginx thấy API
 
   nginx:
     image: nginx:alpine
@@ -23,9 +24,10 @@ services:
       - ./certbot/www:/var/www/certbot
     depends_on:
       - stock-cms-client
+      - stock-predict-api   # đảm bảo backend sẵn sàng
     networks:
       - frontend_net
-      - backend_net   # dùng cùng network backend
+      - backend_net
 
   certbot:
     image: certbot/certbot
@@ -40,4 +42,4 @@ networks:
   frontend_net:
     driver: bridge
   backend_net:
-    external: true   # giữ external true, nhưng network đã tồn tại từ backend Compos
+    external: false 
