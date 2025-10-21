@@ -25,7 +25,7 @@ services:
       - stock-cms-client
     networks:
       - frontend_net
-      - backend_net   # Kết nối vào network backend để gọi API
+      - backend_net   # dùng cùng network backend
 
   certbot:
     image: certbot/certbot
@@ -40,4 +40,4 @@ networks:
   frontend_net:
     driver: bridge
   backend_net:
-    external: true
+    external: true   # giữ external true, nhưng network đã tồn tại từ backend Compos
