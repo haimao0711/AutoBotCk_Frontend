@@ -8,6 +8,8 @@ services:
       - "3000"
     env_file:
       - .env.production
+    networks:
+      - frontend_net
 
   nginx:
     image: nginx:alpine
@@ -21,6 +23,9 @@ services:
       - ./certbot/www:/var/www/certbot
     depends_on:
       - stock-cms-client
+    networks:
+      - frontend_net
+      - backend_net   # Kết nối vào network backend để gọi API
 
   certbot:
     image: certbot/certbot
@@ -28,3 +33,11 @@ services:
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
+    networks:
+      - frontend_net
+
+networks:
+  frontend_net:
+    driver: bridge
+  backend_net:
+    external: true
