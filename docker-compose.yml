@@ -10,7 +10,6 @@ services:
       - .env.production
     networks:
       - frontend_net
-      - backend_net   # gắn cùng network với backend để Nginx thấy API
 
   nginx:
     image: nginx:alpine
@@ -26,7 +25,7 @@ services:
       - stock-cms-client
     networks:
       - frontend_net
-      - backend_net
+      - backend_net   # gắn cùng network với backend
 
   certbot:
     image: certbot/certbot
@@ -41,4 +40,5 @@ networks:
   frontend_net:
     driver: bridge
   backend_net:
-    external: false 
+    external: true
+    name: autobotck_backend
