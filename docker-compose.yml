@@ -24,7 +24,6 @@ services:
       - ./certbot/www:/var/www/certbot
     depends_on:
       - stock-cms-client
-      - stock-predict-api   # đảm bảo backend sẵn sàng
     networks:
       - frontend_net
       - backend_net
