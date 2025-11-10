@@ -323,8 +323,6 @@ const Module = (props: ModuleProps) => {
 			<div className='d-flex flex-wrap justify-content-between container py-4 px-2'>
 				<div className='row w-100' style={{ marginLeft: 0, marginRight: 0 }}>
 					{selectRenders.map((selectRender, idRow) => {
-						console.log('selectRenders:', selectRenders);
-						console.log('typeRenders:', typeRenders);
 						const item = typeRenders?.[idRow];
 						const itemId = item?.keyRender || '';
 						return (

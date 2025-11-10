@@ -418,9 +418,11 @@ export const transformStockOther = (data: Record<string, number | boolean>): ISt
 		'stock_config_is_use_time_to_buy',
 		'stock_config_time_start_buy',
 		'stock_config_time_end_buy',
+		'stock_config_days_buy',
 		'stock_config_is_use_time_to_sell',
 		'stock_config_time_start_sell',
 		'stock_config_time_end_sell',
+		'stock_config_days_sell',
 	];
 
 	const obj: IStockOtherConfig = transformConfig(data, iStockOtherConfigKeys, 'stock_config_');

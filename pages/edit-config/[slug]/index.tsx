@@ -23,13 +23,10 @@ const Index: NextPage = () => {
 	const getConfiguration = useGetConfigurationDetailsForStockAndTradeType(id, slug);
 	const fetchData = useCallback(async () => {
 		const userConfigs = (await getConfiguration).data;
-		// console.log('userConfigs', userConfigs);
 		const data = transformBaseConfig(userConfigs);
 
 		setConfig(Object.keys(userConfigs).length ? data : undefined);
 	}, [getConfiguration]);
-
-	// console.log('config data: ', config);
 
 	useEffect(() => {
 		if (refetch) {

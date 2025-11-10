@@ -182,7 +182,6 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 		[formik],
 	);
 
-	console.log('selectedSymbols:', selectedSymbols);
 	return (
 		<div className='d-flex flex-wrap'>
 			{(submitMode === 'following' || submitMode === 'trading') && (

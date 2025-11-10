@@ -192,9 +192,11 @@ export const initialValueStockOther: IStockOtherConfig = {
 	stock_config_is_use_time_to_buy: false,
 	stock_config_time_start_buy: '',
 	stock_config_time_end_buy: '',
+	stock_config_days_buy: '',
 	stock_config_is_use_time_to_sell: false,
 	stock_config_time_start_sell: '',
 	stock_config_time_end_sell: '',
+	stock_config_days_sell: '',
 };
 
 export const initialValuePriorityVNIndexBuy: IVNIndexBuyPriorityConfig = {

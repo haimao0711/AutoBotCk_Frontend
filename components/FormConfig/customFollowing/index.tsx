@@ -6,6 +6,7 @@ import FormGroup from '@components/bootstrap/forms/FormGroup';
 import Input from '@components/bootstrap/forms/Input';
 import { IBaseConfig, IStockOtherConfig } from '../interface';
 import { handleChange } from '..';
+import DaysPicker from './DayPicker';
 
 interface CustomConfigProps {
 	formik: FormikProps<IBaseConfig>;
@@ -121,7 +122,7 @@ const CustomFollowingConfig = ({ formik }: CustomConfigProps) => {
 				<FormGroup>
 					<div className='col-12 d-flex flex-wrap gap-4'>
 						<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
-							<div className='col-xl-3 col-lg-5 col-12 mb-4'>
+							<div className='col-xl-3 col-lg-3 col-12 mb-3'>
 								<FormGroup label='SỬ DỤNG THỜI GIAN MUA '>
 									<Checks
 										id='stock.other.stock_config_is_use_time_to_buy'
@@ -137,48 +138,53 @@ const CustomFollowingConfig = ({ formik }: CustomConfigProps) => {
 									/>
 								</FormGroup>
 							</div>
-							<>
-								<div className='col-xl-3 col-lg-5 col-12 mb-4'>
-									{values.stock.other.stock_config_is_use_time_to_buy && (
-										<>
-											<FormGroup label='Bắt đầu'>
-												<Input
-													type='time'
-													autoComplete='volume'
-													id='stock.other.stock_config_time_start_buy'
-													onChange={formik?.handleChange}
-													onBlur={formik?.handleBlur}
-													value={
-														values.stock.other
-															.stock_config_time_start_buy
-													}
-													isValid={formik?.isValid}
-													validFeedback='Looks good!'
-												/>
-											</FormGroup>
-											<FormGroup label='Kết thúc'>
-												<Input
-													type='time'
-													placeholder='Nhập chỉ số'
-													autoComplete='volume'
-													id='stock.other.stock_config_time_end_buy'
-													onChange={formik?.handleChange}
-													onBlur={formik?.handleBlur}
-													value={
-														values.stock.other.stock_config_time_end_buy
-													}
-													min={0}
-													isValid={formik?.isValid}
-													validFeedback='Looks good!'
-												/>
-											</FormGroup>
-										</>
-									)}
-								</div>
-							</>
+							{values.stock.other.stock_config_is_use_time_to_buy && (
+								<>
+									<div className='col-xl-3 col-lg-3 col-12 mb-3'>
+										<FormGroup label='Bắt đầu'>
+											<Input
+												type='time'
+												autoComplete='volume'
+												id='stock.other.stock_config_time_start_buy'
+												onChange={formik?.handleChange}
+												onBlur={formik?.handleBlur}
+												value={
+													values.stock.other.stock_config_time_start_buy
+												}
+												isValid={formik?.isValid}
+												validFeedback='Looks good!'
+											/>
+										</FormGroup>
+										<FormGroup label='Kết thúc'>
+											<Input
+												type='time'
+												placeholder='Nhập chỉ số'
+												autoComplete='volume'
+												id='stock.other.stock_config_time_end_buy'
+												onChange={formik?.handleChange}
+												onBlur={formik?.handleBlur}
+												value={values.stock.other.stock_config_time_end_buy}
+												min={0}
+												isValid={formik?.isValid}
+												validFeedback='Looks good!'
+											/>
+										</FormGroup>
+									</div>
+									<DaysPicker
+										label='Chọn ngày mua'
+										value={values.stock.other.stock_config_days_buy}
+										onChange={(val) =>
+											formik.setFieldValue(
+												'stock.other.stock_config_days_buy',
+												val,
+											)
+										}
+									/>
+								</>
+							)}
 						</div>
 						<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
-							<div className='col-xl-3 col-lg-5 col-12 mb-4'>
+							<div className='col-xl-3 col-lg-3 col-12 mb-4'>
 								<FormGroup label='SỬ DỤNG THỜI GIAN BÁN '>
 									<Checks
 										id='stock.other.stock_config_is_use_time_to_sell'
@@ -196,9 +202,9 @@ const CustomFollowingConfig = ({ formik }: CustomConfigProps) => {
 									/>
 								</FormGroup>
 							</div>
-							<div className='col-xl-3 col-lg-5 col-12 mb-4'>
-								{values.stock.other.stock_config_is_use_time_to_sell && (
-									<>
+							{values.stock.other.stock_config_is_use_time_to_sell && (
+								<>
+									<div className='col-xl-3 col-lg-3 col-12 mb-4'>
 										<FormGroup label='Bắt đầu'>
 											<Input
 												type='time'
@@ -229,9 +235,19 @@ const CustomFollowingConfig = ({ formik }: CustomConfigProps) => {
 												validFeedback='Looks good!'
 											/>
 										</FormGroup>
-									</>
-								)}
-							</div>
+									</div>
+									<DaysPicker
+										label='Chọn ngày bán'
+										value={values.stock.other.stock_config_days_sell}
+										onChange={(val) =>
+											formik.setFieldValue(
+												'stock.other.stock_config_days_sell',
+												val,
+											)
+										}
+									/>
+								</>
+							)}
 						</div>
 					</div>
 				</FormGroup>

@@ -359,9 +359,11 @@ export interface IStockOtherConfig {
 	stock_config_is_use_time_to_buy: boolean;
 	stock_config_time_start_buy: string;
 	stock_config_time_end_buy: string;
+	stock_config_days_buy: string;
 	stock_config_is_use_time_to_sell: boolean;
 	stock_config_time_start_sell: string;
 	stock_config_time_end_sell: string;
+	stock_config_days_sell: string;
 }
 
 export interface IVNIndexBase {
