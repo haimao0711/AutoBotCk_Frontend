@@ -232,20 +232,6 @@ const FormTable: FC<IFormProps> = ({
 		});
 	}, []);
 
-	// useEffect(() => {
-	// 	async function fetchData() {
-	// 		const { userConfigs } = await authService.getConfig();
-	// 		setArrayConfig(userConfigs);
-	// 	}
-	// 	fetchData();
-	// }, []);
-	// Selected Event
-	// useEffect(() => {
-	// 	if (stocks) setValues({ ...stocks });
-	// 	return () => {};
-	// 	//	eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, [setValues, stocks]);
-
 	useEffect(() => {
 		async function fetchData() {
 			const { stocks, userConfigs } = await authService.getConfig();
@@ -269,16 +255,6 @@ const FormTable: FC<IFormProps> = ({
 		fetchData();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	// useEffect(() => {
-	// 	async function fetchData() {
-	// 		const { userConfigs } = await authService.getConfig();
-	// 		setArrayConfig(userConfigs);
-	// 		setArrayRender(userConfigs?.slice(0, perPage));
-	// 	}
-	// 	!isOpen && fetchData();
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, [isOpen]);
 
 	useEffect(() => {
 		const account: any =
@@ -532,28 +508,6 @@ const FormTable: FC<IFormProps> = ({
 												</th>
 												<th>
 													<>
-														{/* <Button
-															icon={isLoading ? undefined : 'Run'}
-															isLight
-															color={'success'}
-															className='mb-3'
-															onClick={() => {
-																setIsOpenDelete(true);
-																setInfo(item);
-																setIsOpenEdit(false);
-
-																setIsOptions({
-																	isOpen: true,
-																	isBuy: true, //
-																	isSell: false, //
-																});
-															}}>
-															{isLoading && (
-																<Spinner isSmall inButton />
-															)}
-															Mua
-														</Button> */}
-
 														<Button
 															icon={isLoading ? undefined : 'Run'}
 															isLight
@@ -592,10 +546,6 @@ const FormTable: FC<IFormProps> = ({
 					perPage={perPage}
 					setPerPage={setPerPage}
 				/>
-				{/* <div className='d-flex fs-4 my-4 gap-2'>
-					<p>{activeAdd ? 'Vui lòng nhập thông tin' : 'Thêm mã chứng khoán'}</p>
-					{!activeAdd && <AddBox onClick={() => setActiveAdd(true)} />}
-				</div> */}
 				{activeAdd && (
 					<div className='col-12'>
 						<div className=' col-12'>

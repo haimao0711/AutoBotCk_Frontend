@@ -51,9 +51,9 @@ const DaysPicker: React.FC<DaysPickerProps> = ({ label, value, onChange }) => {
 								borderRadius: '50%',
 								cursor: 'pointer',
 								userSelect: 'none',
-								backgroundColor: selected ? '#28a745' : 'transparent',
+								backgroundColor: selected ? '#5FD068' : 'transparent',
 								color: selected ? 'white' : 'white',
-								borderColor: selected ? '#28a745' : '',
+								borderColor: selected ? '#5FD068' : '',
 								fontWeight: 'bold',
 							}}
 							onClick={() => handleToggleDay(day)}>

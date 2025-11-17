@@ -1,0 +1,66 @@
+╔═══════════════════════════════════════════════════════════════════╗
+║          🚀 HƯỚNG DẪN DEPLOY TỰ ĐỘNG - CHỈ 1 LỆNH                ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+📌 SAU KHI PUSH CODE LÊN SERVER, CHỈ CẦN CHẠY:
+
+    chmod +x deploy.sh && ./deploy.sh
+
+✅ Script sẽ tự động:
+   • Build Docker image mới
+   • Deploy container mới
+   • Tự động setup/gia hạn SSL (không cần làm gì!)
+   • Khởi động nginx và certbot
+   • Hiển thị trạng thái
+
+═══════════════════════════════════════════════════════════════════
+
+📋 SETUP LẦN ĐẦU (chỉ cần làm 1 lần):
+
+1. Cấp quyền cho scripts:
+   chmod +x deploy.sh setup-ssl-auto.sh
+
+2. Tạo file .env.production (nếu chưa có)
+
+3. (Tùy chọn) Chỉnh email trong setup-ssl-auto.sh (dòng 6)
+   Thay: EMAIL="admin@${DOMAIN}"
+   Thành: EMAIL="your-email@domain.com"
+
+4. Chạy deploy:
+   ./deploy.sh
+
+═══════════════════════════════════════════════════════════════════
+
+🔄 DEPLOY LẦN SAU:
+
+   Chỉ cần chạy: ./deploy.sh
+
+═══════════════════════════════════════════════════════════════════
+
+✅ KẾT QUẢ:
+
+   Website sẽ tự động có SSL tại:
+   https://autobotchungkhoan.pro.vn
+
+   SSL sẽ TỰ ĐỘNG GIA HẠN mỗi 12 giờ, không cần làm gì!
+
+═══════════════════════════════════════════════════════════════════
+
+⚠️  LƯU Ý TRƯỚC KHI DEPLOY:
+
+   ✓ Domain phải trỏ đúng IP server
+   ✓ Port 80 và 443 phải mở trên firewall
+   ✓ File .env.production phải tồn tại
+
+═══════════════════════════════════════════════════════════════════
+
+🛠️  XEM LOGS (nếu cần):
+
+   docker-compose logs -f              # Tất cả
+   docker-compose logs -f nginx        # Chỉ nginx
+   docker-compose logs -f certbot      # Chỉ certbot
+
+═══════════════════════════════════════════════════════════════════
+
+📖 XEM CHI TIẾT: README_DEPLOY.md hoặc QUICK_START.md
+

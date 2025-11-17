@@ -612,7 +612,7 @@ const Form: FC<IFormProps> = ({
 												<th>
 													{Number(item?.volume_trade).toLocaleString()}
 												</th>
-												<th style={{ color: '#FFD900' }}>
+												<th style={{ color: '#5FD068' }}>
 													{Number(item?.current_price).toFixed(2)}
 												</th>
 												<th>{Number(item?.aver_price_buy).toFixed(2)}</th>
