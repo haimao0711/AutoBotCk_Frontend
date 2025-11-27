@@ -18,10 +18,10 @@ export const MAPING_NAME_ATTR: ConditionMappingTypes = {
 		name: 'MUA - MACD ĐẢO CHIỀU TĂNG (VNI)',
 	},
 	vnindex_config_use_macd_increase: {
-		name: 'MUA - SMA TĂNG (VNI)',
+		name: 'MUA - MACD TĂNG (VNI)',
 	},
 	vnindex_config_use_sma_increase: {
-		name: 'MUA - MACD TĂNG (VNI)',
+		name: 'MUA - SMA TĂNG (VNI)',
 	},
 	vnindex_config_use_histogram_reversed_increase: {
 		name: 'MUA - HISTOGRAM ĐẢO CHIỀU TĂNG (VNI)',
