@@ -105,6 +105,12 @@ const generateSelectRenders = (
 				isRender: true,
 			},
 			{
+				key: `vnindex_config_use_sma_${trend}`,
+				label: `SMA ${vieTrend}`,
+				name: `${vieSide} - SMA ${vieTrend} (VNI)`,
+				isRender: true,
+			},
+			{
 				key: `vnindex_config_use_min_vnindex_${side}`,
 				label: `Chỉ số VNINDEX <=`,
 				name: `${vieSide} - CHỈ SỐ VNINDEX <= (VNI)`,
@@ -131,7 +137,7 @@ const generateSelectRenders = (
 			{
 				key: `vnindex_config_use_rsi_obl_to_${side}`,
 				label: `RSI(VNI) ${comparasionOperator}`,
-				name: `${vieSide} - RSI ${comparasionOperator} (CP)`,
+				name: `${vieSide} - RSI ${comparasionOperator} (VNI)`,
 				isRender: true,
 			},
 		],
@@ -139,7 +145,7 @@ const generateSelectRenders = (
 			{
 				key: `vnindex_config_use_stoch_rsi_obl_to_${side}`,
 				label: `STOCH RSI(VNI) <=`,
-				name: `BẮT BUỘC - STOCH RSI <= (CP)`,
+				name: `BẮT BUỘC - STOCH RSI <= (VNI)`,
 				isRender: true,
 			},
 		],
@@ -147,7 +153,7 @@ const generateSelectRenders = (
 			{
 				key: `vnindex_config_use_histogram_obl_to_${side}`,
 				label: `HISTOGRAM(VNI) ${comparasionOperator}`,
-				name: `${vieSide} - HISTOGRAM <= (CP)`,
+				name: `${vieSide} - HISTOGRAM <= (VNI)`,
 				isRender: true,
 			},
 		],
@@ -156,6 +162,14 @@ const generateSelectRenders = (
 				key: `vnindex_config_use_macd_obl_increase`,
 				label: `MACD(VNI) tăng`,
 				name: `${vieSide} - MACD(VNI) tăng`,
+				isRender: true,
+			},
+		],
+		[
+			{
+				key: `vnindex_config_use_sma_obl_increase`,
+				label: `SMA(VNI) tăng`,
+				name: `${vieSide} - SMA(VNI) tăng`,
 				isRender: true,
 			},
 		],

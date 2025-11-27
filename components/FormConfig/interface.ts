@@ -60,12 +60,14 @@ export interface IVNIndexBuyConfig {
 	vnindex_config_use_macd_obl_to_buy: boolean;
 	vnindex_config_use_histogram_obl_to_buy: boolean;
 	vnindex_config_use_macd_obl_increase: boolean;
+	vnindex_config_use_sma_obl_increase: boolean;
 	vnindex_config_use_macd_reversed_increase: boolean;
 	vnindex_config_value_macd_to_buy: number;
 	vnindex_config_value_histogram_to_buy: number;
 	vnindex_config_value_macd_obl_to_buy: number;
 	vnindex_config_value_histogram_obl_to_buy: number;
 	vnindex_config_use_macd_increase: boolean;
+	vnindex_config_use_sma_increase: boolean;
 
 	vnindex_config_use_histogram_reversed_increase: boolean;
 	vnindex_config_use_histogram_increase: boolean;
@@ -95,6 +97,7 @@ export interface IVNIndexSellConfig {
 	vnindex_config_value_macd_to_sell: number;
 	vnindex_config_value_histogram_to_sell: number;
 	vnindex_config_use_macd_decrease: boolean;
+	vnindex_config_use_sma_decrease: boolean;
 
 	vnindex_config_use_histogram_reversed_decrease: boolean;
 	vnindex_config_use_histogram_decrease: boolean;
@@ -129,7 +132,9 @@ export interface IVNIndexBuyPriorityConfig {
 	vnindex_config_macd_reversed_increase_necessary_condition: boolean;
 	vnindex_config_macd_reversed_increase_sufficient_condition: boolean;
 	vnindex_config_macd_increase_necessary_condition: boolean;
+	vnindex_config_sma_increase_necessary_condition: boolean;
 	vnindex_config_macd_increase_sufficient_condition: boolean;
+	vnindex_config_sma_increase_sufficient_condition: boolean;
 
 	vnindex_config_histogram_reversed_increase_necessary_condition: boolean;
 	vnindex_config_histogram_reversed_increase_sufficient_condition: boolean;
@@ -170,7 +175,9 @@ export interface IVNIndexSellPriorityConfig {
 	vnindex_config_macd_reversed_decrease_necessary_condition: boolean;
 	vnindex_config_macd_reversed_decrease_sufficient_condition: boolean;
 	vnindex_config_macd_decrease_necessary_condition: boolean;
+	vnindex_config_sma_decrease_necessary_condition: boolean;
 	vnindex_config_macd_decrease_sufficient_condition: boolean;
+	vnindex_config_sma_decrease_sufficient_condition: boolean;
 
 	vnindex_config_histogram_reversed_decrease_necessary_condition: boolean;
 	vnindex_config_histogram_reversed_decrease_sufficient_condition: boolean;
@@ -201,6 +208,7 @@ export interface IStockBuyConfig {
 	stock_config_use_macd_obl_to_buy: boolean;
 	stock_config_use_histogram_obl_to_buy: boolean;
 	stock_config_use_macd_obl_increase: boolean;
+	stock_config_use_sma_obl_increase: boolean;
 	stock_config_use_buy_up_obl_to_buy: boolean;
 	stock_config_use_buy_foreign_obl_to_buy: boolean;
 	stock_config_use_volume_trade_obl_to_buy: boolean;
@@ -213,6 +221,7 @@ export interface IStockBuyConfig {
 	stock_config_value_buy_foreign_obl_to_buy: number;
 	stock_config_value_volume_trade_obl_to_buy: number;
 	stock_config_use_macd_increase: boolean;
+	stock_config_use_sma_increase: boolean;
 
 	stock_config_use_histogram_reversed_increase: boolean;
 	stock_config_use_histogram_increase: boolean;
@@ -237,6 +246,7 @@ export interface IStockSellConfig {
 	stock_config_value_macd_to_sell: number;
 	stock_config_value_histogram_to_sell: number;
 	stock_config_use_macd_decrease: boolean;
+	stock_config_use_sma_decrease: boolean;
 
 	stock_config_use_histogram_reversed_decrease: boolean;
 	stock_config_use_histogram_decrease: boolean;
@@ -266,7 +276,9 @@ export interface IStockBuyPriorityConfig {
 	stock_config_macd_reversed_increase_necessary_condition: boolean;
 	stock_config_macd_reversed_increase_sufficient_condition: boolean;
 	stock_config_macd_increase_necessary_condition: boolean;
+	stock_config_sma_increase_necessary_condition: boolean;
 	stock_config_macd_increase_sufficient_condition: boolean;
+	stock_config_sma_increase_sufficient_condition: boolean;
 
 	stock_config_histogram_reversed_increase_necessary_condition: boolean;
 	stock_config_histogram_reversed_increase_sufficient_condition: boolean;
@@ -299,7 +311,9 @@ export interface IStockSellPriorityConfig {
 	stock_config_macd_reversed_decrease_necessary_condition: boolean;
 	stock_config_macd_reversed_decrease_sufficient_condition: boolean;
 	stock_config_macd_decrease_necessary_condition: boolean;
+	stock_config_sma_decrease_necessary_condition: boolean;
 	stock_config_macd_decrease_sufficient_condition: boolean;
+	stock_config_sma_decrease_sufficient_condition: boolean;
 
 	stock_config_histogram_reversed_decrease_necessary_condition: boolean;
 	stock_config_histogram_reversed_decrease_sufficient_condition: boolean;

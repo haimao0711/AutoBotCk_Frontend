@@ -42,5 +42,5 @@ Website sẽ tự động có SSL tại: **https://autobotchungkhoan.pro.vn**
 SSL sẽ **tự động gia hạn** mỗi 12 giờ, không cần làm gì thêm!
 
 ---
-
-**Lưu ý:** Đảm bảo domain đã trỏ đúng IP server và port 80/443 đã mở trước khi deploy.
+ Đảm bảo domain đã trỏ đúng IP server và port 80/443 đã mở trước khi deploy
+**Lưu ý:**.

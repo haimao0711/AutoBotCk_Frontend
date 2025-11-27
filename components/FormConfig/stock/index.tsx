@@ -42,19 +42,19 @@ const generateSelectRenders = (
 			{
 				key: `stock_config_use_rsi_reversed_${trend}`,
 				label: `RSI ĐẢO CHIỀU ${vieTrend}`,
-				name: `${vieSide} - RSI ĐẢO CHIỀU ${vieTrend} (VNI)`,
+				name: `${vieSide} - RSI ĐẢO CHIỀU ${vieTrend} (CP)`,
 				isRender: true,
 			},
 			{
 				key: `stock_config_use_rsi_${trend}`,
 				label: `RSI ${vieTrend}`,
-				name: `${vieSide} - RSI ${vieTrend} (VNI)`,
+				name: `${vieSide} - RSI ${vieTrend} (CP)`,
 				isRender: true,
 			},
 			{
 				key: `stock_config_use_rsi_to_${side}`,
 				label: `RSI ${comparasionOperator}`,
-				name: `${vieSide} - RSI ${comparasionOperator} (VNI)`,
+				name: `${vieSide} - RSI ${comparasionOperator} (CP)`,
 				isRender: true,
 			},
 		],
@@ -62,19 +62,19 @@ const generateSelectRenders = (
 			{
 				key: `stock_config_use_stoch_rsi_reversed_${trend}`,
 				label: `STOCH RSI ĐẢO CHIỀU ${vieTrend}`,
-				name: `${vieSide} - STOCH RSI ĐẢO CHIỀU ${vieTrend} (VNI)`,
+				name: `${vieSide} - STOCH RSI ĐẢO CHIỀU ${vieTrend} (CP)`,
 				isRender: true,
 			},
 			{
 				key: `stock_config_use_stoch_rsi_${trend}`,
 				label: `STOCH RSI ${vieTrend}`,
-				name: `${vieSide} - STOCH RSI ${vieTrend} (VNI)`,
+				name: `${vieSide} - STOCH RSI ${vieTrend} (CP)`,
 				isRender: true,
 			},
 			{
 				key: `stock_config_use_stoch_rsi_to_${side}`,
 				label: `STOCH RSI ${comparasionOperator}`,
-				name: `${vieSide} - STOCH RSI <= (VNI)`,
+				name: `${vieSide} - STOCH RSI <= (CP)`,
 				isRender: true,
 			},
 		],
@@ -82,19 +82,19 @@ const generateSelectRenders = (
 			{
 				key: `stock_config_use_macd_reversed_${trend}`,
 				label: `MACD ĐẢO CHIỀU ${vieTrend}`,
-				name: `${vieSide} - MACD ĐẢO CHIỀU ${vieTrend} (VNI)`,
+				name: `${vieSide} - MACD ĐẢO CHIỀU ${vieTrend} (CP)`,
 				isRender: true,
 			},
 			{
 				key: `stock_config_use_macd_${trend}`,
 				label: `MACD ${vieTrend}`,
-				name: `${vieSide} - MACD ${vieTrend} (VNI)`,
+				name: `${vieSide} - MACD ${vieTrend} (CP)`,
 				isRender: true,
 			},
 			{
 				key: `stock_config_use_histogram_to_${side}`,
 				label: `HISTOGRAM ${comparasionOperator}`,
-				name: `${vieSide} - HISTOGRAM <= (VNI)`,
+				name: `${vieSide} - HISTOGRAM <= (CP)`,
 				isRender: true,
 			},
 		],
@@ -102,24 +102,22 @@ const generateSelectRenders = (
 			{
 				key: `stock_config_use_histogram_reversed_${trend}`,
 				label: `HISTOGRAM ĐẢO CHIỀU ${vieTrend}`,
-				name: `${vieSide} - HISTOGRAM ĐẢO CHIỀU ${vieTrend} (VNI)`,
+				name: `${vieSide} - HISTOGRAM ĐẢO CHIỀU ${vieTrend} (CP)`,
+				isRender: true,
+			},
+			{
+				key: `stock_config_use_sma_${trend}`,
+				label: `SMA ${vieTrend}`,
+				name: `${vieSide} - SMA ${vieTrend} (CP)`,
 				isRender: true,
 			},
 			{
 				key: `stock_config_use_histogram_${trend}`,
 				label: `HISTOGRAM ${vieTrend}`,
-				name: `${vieSide} - HISTOGRAM ${vieTrend} (VNI)`,
+				name: `${vieSide} - HISTOGRAM ${vieTrend} (CP)`,
 				isRender: true,
 			},
 		],
-		// [
-		// 	{
-		// 		key: `stock_config_use_volume_to_${side}`,
-		// 		label: `VOLUME>VOLUME MA`,
-		// 		name: `${vieSide} - VOLUME>VOLUME MA (VNI)`,
-		// 		isRender: type === 'Buy',
-		// 	},
-		// ],
 	];
 	const rendersObl = [
 		[
@@ -167,6 +165,14 @@ const generateSelectRenders = (
 				key: `stock_config_use_macd_obl_increase`,
 				label: `MACD (CP) tăng`,
 				name: `${vieSide} - MACD tăng (CP)`,
+				isRender: true,
+			},
+		],
+		[
+			{
+				key: `stock_config_use_sma_obl_increase`,
+				label: `SMA (CP) tăng`,
+				name: `${vieSide} - SMA tăng (CP)`,
 				isRender: true,
 			},
 		],
@@ -234,6 +240,11 @@ const generateTypeRenders = (
 			key: `stock_config_value_volume_trade_obl_to_${side}`,
 			label: 'Nhập chỉ số',
 			isRender: slug !== 'trading',
+		},
+		{
+			keyRender: `stock_config_use_max_stock_${side}`,
+			key: `stock_config_max_stock_${side}`,
+			label: 'Nhập chỉ số',
 		},
 		{
 			keyRender: `stock_config_use_max_stock_${side}`,

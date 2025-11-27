@@ -8,6 +8,19 @@ set -e
 echo "🚀 Bắt đầu deploy..."
 echo ""
 
+# Kiểm tra điều kiện cần thiết (DNS, Port, Firewall)
+if [ -f "./scripts/check-prerequisites.sh" ]; then
+    echo "🔍 Đang kiểm tra điều kiện deploy..."
+    chmod +x ./scripts/check-prerequisites.sh 2>/dev/null || true
+    if ! ./scripts/check-prerequisites.sh; then
+        echo ""
+        echo "❌ Kiểm tra không đạt! Vui lòng sửa các lỗi trên trước khi deploy."
+        echo "   Hoặc chạy riêng: ./scripts/check-prerequisites.sh để xem chi tiết"
+        exit 1
+    fi
+    echo ""
+fi
+
 # Kiểm tra file .env.production
 if [ ! -f ".env.production" ]; then
     echo "❌ Không tìm thấy file .env.production"

@@ -36,12 +36,14 @@ export const initialValueVNIndexBuy: IVNIndexBuyConfig = {
 	vnindex_config_use_macd_obl_to_buy: false,
 	vnindex_config_use_histogram_obl_to_buy: false,
 	vnindex_config_use_macd_obl_increase: false,
+	vnindex_config_use_sma_obl_increase: false,
 	vnindex_config_use_macd_reversed_increase: false,
 	vnindex_config_value_macd_to_buy: 0,
 	vnindex_config_value_histogram_to_buy: 0,
 	vnindex_config_value_macd_obl_to_buy: 0,
 	vnindex_config_value_histogram_obl_to_buy: 0,
 	vnindex_config_use_macd_increase: false,
+	vnindex_config_use_sma_increase: false,
 
 	vnindex_config_use_histogram_reversed_increase: false,
 	vnindex_config_use_histogram_increase: false,
@@ -72,6 +74,7 @@ export const initialValueVNIndexSell: IVNIndexSellConfig = {
 	vnindex_config_value_macd_to_sell: 0,
 	vnindex_config_value_histogram_to_sell: 0,
 	vnindex_config_use_macd_decrease: false,
+	vnindex_config_use_sma_decrease: false,
 
 	vnindex_config_use_histogram_reversed_decrease: false,
 	vnindex_config_use_histogram_decrease: false,
@@ -99,6 +102,7 @@ export const initialValueStockBuy: IStockBuyConfig = {
 	stock_config_use_macd_obl_to_buy: false,
 	stock_config_use_histogram_obl_to_buy: false,
 	stock_config_use_macd_obl_increase: false,
+	stock_config_use_sma_obl_increase: false,
 	stock_config_use_buy_up_obl_to_buy: false,
 	stock_config_use_buy_foreign_obl_to_buy: false,
 	stock_config_use_volume_trade_obl_to_buy: false,
@@ -111,6 +115,7 @@ export const initialValueStockBuy: IStockBuyConfig = {
 	stock_config_value_buy_foreign_obl_to_buy: 0,
 	stock_config_value_volume_trade_obl_to_buy: 0,
 	stock_config_use_macd_increase: false,
+	stock_config_use_sma_increase: false,
 
 	stock_config_use_histogram_reversed_increase: false,
 	stock_config_use_histogram_increase: false,
@@ -135,6 +140,7 @@ export const initialValueStockSell: IStockSellConfig = {
 	stock_config_value_macd_to_sell: 0,
 	stock_config_value_histogram_to_sell: 0,
 	stock_config_use_macd_decrease: false,
+	stock_config_use_sma_decrease: false,
 
 	stock_config_use_histogram_reversed_decrease: false,
 	stock_config_use_histogram_decrease: false,
@@ -226,7 +232,9 @@ export const initialValuePriorityVNIndexBuy: IVNIndexBuyPriorityConfig = {
 	vnindex_config_macd_reversed_increase_necessary_condition: false,
 	vnindex_config_macd_reversed_increase_sufficient_condition: false,
 	vnindex_config_macd_increase_necessary_condition: false,
+	vnindex_config_sma_increase_necessary_condition: false,
 	vnindex_config_macd_increase_sufficient_condition: false,
+	vnindex_config_sma_increase_sufficient_condition: false,
 
 	vnindex_config_histogram_reversed_increase_necessary_condition: false,
 	vnindex_config_histogram_reversed_increase_sufficient_condition: false,
@@ -267,7 +275,9 @@ export const initialValuePriorityVNIndexSell: IVNIndexSellPriorityConfig = {
 	vnindex_config_macd_reversed_decrease_necessary_condition: false,
 	vnindex_config_macd_reversed_decrease_sufficient_condition: false,
 	vnindex_config_macd_decrease_necessary_condition: false,
+	vnindex_config_sma_decrease_necessary_condition: false,
 	vnindex_config_macd_decrease_sufficient_condition: false,
+	vnindex_config_sma_decrease_sufficient_condition: false,
 
 	vnindex_config_histogram_reversed_decrease_necessary_condition: false,
 	vnindex_config_histogram_reversed_decrease_sufficient_condition: false,
@@ -301,7 +311,9 @@ export const initialValuePriorityStockBuy: IStockBuyPriorityConfig = {
 	stock_config_macd_reversed_increase_necessary_condition: false,
 	stock_config_macd_reversed_increase_sufficient_condition: false,
 	stock_config_macd_increase_necessary_condition: false,
+	stock_config_sma_increase_necessary_condition: false,
 	stock_config_macd_increase_sufficient_condition: false,
+	stock_config_sma_increase_sufficient_condition: false,
 
 	stock_config_histogram_reversed_increase_necessary_condition: false,
 	stock_config_histogram_reversed_increase_sufficient_condition: false,
@@ -334,7 +346,9 @@ export const initialValuePriorityStockSell: IStockSellPriorityConfig = {
 	stock_config_macd_reversed_decrease_necessary_condition: false,
 	stock_config_macd_reversed_decrease_sufficient_condition: false,
 	stock_config_macd_decrease_necessary_condition: false,
+	stock_config_sma_decrease_necessary_condition: false,
 	stock_config_macd_decrease_sufficient_condition: false,
+	stock_config_sma_decrease_sufficient_condition: false,
 
 	stock_config_histogram_reversed_decrease_necessary_condition: false,
 	stock_config_histogram_reversed_decrease_sufficient_condition: false,
