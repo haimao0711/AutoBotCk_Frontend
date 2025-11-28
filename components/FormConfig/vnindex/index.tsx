@@ -28,6 +28,7 @@ export const FormStyle = styled.div`
 
 const generateSelectRenders = (
 	type: 'Buy' | 'Sell' | 'BuyObl',
+	slug: string | string[] | undefined,
 ): Array<Array<SwitchItemsRenderProps>> => {
 	const side = type === 'Buy' || type === 'BuyObl' ? 'buy' : 'sell';
 	const vieSide = type === 'Buy' || type === 'BuyObl' ? 'MUA' : 'BÁN';
@@ -177,7 +178,10 @@ const generateSelectRenders = (
 	return type === 'BuyObl' ? rendersObl : renders;
 };
 
-const generateTypeRenders = (type: 'Buy' | 'Sell' | 'BuyObl'): Array<TypeItemsRenderProps> => {
+const generateTypeRenders = (
+	type: 'Buy' | 'Sell' | 'BuyObl',
+	slug: string | string[] | undefined,
+): Array<TypeItemsRenderProps> => {
 	const side = type === 'Buy' || type === 'BuyObl' ? 'buy' : 'sell';
 
 	const renders = [
@@ -227,11 +231,13 @@ const generateTypeRenders = (type: 'Buy' | 'Sell' | 'BuyObl'): Array<TypeItemsRe
 			keyRender: `vnindex_config_use_min_vnindex_${side}`,
 			key: `vnindex_config_min_vnindex_${side}`,
 			label: 'Nhập chỉ số',
+			isRender: slug !== 'trading',
 		},
 		{
 			keyRender: `vnindex_config_use_max_vnindex_${side}`,
 			key: `vnindex_config_max_vnindex_${side}`,
 			label: 'Nhập chỉ số',
+			isRender: slug !== 'trading',
 		},
 	];
 	return type === 'BuyObl' ? rendersObl : renders;
@@ -326,12 +332,12 @@ const Module = (props: ModuleProps) => {
 		window.addEventListener('resize', updateStyle);
 		return () => window.removeEventListener('resize', updateStyle);
 	}, []);
-	const { type, label, formik, setValues } = props;
+	const { type, label, formik, setValues, slug } = props;
 	const { values } = formik;
 	const side = type === 'Buy' || type === 'BuyObl' ? 'buy' : 'sell';
 
-	const selectRenders = generateSelectRenders(type);
-	const typeRenders = generateTypeRenders(type);
+	const selectRenders = generateSelectRenders(type, slug);
+	const typeRenders = generateTypeRenders(type, slug);
 	return (
 		<FormGroup className='col-12 border-b border-gray-300 py-6 px-1 mb-6' label={label}>
 			<div className='d-flex flex-wrap justify-content-between container py-4 px-2'>
