@@ -168,6 +168,7 @@ export const initialValueStockOther: IStockOtherConfig = {
 
 	stock_config_use_take_profit_first_part: false,
 	stock_config_use_stoch_rsi_to_take_profit: false,
+	stock_config_use_rsi_decrease_to_take_profit: false,
 	stock_config_use_take_profit_first_part_two: false,
 	stock_config_percent_take_profit_sell_first: 0,
 	stock_config_value_stoch_rsi_to_take_profit: 0,
@@ -178,6 +179,7 @@ export const initialValueStockOther: IStockOtherConfig = {
 	stock_config_use_take_profit_second_part_two: false,
 	stock_config_percent_take_profit_sell_second: 0,
 	stock_config_percent_stoch_rsi_to_take_profit: 0,
+	stock_config_percent_rsi_decrease_to_take_profit: 0,
 	stock_config_percent_take_profit_sell_second_two: 0,
 	stock_config_use_bolinger_to_take_profit: false,
 	stock_config_use_bolinger_a_part_to_take_profit: false,

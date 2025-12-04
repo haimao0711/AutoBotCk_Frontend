@@ -397,9 +397,8 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 								)}
 							</div>
 
-							<div className='d-flex justify-content-end mt-3'>
+							<div className='d-flex justify-content-end mt-3 gap-3'>
 								<Button
-									className='ml-3'
 									icon={isLoading ? undefined : 'Save'}
 									isLight
 									color={'success'}
@@ -411,7 +410,6 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 										: 'Thêm'}
 								</Button>
 								<Button
-									className='ml-3'
 									icon={isLoading ? undefined : 'Save'}
 									isLight
 									color={'success'}
@@ -432,6 +430,41 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 										: 'Cập nhật cho các mã khác'}
 								</Button>
 							</div>
+							<ButtonBack>
+								<CardTitle>
+									<div className='d-flex flex-sm-row  align-items-center w-100 gap-3 mt-3'>
+										<Button
+											isLight
+											color={'warning'}
+											style={{
+												width: '172px',
+											}}
+											isDisable={isLoading}
+											onClick={() => router.push('/overview')}>
+											Quay lại trang chủ
+										</Button>
+										<Button
+											isLight
+											color={'warning'}
+											style={{ width: '172px' }}
+											isDisable={isLoading}
+											onClick={() => {
+												router.push(
+													`/edit-config/${
+														slug === 'following'
+															? 'trading'
+															: slug === 'trading'
+															? 'following'
+															: 'overview'
+													}?id=` + id,
+												);
+											}}>
+											Cấu hình
+											{slug === 'following' ? ' hành động' : ' theo dõi'}
+										</Button>
+									</div>
+								</CardTitle>
+							</ButtonBack>
 						</CardBody>
 					</FormStyled>
 				</Card>

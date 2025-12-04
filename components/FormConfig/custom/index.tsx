@@ -597,6 +597,55 @@ const CustomConfig = ({ formik }: CustomConfigProps) => {
 										)}
 									</div>
 								</div>
+								<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
+									<div className='col-xl-3 col-lg-5 col-12  '>
+										<FormGroup label='BÁN LẦN 1 KHI RSI giảm'>
+											<Checks
+												id='stock.other.stock_config_use_rsi_decrease_to_take_profit'
+												type='switch'
+												label='Active'
+												style={{
+													display: 'flex',
+													alignItems: 'center',
+												}}
+												onChange={formik.handleChange}
+												checked={
+													values.stock.other
+														.stock_config_use_rsi_decrease_to_take_profit
+												}
+												ariaLabel='status'
+											/>
+										</FormGroup>
+									</div>
+									<div className='col-xl-2 col-lg-5 col-12 '>
+										{values.stock.other
+											.stock_config_use_rsi_decrease_to_take_profit && (
+											<FormGroup label='Lượng CP bán (%)'>
+												<Input
+													type='text'
+													placeholder='Nhập chỉ số'
+													autoComplete='volume'
+													id='stock.other.stock_config_percent_rsi_decrease_to_take_profit'
+													onChange={(e: any) => {
+														handlePrecentageChange(
+															e,
+															'stock.other.stock_config_percent_rsi_decrease_to_take_profit',
+														);
+													}}
+													onBlur={formik?.handleBlur}
+													value={
+														values.stock.other
+															.stock_config_percent_rsi_decrease_to_take_profit *
+														100
+													}
+													min={0}
+													isValid={formik?.isValid}
+													validFeedback='Looks good!'
+												/>
+											</FormGroup>
+										)}
+									</div>
+								</div>
 								<div className='col-12 mb-5 d-flex gap-4 flex-wrap'>
 									<div className='col-xl-3 col-lg-5 col-12  '>
 										<FormGroup label='BÁN LẦN 1 KHI GIÁ HIỆN TẠI CHẠM CẠNH TRÊN BOLLINGER (CHART THEO DÕI) '>

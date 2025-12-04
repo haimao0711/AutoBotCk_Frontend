@@ -343,6 +343,7 @@ export interface IStockOtherConfig {
 
 	stock_config_use_take_profit_first_part: boolean;
 	stock_config_use_stoch_rsi_to_take_profit: boolean;
+	stock_config_use_rsi_decrease_to_take_profit: boolean;
 	stock_config_use_take_profit_first_part_two: boolean;
 	stock_config_percent_take_profit_sell_first: number;
 	stock_config_value_stoch_rsi_to_take_profit: number;
@@ -353,6 +354,7 @@ export interface IStockOtherConfig {
 	stock_config_use_take_profit_second_part_two: boolean;
 	stock_config_percent_take_profit_sell_second: number;
 	stock_config_percent_stoch_rsi_to_take_profit: number;
+	stock_config_percent_rsi_decrease_to_take_profit: number;
 	stock_config_percent_take_profit_sell_second_two: number;
 	stock_config_use_bolinger_to_take_profit: boolean;
 	stock_config_use_bolinger_a_part_to_take_profit: boolean;
