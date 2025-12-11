@@ -468,8 +468,16 @@ export const transformConfigData = (data: Record<string, any>): IConfig => {
 	if ('chart' in data) {
 		obj.chart = data['chart'] ? data['chart'].toString() : undefined;
 	}
+	if ('chart_second' in data) {
+		obj.chart_second = data['chart_second'] ? data['chart_second'].toString() : undefined;
+	}
 	if ('chart_sell' in data) {
 		obj.chart_sell = data['chart_sell'] ? data['chart_sell'].toString() : undefined;
+	}
+	if ('chart_sell_second' in data) {
+		obj.chart_sell_second = data['chart_sell_second']
+			? data['chart_sell_second'].toString()
+			: undefined;
 	}
 	if ('chart_type' in data) {
 		obj.chart_type = data['chart_type'] ? data['chart_type'].toString() : undefined;
@@ -493,6 +501,9 @@ export const transformConfigData = (data: Record<string, any>): IConfig => {
 
 	if ('is_use_vnindex_config' in data) {
 		obj.config_is_use_vnindex_config = Boolean(data['is_use_vnindex_config']);
+	}
+	if ('is_use_candle_second' in data) {
+		obj.config_is_use_candle_second = Boolean(data['is_use_candle_second']);
 	}
 
 	return obj as IConfig;

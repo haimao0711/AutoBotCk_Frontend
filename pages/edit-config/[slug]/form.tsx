@@ -26,7 +26,7 @@ import ModalPrioritize from '@components/FormConfig/prioritize';
 import { IBaseConfig, IErrorBaseConfig, IPriorityBase } from '@components/FormConfig/interface';
 import { initialValuesBaseConfig } from '../../../utils/initialValue';
 import { transformConfigData } from '../../../utils//transform';
-import { times } from '../../overview/form';
+import { times, times_second } from '../../overview/form';
 
 const FormStyled = styled.div`
 	.rc-time-picker-panel,
@@ -303,6 +303,62 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 											})}
 										</Select>
 									</FormGroup>
+									<FormGroup
+										label={`SỬ DỤNG CHART ${
+											slug === 'following' ? 'THEO DÕI' : 'HÀNH ĐỘNG'
+										} THỨ HAI`}
+										className='col-lg-3 col-6 mb-4'>
+										<Checks
+											id='base.config_is_use_candle_second'
+											type='switch'
+											label='Active'
+											onChange={formik.handleChange}
+											checked={
+												formik?.values.base.config_is_use_candle_second
+											}
+											ariaLabel='status'
+										/>
+									</FormGroup>
+									{formik?.values.base.config_is_use_candle_second && (
+										<>
+											<FormGroup
+												className='col-lg-3 col-12 mb-4'
+												label='CHỌN CHART MUA THỨ HAI'>
+												<Select
+													id='base.chart_second'
+													ariaLabel='Board select'
+													placeholder='Chọn chart'
+													onChange={formik.handleChange}
+													value={formik.values.base.chart_second}>
+													{times_second?.map((item: any) => {
+														return (
+															<Option key={item} value={item}>
+																{item}
+															</Option>
+														);
+													})}
+												</Select>
+											</FormGroup>
+											<FormGroup
+												className='col-lg-3 col-12 mb-4'
+												label='CHỌN CHART BÁN THỨ HAI'>
+												<Select
+													id='base.chart_sell_second'
+													ariaLabel='Board select'
+													placeholder='Chọn chart'
+													onChange={formik.handleChange}
+													value={formik.values.base.chart_sell_second}>
+													{times_second?.map((item: any) => {
+														return (
+															<Option key={item} value={item}>
+																{item}
+															</Option>
+														);
+													})}
+												</Select>
+											</FormGroup>
+										</>
+									)}
 								</div>
 
 								<BoxShadowStyled>

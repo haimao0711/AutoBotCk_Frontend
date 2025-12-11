@@ -25,12 +25,15 @@ export interface IConfig {
 	stock_name?: string;
 	chart?: string;
 	chart_sell?: string;
+	chart_second?: string;
+	chart_sell_second?: string;
 	chart_type?: string;
 	config_stock_id?: string;
 	config_is_buy: boolean;
 	config_is_sell: boolean;
 	config_is_use_vnindex_config: boolean;
 	config_is_use_stock_config: boolean;
+	config_is_use_candle_second: boolean;
 }
 
 export interface IErrorConfig extends Omit<IConfig, 'name' | 'config_id'> {}
