@@ -367,6 +367,7 @@ export const initialValuesBaseConfig: IBaseConfig = {
 		config_is_sell: false,
 		config_is_use_vnindex_config: false,
 		config_is_use_stock_config: false,
+		config_is_use_candle_second: false,
 	},
 	vnindex: {
 		buy: initialValueVNIndexBuy,
