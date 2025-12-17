@@ -49,7 +49,7 @@ interface IFormProps {
 const FormStyled = styled.div``;
 
 export const times = ['M1', 'M5', 'M15', 'H1', 'D1', 'W1'];
-export const times_second = ['NONE', 'M1', 'M5', 'M15', 'H1', 'D1', 'W1'];
+export const times_second = ['OFF', 'M1', 'M5', 'M15', 'H1', 'D1', 'W1'];
 const CHECK_ALL_OBJECT: { [key: string]: boolean } = {
 	statusList: true,
 	provinceList: true,

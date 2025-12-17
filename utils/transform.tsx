@@ -29,6 +29,7 @@ export const transformConfigData = (config: IBaseConfig): Record<string, any> =>
 		'config_is_sell',
 		'config_is_use_vnindex_config',
 		'config_is_use_stock_config',
+		'config_is_use_candle_second',
 	];
 
 	(Object.keys(config.base) as Array<keyof IConfig>).forEach((key) => {

@@ -106,8 +106,16 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 
 	const handleSubmitFormik = useCallback(
 		(values: IBaseConfig) => {
-			const data = transformConfigData(values);
-			console.log('data update:', data);
+			// Đảm bảo giá trị mặc định 'OFF' cho chart_second và chart_sell_second
+			const valuesWithDefaults = {
+				...values,
+				base: {
+					...values.base,
+					chart_second: values.base.chart_second || 'OFF',
+					chart_sell_second: values.base.chart_sell_second || 'OFF',
+				},
+			};
+			const data = transformConfigData(valuesWithDefaults);
 			if (!config) return;
 			setIsLoading(true);
 			const onSuccess = (data: any) => {
@@ -329,7 +337,9 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 													ariaLabel='Board select'
 													placeholder='Chọn chart'
 													onChange={formik.handleChange}
-													value={formik.values.base.chart_second}>
+													value={
+														formik.values.base.chart_second || 'OFF'
+													}>
 													{times_second?.map((item: any) => {
 														return (
 															<Option key={item} value={item}>
@@ -347,7 +357,10 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 													ariaLabel='Board select'
 													placeholder='Chọn chart'
 													onChange={formik.handleChange}
-													value={formik.values.base.chart_sell_second}>
+													value={
+														formik.values.base.chart_sell_second ||
+														'OFF'
+													}>
 													{times_second?.map((item: any) => {
 														return (
 															<Option key={item} value={item}>
