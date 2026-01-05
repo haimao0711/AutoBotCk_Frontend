@@ -16,6 +16,7 @@ type StockItem = {
 	stock_id: string;
 	stock_name: string;
 	level: string;
+	current_price: string;
 };
 
 const ConfirmApplyAllModal: React.FC<Props> = ({

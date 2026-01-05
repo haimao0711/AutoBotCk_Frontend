@@ -77,6 +77,7 @@ type StockItem = {
 	stock_id: string;
 	stock_name: string;
 	level: string;
+	current_price: string;
 };
 type FormType = {
 	title: string;
@@ -211,12 +212,12 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 						config?.base.config_is_sell &&
 						config?.base.config_is_use_stock_config &&
 						config?.base.config_is_use_vnindex_config) ||
-					(formik?.values?.base.config_is_buy &&
-						(formik?.values?.base.config_is_use_vnindex_config ||
-							formik?.values?.base.config_is_use_stock_config)) ||
-					(formik?.values?.base.config_is_sell &&
-						(formik?.values?.base.config_is_use_vnindex_config ||
-							formik?.values?.base.config_is_use_stock_config))
+						(formik?.values?.base.config_is_buy &&
+							(formik?.values?.base.config_is_use_vnindex_config ||
+								formik?.values?.base.config_is_use_stock_config)) ||
+						(formik?.values?.base.config_is_sell &&
+							(formik?.values?.base.config_is_use_vnindex_config ||
+								formik?.values?.base.config_is_use_stock_config))
 						? 'col-xl-8  col-12'
 						: 'col-12'
 				}>
@@ -227,9 +228,8 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 								<div className='d-flex flex-column flex-sm-row justify-content-center align-items-center w-100 gap-3'>
 									<CardLabel icon='Edit' iconColor='warning'>
 										<div className='mb-1'>
-											{`CHỈNH SỬA CẤU HÌNH ${
-												slug === 'following' ? 'THEO DÕI' : 'HÀNH ĐỘNG'
-											}`}
+											{`CHỈNH SỬA CẤU HÌNH ${slug === 'following' ? 'THEO DÕI' : 'HÀNH ĐỘNG'
+												}`}
 										</div>
 									</CardLabel>
 									<Button
@@ -249,8 +249,7 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 										isDisable={isLoading}
 										onClick={() => {
 											router.push(
-												`/edit-config/${
-													slug === 'following' ? 'trading' : 'following'
+												`/edit-config/${slug === 'following' ? 'trading' : 'following'
 												}?id=` + id,
 											);
 										}}>
@@ -312,9 +311,8 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 										</Select>
 									</FormGroup>
 									<FormGroup
-										label={`SỬ DỤNG CHART ${
-											slug === 'following' ? 'THEO DÕI' : 'HÀNH ĐỘNG'
-										} THỨ HAI`}
+										label={`SỬ DỤNG CHART ${slug === 'following' ? 'THEO DÕI' : 'HÀNH ĐỘNG'
+											} THỨ HAI`}
 										className='col-lg-3 col-6 mb-4'>
 										<Checks
 											id='base.config_is_use_candle_second'
@@ -519,10 +517,9 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 											isDisable={isLoading}
 											onClick={() => {
 												router.push(
-													`/edit-config/${
-														slug === 'following'
-															? 'trading'
-															: slug === 'trading'
+													`/edit-config/${slug === 'following'
+														? 'trading'
+														: slug === 'trading'
 															? 'following'
 															: 'overview'
 													}?id=` + id,
@@ -550,12 +547,12 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 						config?.base.config_is_sell &&
 						config?.base.config_is_use_vnindex_config &&
 						config?.base.config_is_use_stock_config) ||
-					(formik?.values?.base.config_is_buy &&
-						(formik?.values?.base.config_is_use_vnindex_config ||
-							formik?.values?.base.config_is_use_stock_config)) ||
-					(formik?.values?.base.config_is_sell &&
-						(formik?.values?.base.config_is_use_vnindex_config ||
-							formik?.values?.base.config_is_use_stock_config)) ? (
+						(formik?.values?.base.config_is_buy &&
+							(formik?.values?.base.config_is_use_vnindex_config ||
+								formik?.values?.base.config_is_use_stock_config)) ||
+						(formik?.values?.base.config_is_sell &&
+							(formik?.values?.base.config_is_use_vnindex_config ||
+								formik?.values?.base.config_is_use_stock_config)) ? (
 						<ModalPrioritize formik={formik} />
 					) : (
 						<></>

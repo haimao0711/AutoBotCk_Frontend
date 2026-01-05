@@ -197,10 +197,10 @@ const Form: FC<IFormProps> = ({
 					arrConfig.map((item: any) =>
 						item.stock_id == dataRes.stock_id
 							? {
-									...item,
-									is_block_buy: dataRes.is_block_buy,
-									is_block_sell: dataRes.is_block_sell,
-							  }
+								...item,
+								is_block_buy: dataRes.is_block_buy,
+								is_block_sell: dataRes.is_block_sell,
+							}
 							: item,
 					),
 				);
@@ -321,7 +321,7 @@ const Form: FC<IFormProps> = ({
 	// Selected Event
 	useEffect(() => {
 		if (stocks) setValues({ ...stocks });
-		return () => {};
+		return () => { };
 		//	eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setValues, stocks]);
 
@@ -440,7 +440,7 @@ const Form: FC<IFormProps> = ({
 					<form className='row g-3 align-items-center mb-4'>
 						<div className='d-flex align-items-center'>
 							<label htmlFor='sortOption' className='me-2 fw-bold mb-0'>
-								Sắp xếp theo:
+								Sắp xếp theo
 							</label>
 							<select
 								id='sortKey'
@@ -477,8 +477,8 @@ const Form: FC<IFormProps> = ({
 									searchType === 'symbol'
 										? 'Mã cổ phiếu'
 										: searchType === 'volume'
-										? 'Khối lượng'
-										: 'Level'
+											? 'Khối lượng'
+											: 'Level'
 								}>
 								<Input
 									id='search'
@@ -487,8 +487,8 @@ const Form: FC<IFormProps> = ({
 										searchType === 'symbol'
 											? 'Chọn mã cổ phiếu'
 											: searchType === 'volume'
-											? 'Chọn khối lượng'
-											: 'Chọn level'
+												? 'Chọn khối lượng'
+												: 'Chọn level'
 									}
 									autoComplete='search'
 									value={keyStockSearch}
