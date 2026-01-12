@@ -460,8 +460,8 @@ const Form: FC<IFormProps> = ({
 						<div className='col-8 col-md-3 col-lg-2'>
 							<FormItem label='Tìm kiếm theo'>
 								<select
-									className='form-control'
-									style={{ minHeight: '48px' }}
+									className='form-select cursor-pointer'
+									style={{ height: '48px' }}
 									value={searchType}
 									onChange={(e) => setSearchType(e.target.value)}>
 									<option value='symbol'>Mã cổ phiếu</option>
@@ -496,6 +496,12 @@ const Form: FC<IFormProps> = ({
 									style={{ minHeight: '48px' }}
 									onFocus={() => {
 										formik.setErrors({});
+									}}
+									onKeyDown={(e: any) => {
+										if (e.key === 'Enter') {
+											e.preventDefault();
+											handleSearch();
+										}
 									}}
 								/>
 							</FormItem>
