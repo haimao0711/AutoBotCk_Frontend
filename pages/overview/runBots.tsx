@@ -44,6 +44,7 @@ const RunBot: FC<any> = ({
 	setIsOpenDelete,
 	isOptions,
 	setIsOptions,
+	userConfigs,
 }) => {
 	const { darkModeStatus } = useDarkMode();
 	const [stocks, setStocks] = useState();
@@ -70,6 +71,7 @@ const RunBot: FC<any> = ({
 							setIsOpenDelete={setIsOpenDelete}
 							isOptions={isOptions}
 							setIsOptions={setIsOptions}
+							userConfigs={userConfigs}
 						/>
 					</div>
 				</CardBody>

@@ -46,6 +46,7 @@ const Index: NextPage = () => {
 		isSell: false,
 		isTrade: false,
 	});
+	const [userConfigs, setUserConfigs] = useState<any[]>([]);
 	const [isTrading, setIsTrading] = useState(false);
 	const {
 		isLogin,
@@ -120,7 +121,7 @@ const Index: NextPage = () => {
 			}
 		}
 		checkIsTrading();
-		const intervalId = setInterval(checkIsTrading, 5000);
+		const intervalId = setInterval(checkIsTrading, 3000);
 		return () => clearInterval(intervalId);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -137,6 +138,21 @@ const Index: NextPage = () => {
 			}
 		}
 		getIsBlockBuy();
+	}, []);
+
+	const fetchConfigs = async () => {
+		try {
+			const { userConfigs } = await authService.getConfig();
+			setUserConfigs(userConfigs);
+		} catch (error) {
+			console.error('fetchConfigs error:', error);
+		}
+	};
+
+	useEffect(() => {
+		fetchConfigs();
+		const intervalId = setInterval(fetchConfigs, 3000);
+		return () => clearInterval(intervalId);
 	}, []);
 
 	return (
@@ -158,6 +174,7 @@ const Index: NextPage = () => {
 				setIsOpen={setIsOpenDelete}
 				options={isOptions}
 				setIsOptions={setIsOptions}
+				getData={fetchConfigs}
 			/>
 			<Page>
 				<div className='containerProfile'>
@@ -227,6 +244,7 @@ const Index: NextPage = () => {
 						setIsOpenDelete={setIsOpenDelete}
 						isOptions={isOptions}
 						setIsOptions={setIsOptions}
+						userConfigs={userConfigs}
 					/>
 				</div>
 				<div className='wrap-statics'>
@@ -240,6 +258,7 @@ const Index: NextPage = () => {
 						setIsOpenDelete={setIsOpenDelete}
 						isOptions={isOptions}
 						setIsOptions={setIsOptions}
+						userConfigs={userConfigs}
 					/>
 				</div>
 				{/* <div className='wrap-statics'>

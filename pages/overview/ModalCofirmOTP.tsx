@@ -10,11 +10,7 @@ import { useFormik } from 'formik';
 import Toasts from '@components/bootstrap/Toasts';
 import { useToasts } from 'react-toast-notifications';
 import { useGetCreateUser } from '@hooks/useGetCreateUser';
-import {
-	useGetAccountVps,
-	useGetCreateAccountVps,
-	useGetUpdateAccountVps,
-} from '@hooks/useGetCreateConfig';
+import { useGetCreateAccountVps, useGetUpdateAccountVps } from '@hooks/useGetCreateConfig';
 import { authService } from '@services/index';
 
 interface IAddAccountModalProps {

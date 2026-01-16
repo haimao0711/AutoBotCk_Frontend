@@ -57,9 +57,14 @@ const ListStockApply: React.FC<ListStockApplyProps> = ({
 			return exists
 				? prev.filter((s) => s.stock_id !== item.stock_id)
 				: [
-					...prev,
-					{ stock_id: item.stock_id, stock_name: item.stock_name, level: item.level, current_price: item.current_price },
-				];
+						...prev,
+						{
+							stock_id: item.stock_id,
+							stock_name: item.stock_name,
+							level: item.level,
+							current_price: item.current_price,
+						},
+				  ];
 		});
 	};
 
@@ -109,7 +114,9 @@ const ListStockApply: React.FC<ListStockApplyProps> = ({
 							<select
 								id='sortOption'
 								value={sortOption}
-								onChange={(e) => setSortOption(e.target.value as 'ABC' | 'Level' | 'Price')}
+								onChange={(e) =>
+									setSortOption(e.target.value as 'ABC' | 'Level' | 'Price')
+								}
 								className='form-select form-select-sm'
 								style={{ width: '130px' }}>
 								<option value='ABC'>ABC</option>
@@ -122,18 +129,36 @@ const ListStockApply: React.FC<ListStockApplyProps> = ({
 					<div className='border-top border-start border-secondary-subtle'>
 						{/* Header Row */}
 						<div className='d-flex align-items-center border-bottom border-secondary-subtle fw-bold text-muted'>
-							<div className='border-end border-secondary-subtle d-flex justify-content-center align-items-center flex-shrink-0' style={{ width: '40px', height: '35px' }}>
+							<div
+								className='border-end border-secondary-subtle d-flex justify-content-center align-items-center flex-shrink-0'
+								style={{ width: '40px', height: '35px' }}>
 								#
 							</div>
-							<span className='border-end border-secondary-subtle text-center py-1 flex-grow-1' style={{ flexBasis: '40%' }}>Mã cổ phiếu</span>
-							<span className='border-end border-secondary-subtle text-center py-1 flex-grow-0' style={{ flexBasis: '20%', minWidth: '60px' }}>Level</span>
-							<span className='text-center py-1 border-end border-secondary-subtle flex-grow-1' style={{ flexBasis: '40%' }}>Giá hiện tại</span>
+							<span
+								className='border-end border-secondary-subtle text-center py-1 flex-grow-1'
+								style={{ flexBasis: '40%' }}>
+								Mã cổ phiếu
+							</span>
+							<span
+								className='border-end border-secondary-subtle text-center py-1 flex-grow-0'
+								style={{ flexBasis: '20%', minWidth: '60px' }}>
+								Level
+							</span>
+							<span
+								className='text-center py-1 border-end border-secondary-subtle flex-grow-1'
+								style={{ flexBasis: '40%' }}>
+								Giá hiện tại
+							</span>
 						</div>
 
 						{/* Items Row */}
 						{(sortedSymbols ?? []).map((symbol) => (
-							<div key={symbol.stock_id} className='d-flex align-items-center border-bottom border-secondary-subtle'>
-								<div className='border-end border-secondary-subtle d-flex justify-content-center align-items-center flex-shrink-0' style={{ width: '40px', height: '35px' }}>
+							<div
+								key={symbol.stock_id}
+								className='d-flex align-items-center border-bottom border-secondary-subtle'>
+								<div
+									className='border-end border-secondary-subtle d-flex justify-content-center align-items-center flex-shrink-0'
+									style={{ width: '40px', height: '35px' }}>
 									<input
 										type='checkbox'
 										className='form-check-input mt-0 border-secondary'
@@ -149,13 +174,19 @@ const ListStockApply: React.FC<ListStockApplyProps> = ({
 									className='d-flex justify-content-start align-items-center mb-0 flex-grow-1'
 									htmlFor={`checkbox-${symbol.stock_id}`}
 									style={{ cursor: 'pointer' }}>
-									<span className='border-end border-secondary-subtle text-center py-1 flex-grow-1' style={{ flexBasis: '40%' }}>
+									<span
+										className='border-end border-secondary-subtle text-center py-1 flex-grow-1'
+										style={{ flexBasis: '40%' }}>
 										{symbol?.stock_name}
 									</span>
-									<span className='border-end border-secondary-subtle text-center py-1 flex-grow-0' style={{ flexBasis: '20%', minWidth: '60px' }}>
+									<span
+										className='border-end border-secondary-subtle text-center py-1 flex-grow-0'
+										style={{ flexBasis: '20%', minWidth: '60px' }}>
 										{symbol?.level}
 									</span>
-									<span className='text-center py-1 border-end border-secondary-subtle flex-grow-1' style={{ flexBasis: '40%' }}>
+									<span
+										className='text-center py-1 border-end border-secondary-subtle flex-grow-1'
+										style={{ flexBasis: '40%' }}>
 										{symbol?.current_price}
 									</span>
 								</label>

@@ -16,3 +16,7 @@
 .border-transparent {
 	--#{$prefix}border-opacity: 0;
 }
+
+.text-gray-500 {
+	color: $gray-500 !important;
+}

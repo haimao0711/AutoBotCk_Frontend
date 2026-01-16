@@ -23,10 +23,10 @@ import ConfigContext from '@context/configContext';
 import PaginationButtons, { PER_COUNT } from '@components/PaginationButtons';
 
 import {
-	useGetAccountVps,
+	getAccountVpsApi,
 	useGetCreateConfig,
 	useGetCreateConfigRun,
-	useGetTemplateConfig,
+	getTemplateConfigApi,
 	useGetUpdateApiStock,
 } from '@hooks/useGetCreateConfig';
 import Dropdown, {
@@ -78,14 +78,14 @@ const FormTable: FC<IFormProps> = ({
 	const { addToast } = useToasts();
 	const createConfig = useGetCreateConfig();
 	const createConfigRun = useGetCreateConfigRun();
-	const getTemplate = useGetTemplateConfig();
+	// const getTemplate = useGetTemplateConfig();
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [accountsVps, setAccountVps] = useState<AccountType[] | any[]>([]);
 	const [arrayStocks, setArrayStocks] = useState([]);
 	const [arrConfig, setArrayConfig] = useState<any>([]);
 	const [isEdit, setIsEdit] = useState<any>();
-	const getAccountVps = useGetAccountVps();
+	// const getAccountVps = useGetAccountVps();
 	const [currentId, setCurrentId] = useState<any>();
 	const [currentChart, setCurrentChart] = useState('M1');
 	const [currentChartTrading, setCurrentChartTrading] = useState('M1');
@@ -125,7 +125,7 @@ const FormTable: FC<IFormProps> = ({
 
 	useEffect(() => {
 		async function fetchData() {
-			const template = await getTemplate;
+			const template = await getTemplateConfigApi();
 			setIsTemplate(JSON.stringify(template) !== '{}' ? true : false);
 		}
 		fetchData();
@@ -233,8 +233,14 @@ const FormTable: FC<IFormProps> = ({
 	}, []);
 
 	useEffect(() => {
+		async function fetchStocks() {
+			const stocks = await authService.getStocks();
+			setArrayStocks(stocks ? stocks?.slice(0, 10) : []);
+			setArrayStocksOrigin(stocks);
+		}
+
 		async function fetchData() {
-			const { stocks, userConfigs } = await authService.getConfig();
+			const { userConfigs } = await authService.getConfig();
 
 			const buyedConfigs = userConfigs?.filter(
 				(config: any) =>
@@ -242,16 +248,15 @@ const FormTable: FC<IFormProps> = ({
 					config?.trading_status === 'buying_processing',
 			);
 
-			const accounts = await getAccountVps;
+			const accounts = await getAccountVpsApi();
 
 			if (accounts) {
 				setAccountVps(transformData(accounts));
 			}
 			setArrayConfig(buyedConfigs);
 			setArrayRender(buyedConfigs?.slice(0, perPage));
-			setArrayStocks(stocks ? stocks?.slice(0, 10) : []);
-			setArrayStocksOrigin(stocks);
 		}
+		fetchStocks();
 		fetchData();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);

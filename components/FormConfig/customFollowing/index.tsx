@@ -123,7 +123,7 @@ const CustomFollowingConfig = ({ formik }: CustomConfigProps) => {
 					<div className='col-12 d-flex flex-wrap gap-4'>
 						<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
 							<div className='col-xl-3 col-lg-3 col-12 mb-3'>
-								<FormGroup label='SỬ DỤNG THỜI GIAN MUA '>
+								<FormGroup label='SỬ DỤNG THỜI GIAN MUA ' labelClassName='fw-bold'>
 									<Checks
 										id='stock.other.stock_config_is_use_time_to_buy'
 										type='switch'
@@ -185,7 +185,7 @@ const CustomFollowingConfig = ({ formik }: CustomConfigProps) => {
 						</div>
 						<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
 							<div className='col-xl-3 col-lg-3 col-12 mb-4'>
-								<FormGroup label='SỬ DỤNG THỜI GIAN BÁN '>
+								<FormGroup label='SỬ DỤNG THỜI GIAN BÁN ' labelClassName='fw-bold'>
 									<Checks
 										id='stock.other.stock_config_is_use_time_to_sell'
 										type='switch'

@@ -129,7 +129,10 @@ const Module = (props: ModuleProps) => {
 	}, []);
 	const { type, label, itemRenders, formik } = props;
 	return (
-		<FormGroup className='col-12 border-b border-gray-300 py-3 px-1 mb-6' label={label}>
+		<FormGroup
+			className='col-12 border-b border-gray-300 py-3 px-1 mb-6'
+			label={label}
+			labelClassName='fw-bold text-gray-500'>
 			<div className='d-flex flex-wrap justify-content-between container py-4 px-2'>
 				<div
 					className='row w-100 align-items-start'
@@ -446,7 +449,10 @@ const CustomConfig = ({ formik }: CustomConfigProps) => {
 				{BuyModule}
 				{SellModule}
 				<div className='py-4 px-2'>
-					<FormGroup className='col-12 ' label='KỊCH BẢN CHỐT LỜI'>
+					<FormGroup
+						className='col-12 '
+						label='KỊCH BẢN CHỐT LỜI'
+						labelClassName='fw-bold text-gray-500'>
 						<div className='d-flex col-12 flex-wrap ms-2'>
 							<div className='mb-4 col-12 '>
 								<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>

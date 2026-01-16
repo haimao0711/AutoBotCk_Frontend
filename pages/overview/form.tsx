@@ -16,7 +16,7 @@ import {
 	// useGetAccountVps,
 	useGetCreateConfig,
 	useGetCreateConfigRun,
-	useGetTemplateConfig,
+	getTemplateConfigApi,
 	useGetUpdateApiStock,
 } from '@hooks/useGetCreateConfig';
 import { useToasts } from 'react-toast-notifications';
@@ -44,6 +44,7 @@ interface IFormProps {
 	setInfo(...args: unknown[]): unknown;
 	setIsOpenDelete(...args: unknown[]): unknown;
 	setIsOptions(...args: unknown[]): unknown;
+	userConfigs: any[];
 }
 
 const FormStyled = styled.div``;
@@ -72,11 +73,11 @@ const Form: FC<IFormProps> = ({
 	setIsOpenDelete,
 	isOptions,
 	setIsOptions,
+	userConfigs,
 }) => {
 	const { addToast } = useToasts();
 	const createConfig = useGetCreateConfig();
 	const createConfigRun = useGetCreateConfigRun();
-	const getTemplate = useGetTemplateConfig();
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isLoadingStatus, setIsLoadingStatus] = useState<boolean>(false);
@@ -197,10 +198,10 @@ const Form: FC<IFormProps> = ({
 					arrConfig.map((item: any) =>
 						item.stock_id == dataRes.stock_id
 							? {
-								...item,
-								is_block_buy: dataRes.is_block_buy,
-								is_block_sell: dataRes.is_block_sell,
-							}
+									...item,
+									is_block_buy: dataRes.is_block_buy,
+									is_block_sell: dataRes.is_block_sell,
+							  }
 							: item,
 					),
 				);
@@ -233,11 +234,11 @@ const Form: FC<IFormProps> = ({
 	};
 	useEffect(() => {
 		async function fetchData() {
-			const template = await getTemplate;
+			const template = await getTemplateConfigApi();
 			setIsTemplate(JSON.stringify(template) !== '{}' ? true : false);
 		}
 		fetchData();
-	}, [getTemplate]);
+	}, []);
 	const { setValues, ...formik } = useFormik({
 		initialValues: {
 			...stocks,
@@ -321,14 +322,23 @@ const Form: FC<IFormProps> = ({
 	// Selected Event
 	useEffect(() => {
 		if (stocks) setValues({ ...stocks });
-		return () => { };
+		return () => {};
 		//	eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setValues, stocks]);
 
 	// Get list stock config
 	useEffect(() => {
+		async function fetchStocks() {
+			const stocks = await authService.getStocks();
+			setArrayStocks(stocks ? stocks?.slice(0, 10) : []);
+			setArrayStocksOrigin(stocks);
+		}
+		fetchStocks();
+	}, []);
+
+	useEffect(() => {
 		async function fetchData() {
-			const { stocks, userConfigs } = await authService.getConfig();
+			// const { userConfigs } = await authService.getConfig();
 			const currentSortKey = sortKeyRef.current;
 			const sortedUserConfigs = sortArrHandle(userConfigs, currentSortKey);
 			if (isExistStock && sortedUserConfigs) {
@@ -343,14 +353,12 @@ const Form: FC<IFormProps> = ({
 					setArrayConfig(sortedUserConfigs);
 				}
 			}
-			setArrayStocks(stocks ? stocks?.slice(0, 10) : []);
-			setArrayStocksOrigin(stocks);
 		}
 		fetchData();
-		const intervalId = setInterval(fetchData, 20000);
-		return () => clearInterval(intervalId);
+		// const intervalId = setInterval(fetchData, 3000);
+		// return () => clearInterval(intervalId);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isBlockBuy, isBlockSell]);
+	}, [isBlockBuy, isBlockSell, userConfigs]);
 
 	useEffect(() => {
 		const newArr = arrStocksOrigin?.filter(function (item: any) {
@@ -477,8 +485,8 @@ const Form: FC<IFormProps> = ({
 									searchType === 'symbol'
 										? 'Mã cổ phiếu'
 										: searchType === 'volume'
-											? 'Khối lượng'
-											: 'Level'
+										? 'Khối lượng'
+										: 'Level'
 								}>
 								<Input
 									id='search'
@@ -487,8 +495,8 @@ const Form: FC<IFormProps> = ({
 										searchType === 'symbol'
 											? 'Chọn mã cổ phiếu'
 											: searchType === 'volume'
-												? 'Chọn khối lượng'
-												: 'Chọn level'
+											? 'Chọn khối lượng'
+											: 'Chọn level'
 									}
 									autoComplete='search'
 									value={keyStockSearch}

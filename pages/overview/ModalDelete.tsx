@@ -11,7 +11,7 @@ import Toasts from '@components/bootstrap/Toasts';
 import { useToasts } from 'react-toast-notifications';
 import { useGetCreateUser } from '@hooks/useGetCreateUser';
 import {
-	useGetAccountVps,
+	getAccountVpsApi,
 	useGetStopTrade,
 	useGetBuy,
 	useGetCreateAccountVps,
@@ -30,7 +30,15 @@ interface IValues {
 	otp: number;
 }
 
-const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, setIsOptions }) => {
+const ModalDelete: FC<any> = ({
+	isOpenEdit,
+	isOpen,
+	setIsOpen,
+	info,
+	options,
+	setIsOptions,
+	getData,
+}) => {
 	const { addToast } = useToasts();
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -48,7 +56,7 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 	const [activeBuy, setActiveBuy] = useState(false);
 	const [volumeSell, setVolumeSell] = useState('all');
 	const [isCheckFollowing, setIsCheckFollowing] = useState(false);
-	const getAccountVps = useGetAccountVps();
+	// const getAccountVps = useGetAccountVps();
 
 	const updateConfig = useGetUpdateApiStock();
 	const cancelModal: any = (value: boolean) => {
@@ -61,7 +69,7 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 
 	useEffect(() => {
 		async function fetchAccount() {
-			const accounts = await getAccountVps;
+			const accounts = await getAccountVpsApi();
 			setListAccount(accounts);
 		}
 		fetchAccount();
@@ -100,6 +108,9 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 					},
 				);
 				setIsOpen(false);
+				if (getData) {
+					getData();
+				}
 			},
 			(res: any) => {
 				setIsLoading(false);
@@ -148,6 +159,9 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 								},
 							);
 							setIsOpen(false);
+							if (getData) {
+								getData();
+							}
 						},
 						(res: any) => {
 							setIsLoading(false);
@@ -183,6 +197,9 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 								},
 							);
 							setIsOpen(false);
+							if (getData) {
+								getData();
+							}
 						},
 						(res: any) => {
 							setIsLoading(false);
@@ -218,6 +235,9 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 								},
 							);
 							setIsOpen(false);
+							if (getData) {
+								getData();
+							}
 						},
 						(res: any) => {
 							setIsLoading(false);
@@ -261,6 +281,9 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 								},
 							);
 							setIsOpen(false);
+							if (getData) {
+								getData();
+							}
 						},
 						(data: any) => {
 							setIsLoading(false);
@@ -353,7 +376,7 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 							/>
 						</FormGroup>
 					</div>
-					{options?.isOpen && options?.isSell && (
+					{options?.isOpen && options?.isSell && !options?.isTrade && (
 						<>
 							<div>
 								<FormGroup id='volume_sell'>

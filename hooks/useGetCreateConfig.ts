@@ -41,7 +41,7 @@ export function useGetCreateTemplateConfig() {
 	return getData;
 }
 
-export async function useGetTemplateConfig() {
+export async function getTemplateConfigApi() {
 	const getData = await fetchWrapper.get(`${API_BASE_URL}/api/config/template`).then((data) => {
 		if (data) {
 			return data;
@@ -382,7 +382,7 @@ export function useGetUpdateAccountVps() {
 
 	return getData;
 }
-export async function useGetAccountVps(): Promise<AccountVPS[]> {
+export async function getAccountVpsApi(): Promise<AccountVPS[]> {
 	const accounts = await fetchWrapper.get(`${API_BASE_URL}/api/account/vps`).then((data) => {
 		if (data) {
 			return data;
@@ -460,7 +460,7 @@ export async function useGetTransactions() {
 
 export async function getDataRender() {
 	console.log('co chay vao day');
-	const accounts = await useGetAccountVps();
+	const accounts = await getAccountVpsApi();
 	const configRunning = await useGetConfigRunning();
 	const { userConfigs } = await authService.getConfig();
 

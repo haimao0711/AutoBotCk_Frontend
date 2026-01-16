@@ -82,13 +82,16 @@ const updateOtp = async (body: any) => {
 		);
 	return listOTP;
 };
-const getConfig = async () => {
+const getStocks = async () => {
 	const stocks = await fetchWrapper.get(`${apiBaseUrl}/api/stock`).then((data) => {
 		if (data) {
 			return data?.data;
 		}
 	});
+	return stocks;
+};
 
+const getConfig = async () => {
 	const configs = await fetchWrapper.get(`${apiBaseUrl}/api/config/stock`).then((data) => {
 		if (data) {
 			return data;
@@ -96,7 +99,6 @@ const getConfig = async () => {
 	});
 	const userConfigs = configs;
 	return {
-		stocks,
 		userConfigs,
 	};
 };
@@ -140,7 +142,7 @@ const getStockBalance = async () => {
 	return stockBalance;
 };
 const getIsTrading = async () => {
-	const respon = await fetchWrapper.get(`${apiBaseUrl}/api/trading/is_trading`).then((data) => {
+	const respon = await fetchWrapper.get(`${apiBaseUrl}/api/trading/is_trading/`).then((data) => {
 		if (data) {
 			return data;
 		}
@@ -205,6 +207,7 @@ const getToken = () => {
 export default {
 	token: getToken(),
 	authData: getAuthData(),
+	getStocks,
 	getConfig,
 	getUserConfigs,
 	getStockBalance,

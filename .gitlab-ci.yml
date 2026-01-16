@@ -1,21 +1,20 @@
 stages:
-  - development
-  - production
+    - development
+    - production
 build-development:
-  stage: development
-  only:        
-   - develop
-  tags:
-   - development
-  variables:
-      DOCKER_IMAGE_NAME: lammnh/stock-predict-client
-      DOCKER_IMAGE_TAG: ${CI_JOB_TOKEN}
-      DOCKER_CONTAINER_NAME: stock-predict-client-container-dev
-  before_script:
-    - cat /home/gitlab-runner/.password.txt | docker login --username lamnh --password-stdin
-  script:
-    - chmod u+x ./deploy/develop/build.sh
-    - ./deploy/develop/build.sh
-    - chmod u+x ./deploy/develop/run.sh
-    - ./deploy/develop/run.sh
-
+    stage: development
+    only:
+        - develop
+    tags:
+        - development
+    variables:
+        DOCKER_IMAGE_NAME: lammnh/stock-predict-client
+        DOCKER_IMAGE_TAG: ${CI_JOB_TOKEN}
+        DOCKER_CONTAINER_NAME: stock-predict-client-container-dev
+    before_script:
+        - cat /home/gitlab-runner/.password.txt | docker login --username lamnh --password-stdin
+    script:
+        - chmod u+x ./deploy/develop/build.sh
+        - ./deploy/develop/build.sh
+        - chmod u+x ./deploy/develop/run.sh
+        - ./deploy/develop/run.sh

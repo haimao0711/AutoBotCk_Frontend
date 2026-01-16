@@ -339,7 +339,10 @@ const Module = (props: ModuleProps) => {
 	const selectRenders = generateSelectRenders(type, slug);
 	const typeRenders = generateTypeRenders(type, slug);
 	return (
-		<FormGroup className='col-12 border-b border-gray-300 py-6 px-1 mb-6' label={label}>
+		<FormGroup
+			className='col-12 border-b border-gray-300 py-6 px-1 mb-6'
+			label={label}
+			labelClassName='fw-bold'>
 			<div className='d-flex flex-wrap justify-content-between container py-4 px-2'>
 				<div className='row w-100' style={{ marginLeft: 0, marginRight: 0 }}>
 					{selectRenders.map((selectRender, idRow) => {
@@ -422,22 +425,22 @@ const VNIndex = ({ formik, setValues }: FormPropType) => {
 		/>
 	);
 
-	const SellModule = (
-		<Module
-			type='Sell'
-			label='CÀI ĐẶT ĐIỀU KIỆN BÁN (SỬ DỤNG CHỈ SỐ VNINDEX)'
-			formik={formik}
-			setValues={setValues}
-			slug=''
-		/>
-	);
+	// const SellModule = (
+	// 	<Module
+	// 		type='Sell'
+	// 		label='CÀI ĐẶT ĐIỀU KIỆN BÁN (SỬ DỤNG CHỈ SỐ VNINDEX)'
+	// 		formik={formik}
+	// 		setValues={setValues}
+	// 		slug=''
+	// 	/>
+	// );
 
 	return (
 		<FormStyle>
 			<CardTitle>CẤU HÌNH SỬ DỤNG CHỈ SỐ VNINDEX</CardTitle>
 			{formik?.values.base.config_is_buy && ObligatoryModule}
 			{formik?.values.base.config_is_buy && BuyModule}
-			{formik?.values.base.config_is_sell && SellModule}
+			{/* {formik?.values.base.config_is_sell && SellModule} */}
 		</FormStyle>
 	);
 };

@@ -3,21 +3,24 @@
 ## ❌ Lỗi: `ERR_CERT_DATE_INVALID` - "Your connection is not private"
 
 ### Nguyên nhân
-- Chứng chỉ SSL (Let's Encrypt) đã hết hạn (thời hạn 90 ngày)
-- Chứng chỉ chưa được tạo hoặc cấu hình sai
-- Thời gian trên server không đúng
+
+-   Chứng chỉ SSL (Let's Encrypt) đã hết hạn (thời hạn 90 ngày)
+-   Chứng chỉ chưa được tạo hoặc cấu hình sai
+-   Thời gian trên server không đúng
 
 ### 🔧 Giải pháp
 
 #### **Cách 1: Gia hạn chứng chỉ tự động (Khuyến nghị)**
 
 1. **Cấp quyền thực thi cho script:**
+
 ```bash
 chmod +x scripts/renew-ssl.sh
 chmod +x scripts/init-ssl.sh
 ```
 
 2. **Gia hạn chứng chỉ:**
+
 ```bash
 ./scripts/renew-ssl.sh
 ```
@@ -25,10 +28,12 @@ chmod +x scripts/init-ssl.sh
 #### **Cách 2: Khởi tạo lại chứng chỉ (Nếu chứng chỉ chưa tồn tại hoặc bị lỗi)**
 
 1. **Chỉnh sửa email trong script:**
-   - Mở file `scripts/init-ssl.sh`
-   - Thay đổi dòng: `EMAIL="admin@${DOMAIN}"` thành email của bạn
+
+    - Mở file `scripts/init-ssl.sh`
+    - Thay đổi dòng: `EMAIL="admin@${DOMAIN}"` thành email của bạn
 
 2. **Chạy script khởi tạo:**
+
 ```bash
 ./scripts/init-ssl.sh
 ```
@@ -74,51 +79,57 @@ docker-compose logs certbot
 ### ⚠️ Lưu ý quan trọng
 
 1. **Domain phải trỏ đúng IP server** - Kiểm tra DNS:
-   ```bash
-   nslookup autobotchungkhoan.pro.vn
-   ```
+
+    ```bash
+    nslookup autobotchungkhoan.pro.vn
+    ```
 
 2. **Port 80 và 443 phải mở** - Kiểm tra firewall:
-   ```bash
-   sudo ufw status
-   sudo ufw allow 80/tcp
-   sudo ufw allow 443/tcp
-   ```
+
+    ```bash
+    sudo ufw status
+    sudo ufw allow 80/tcp
+    sudo ufw allow 443/tcp
+    ```
 
 3. **Thư mục certbot phải có quyền đúng:**
-   ```bash
-   sudo chown -R $USER:$USER ./certbot
-   ```
+    ```bash
+    sudo chown -R $USER:$USER ./certbot
+    ```
 
 ### 🚀 Sau khi gia hạn thành công
 
 1. Reload lại nginx:
-   ```bash
-   docker-compose restart nginx
-   ```
+
+    ```bash
+    docker-compose restart nginx
+    ```
 
 2. Kiểm tra website:
-   ```bash
-   curl -I https://autobotchungkhoan.pro.vn
-   ```
+
+    ```bash
+    curl -I https://autobotchungkhoan.pro.vn
+    ```
 
 3. Hoặc truy cập trình duyệt và kiểm tra chứng chỉ SSL
 
 ### 📞 Nếu vẫn còn lỗi
 
 1. Kiểm tra logs:
-   ```bash
-   docker-compose logs nginx
-   docker-compose logs certbot
-   ```
+
+    ```bash
+    docker-compose logs nginx
+    docker-compose logs certbot
+    ```
 
 2. Kiểm tra nginx config:
-   ```bash
-   docker-compose exec nginx nginx -t
-   ```
+
+    ```bash
+    docker-compose exec nginx nginx -t
+    ```
 
 3. Xóa và tạo lại chứng chỉ (cẩn thận - chỉ làm khi cần):
-   ```bash
-   sudo rm -rf ./certbot/conf/live/autobotchungkhoan.pro.vn
-   ./scripts/init-ssl.sh
-   ```
+    ```bash
+    sudo rm -rf ./certbot/conf/live/autobotchungkhoan.pro.vn
+    ./scripts/init-ssl.sh
+    ```

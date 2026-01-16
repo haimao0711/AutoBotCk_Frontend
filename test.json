@@ -18,7 +18,7 @@
 		"value_macd_to_buy": 0,
 		"value_histogram_to_buy": 0,
 		"macd_to_buy_necessary_condition": true,
-		"histogram_to_buy_necessary_condition": true,	
+		"histogram_to_buy_necessary_condition": true,
 		"macd_to_buy_sufficient_condition": true,
 		"histogram_to_buy_sufficient_condition": true,
 		"macd_reversed_increase_necessary_condition": true,

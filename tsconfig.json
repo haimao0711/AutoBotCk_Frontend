@@ -26,6 +26,12 @@
 			"@utils/*": ["./utils/*"]
 		}
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/TradingView.js", "next-i18next.config.js"],
+	"include": [
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		"components/TradingView.js",
+		"next-i18next.config.js"
+	],
 	"exclude": ["node_modules"]
 }
