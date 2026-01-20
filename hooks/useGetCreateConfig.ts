@@ -235,11 +235,9 @@ export function useGetUpdateApiStock() {
 				.post(`${API_BASE_URL}/api/config/stock/update`, payload)
 				.then((data) => {
 					if (data) {
-						if (data) {
-							if (cbs) cbs(data);
-						} else {
-							cbe(data);
-						}
+						if (cbs) cbs(data);
+					} else {
+						if (cbe) cbe(data);
 					}
 				})
 				.catch((err) => {
@@ -260,13 +258,10 @@ export function useGetStopTrade() {
 				.post(`${API_BASE_URL}/api/config/stock/request-stoptrade`, payload)
 				.then((data) => {
 					if (data) {
-						if (data) {
-							if (cbs) cbs(data);
-						} else {
-							cbe(data);
-						}
+						if (cbs) cbs(data);
+					} else {
+						if (cbe) cbe(data);
 					}
-					if (cbs) cbs(data);
 				})
 				.catch((err) => {
 					cbe(err);
@@ -285,13 +280,10 @@ export function useGetBuy() {
 				.post(`${API_BASE_URL}/api/config/stock/request-buy`, payload)
 				.then((data) => {
 					if (data) {
-						if (data) {
-							if (cbs) cbs(data);
-						} else {
-							cbe(data);
-						}
+						if (cbs) cbs(data);
+					} else {
+						if (cbe) cbe(data);
 					}
-					if (cbs) cbs(data);
 				})
 				.catch((err) => {
 					cbe(err);
@@ -309,13 +301,10 @@ export function useGetSell() {
 				.post(`${API_BASE_URL}/api/config/stock/request-sell`, payload)
 				.then((data) => {
 					if (data) {
-						if (data) {
-							if (cbs) cbs(data);
-						} else {
-							cbe(data);
-						}
+						if (cbs) cbs(data);
+					} else {
+						if (cbe) cbe(data);
 					}
-					if (cbs) cbs(data);
 				})
 				.catch((err) => {
 					cbe(err);

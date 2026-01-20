@@ -49,6 +49,22 @@ interface IFormProps {
 
 const FormStyled = styled.div``;
 
+const StyledToggleButton = styled(Button)`
+	transition: all 0.2s ease-in-out;
+	position: relative;
+	overflow: hidden;
+
+	&:hover {
+		filter: brightness(1.25); /* Brighten significantly */
+		box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+		z-index: 1;
+	}
+
+	&:active {
+		filter: brightness(0.9);
+	}
+`;
+
 export const times = ['M1', 'M5', 'M15', 'H1', 'D1', 'W1'];
 export const times_second = ['OFF', 'M1', 'M5', 'M15', 'H1', 'D1', 'W1'];
 const CHECK_ALL_OBJECT: { [key: string]: boolean } = {
@@ -82,7 +98,7 @@ const Form: FC<IFormProps> = ({
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isLoadingStatus, setIsLoadingStatus] = useState<boolean>(false);
 	const [accountsVps, setAccountVps] = useState<AccountType[] | any[]>([]);
-	const [arrayStocks, setArrayStocks] = useState([]);
+	const [arrayStocks, setArrayStocks] = useState<any[]>([]);
 	const [isEdit, setIsEdit] = useState<any>();
 	// const getAccountVps = useGetAccountVps();
 	const [currentId, setCurrentId] = useState<any>();
@@ -93,12 +109,12 @@ const Form: FC<IFormProps> = ({
 	const [searchType, setSearchType] = useState('symbol');
 	const [searchKey, setSearchKey] = useState<string>();
 	const [isSearch, setIsSearch] = useState(false);
-	const [arrStocksOrigin, setArrayStocksOrigin] = useState([]);
+	const [arrStocksOrigin, setArrayStocksOrigin] = useState<any[]>([]);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [perPage, setPerPage] = useState<number>(PER_COUNT['10']);
 	const [arrConfig, setArrayConfig] = useState<any>([]);
-	const [arrRender, setArrayRender] = useState([]);
-	const [arrSearch, setArraySearch] = useState([]);
+	const [arrRender, setArrayRender] = useState<any[]>([]);
+	const [arrSearch, setArraySearch] = useState<any[]>([]);
 	const [amountBuy, setAmountBuy] = useState('');
 	const [keyStockSearch, setKeyStockSearch] = useState('');
 	const [isTemplate, setIsTemplate] = useState(false);
@@ -193,15 +209,14 @@ const Form: FC<IFormProps> = ({
 			data,
 			async (res: any) => {
 				const dataRes = res.data;
-				// console.log('data res: ', dataRes);
 				setArrayConfig(() =>
 					arrConfig.map((item: any) =>
 						item.stock_id == dataRes.stock_id
 							? {
-									...item,
-									is_block_buy: dataRes.is_block_buy,
-									is_block_sell: dataRes.is_block_sell,
-							  }
+								...item,
+								is_block_buy: dataRes.is_block_buy,
+								is_block_sell: dataRes.is_block_sell,
+							}
 							: item,
 					),
 				);
@@ -246,7 +261,6 @@ const Form: FC<IFormProps> = ({
 			checked: [],
 		},
 		onSubmit: async (values) => {
-			// if (values?.checked?.length > 0) {
 			if (isTemplate) {
 				const mappedArray = values.checked.map((value: any) => ({
 					account_id: value,
@@ -257,6 +271,7 @@ const Form: FC<IFormProps> = ({
 					stock_id: currentId,
 					vpses: mappedArray,
 				};
+				console.log('check data create config: ', data);
 				setIsLoading(true);
 				createConfigRun(
 					data,
@@ -322,7 +337,7 @@ const Form: FC<IFormProps> = ({
 	// Selected Event
 	useEffect(() => {
 		if (stocks) setValues({ ...stocks });
-		return () => {};
+		return () => { };
 		//	eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setValues, stocks]);
 
@@ -341,24 +356,43 @@ const Form: FC<IFormProps> = ({
 			// const { userConfigs } = await authService.getConfig();
 			const currentSortKey = sortKeyRef.current;
 			const sortedUserConfigs = sortArrHandle(userConfigs, currentSortKey);
+			let nextConfigs = sortedUserConfigs;
+
 			if (isExistStock && sortedUserConfigs) {
-				const filteredConfigs = sortedUserConfigs.filter(
+				nextConfigs = sortedUserConfigs.filter(
 					(item: any) => Number(item.volume_buy) > 0,
 				);
-				if (!isSearch) {
-					setArrayConfig(filteredConfigs);
-				}
-			} else {
-				if (!isSearch) {
-					setArrayConfig(sortedUserConfigs);
-				}
+			}
+
+			setArrayConfig(nextConfigs);
+
+			if (isSearch) {
+				const newArr = nextConfigs?.filter(function (item: any) {
+					if (searchType === 'symbol') {
+						return (
+							item?.account_vps
+								?.toString()
+								.toLocaleLowerCase()
+								.includes(keyStockSearch && keyStockSearch?.toLocaleLowerCase()) ||
+							item?.stock_name
+								?.toString()
+								.toLocaleLowerCase()
+								.includes(keyStockSearch && keyStockSearch.toLocaleLowerCase())
+						);
+					} else if (searchType === 'volume') {
+						return item?.volume_to_buy == keyStockSearch;
+					} else if (searchType === 'level') {
+						return item?.level == keyStockSearch;
+					}
+				});
+				setArraySearch(newArr);
 			}
 		}
 		fetchData();
 		// const intervalId = setInterval(fetchData, 3000);
 		// return () => clearInterval(intervalId);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isBlockBuy, isBlockSell, userConfigs]);
+	}, [isBlockBuy, isBlockSell, userConfigs, isSearch, keyStockSearch, searchType]);
 
 	useEffect(() => {
 		const newArr = arrStocksOrigin?.filter(function (item: any) {
@@ -485,8 +519,8 @@ const Form: FC<IFormProps> = ({
 									searchType === 'symbol'
 										? 'Mã cổ phiếu'
 										: searchType === 'volume'
-										? 'Khối lượng'
-										: 'Level'
+											? 'Khối lượng'
+											: 'Level'
 								}>
 								<Input
 									id='search'
@@ -495,8 +529,8 @@ const Form: FC<IFormProps> = ({
 										searchType === 'symbol'
 											? 'Chọn mã cổ phiếu'
 											: searchType === 'volume'
-											? 'Chọn khối lượng'
-											: 'Chọn level'
+												? 'Chọn khối lượng'
+												: 'Chọn level'
 									}
 									autoComplete='search'
 									value={keyStockSearch}
@@ -641,7 +675,7 @@ const Form: FC<IFormProps> = ({
 												</th>
 												<th>
 													<div>{`${item?.following_chart_buy} - ${item?.trading_chart_buy}`}</div>
-													<Button
+													<StyledToggleButton
 														style={{
 															backgroundColor: item?.is_block_buy
 																? '#a24022'
@@ -658,11 +692,11 @@ const Form: FC<IFormProps> = ({
 															);
 														}}>
 														{item?.is_block_buy ? 'OFF' : 'ON'}
-													</Button>
+													</StyledToggleButton>
 												</th>
 												<th>
 													<div>{`${item?.following_chart_sell} - ${item?.trading_chart_sell}`}</div>
-													<Button
+													<StyledToggleButton
 														style={{
 															backgroundColor: item?.is_block_sell
 																? '#a24022'
@@ -679,11 +713,11 @@ const Form: FC<IFormProps> = ({
 															);
 														}}>
 														{item?.is_block_sell ? 'OFF' : 'ON'}
-													</Button>
+													</StyledToggleButton>
 												</th>
 												<th>
 													<div>{item?.trading_chart_buy}</div>
-													<Button
+													<StyledToggleButton
 														icon={isLoading ? undefined : 'Run'}
 														style={{
 															backgroundColor: item?.is_buy_hand
@@ -706,11 +740,11 @@ const Form: FC<IFormProps> = ({
 														}}>
 														{isLoading && <Spinner isSmall inButton />}
 														{item?.is_buy_hand ? 'ON' : 'OFF'}
-													</Button>
+													</StyledToggleButton>
 												</th>
 												<th>
 													<div>{item?.trading_chart_sell}</div>
-													<Button
+													<StyledToggleButton
 														icon={isLoading ? undefined : 'Run'}
 														style={{
 															backgroundColor: item?.is_sell_hand
@@ -733,7 +767,7 @@ const Form: FC<IFormProps> = ({
 														}}>
 														{isLoading && <Spinner isSmall inButton />}
 														{item?.is_sell_hand ? 'ON' : 'OFF'}
-													</Button>
+													</StyledToggleButton>
 												</th>
 
 												<th>

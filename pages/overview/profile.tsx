@@ -76,7 +76,7 @@ const Profile = () => {
 						{authTokenCache && (
 							<Dropdown isOpen={dropdownOpen} direction='down'>
 								<DropdownToggle>
-									<div className='flex items-center justify-center text-blue-500 hover:text-blue-700'>
+									<div className='flex items-center justify-center text-blue-500 hover:text-blue-700 cursor-pointer'>
 										<Icon
 											icon='edit'
 											size='md'
@@ -178,8 +178,8 @@ const Profile = () => {
 								}}
 								className='w-100 fw-semibold'
 								onClick={() =>
-									(window.location.href =
-										'https://autobotchungkhoan.pro.vn/auth/login')
+								(window.location.href =
+									'https://autobotchungkhoan.pro.vn/auth/login')
 								}>
 								Đăng nhập ngay
 							</Button>

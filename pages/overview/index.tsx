@@ -18,18 +18,28 @@ import { authService } from '@services/index';
 import { useToasts } from 'react-toast-notifications';
 import Toasts from '@components/bootstrap/Toasts';
 import AuthContext from '@context/authContext';
+import styled from 'styled-components';
 
-const buttonStyle = {
-	backgroundColor: '#4CAF50',
-	color: 'white',
-	padding: '10px 20px',
-	border: 'none',
-	borderRadius: '5px',
-	fontSize: '16px',
-	cursor: 'pointer',
-	transition: 'background-color 0.3s ease',
-	outline: 'none',
-};
+const StyledActionButton = styled(Button)`
+	background-color: #4caf50;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	font-size: 16px;
+	cursor: pointer;
+	transition: all 0.2s ease-in-out;
+	outline: none;
+
+	&:hover {
+		filter: brightness(1.2); /* Make it 20% brighter */
+		box-shadow: 0 0 8px rgba(76, 175, 80, 0.4); /* Add subtle glow */
+	}
+
+	&:active {
+		filter: brightness(0.9);
+	}
+`;
 const Index: NextPage = () => {
 	const { userName, email } = useUserLogin();
 	const { darkModeStatus, setDarkModeStatus } = useDarkMode();
@@ -67,15 +77,15 @@ const Index: NextPage = () => {
 		const data =
 			type === 'B'
 				? {
-						is_block_buy: !isBlockBuy,
-						is_block_sell: isBlockSell,
-						type: 'B',
-				  }
+					is_block_buy: !isBlockBuy,
+					is_block_sell: isBlockSell,
+					type: 'B',
+				}
 				: {
-						is_block_buy: isBlockBuy,
-						is_block_sell: !isBlockSell,
-						type: 'S',
-				  };
+					is_block_buy: isBlockBuy,
+					is_block_sell: !isBlockSell,
+					type: 'S',
+				};
 		const response = await authService.openBlockTrading(data);
 		if (response) {
 			setIsBlockBuy(response?.is_block_buy);
@@ -121,7 +131,7 @@ const Index: NextPage = () => {
 			}
 		}
 		checkIsTrading();
-		const intervalId = setInterval(checkIsTrading, 3000);
+		const intervalId = setInterval(checkIsTrading, 2000);
 		return () => clearInterval(intervalId);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -151,7 +161,7 @@ const Index: NextPage = () => {
 
 	useEffect(() => {
 		fetchConfigs();
-		const intervalId = setInterval(fetchConfigs, 3000);
+		const intervalId = setInterval(fetchConfigs, 2000);
 		return () => clearInterval(intervalId);
 	}, []);
 
@@ -198,37 +208,20 @@ const Index: NextPage = () => {
 							<span>( Click để thay đổi trạng thái)</span>
 						</div>
 						<div className='topBuySell' style={{ display: 'flex', gap: '10px' }}>
-							<Button
-								style={{ ...buttonStyle }} // Thêm khoảng cách bên dưới
-								onClick={(e) => {
+							<StyledActionButton
+								onClick={(e: any) => {
 									setIsOpen(!isOpen);
 								}}>
 								{!isTrading ? 'Đang Dừng Bot' : 'Đang Chạy Bot'}
-							</Button>
-							<Button
-								style={{
-									...buttonStyle,
-									transition: 'transform 0.1s ease',
-								}}
-								onMouseDown={(e) =>
-									(e.currentTarget.style.transform = 'scale(0.9)')
-								}
-								onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+							</StyledActionButton>
+							<StyledActionButton
 								onClick={() => handleStopTrade('B')}>
 								{isBlockBuy ? 'Đang chặn MUA' : 'Đang MUA'}
-							</Button>
-							<Button
-								style={{
-									...buttonStyle,
-									transition: 'transform 0.1s ease',
-								}}
-								onMouseDown={(e) =>
-									(e.currentTarget.style.transform = 'scale(0.9)')
-								}
-								onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+							</StyledActionButton>
+							<StyledActionButton
 								onClick={() => handleStopTrade('S')}>
 								{isBlockSell ? 'Đang chặn BÁN' : 'Đang BÁN'}
-							</Button>
+							</StyledActionButton>
 						</div>
 					</div>
 				</div>
