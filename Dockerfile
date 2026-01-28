@@ -10,7 +10,6 @@ COPY package*.json yarn.lock ./
 
 # Install dependencies with retry logic and increased network timeout
 RUN yarn config set network-timeout 600000 && \
-    yarn config set network-concurrency 1 && \
     yarn install --frozen-lockfile --network-timeout 600000 || \
     (echo "Retry 1..." && sleep 10 && yarn install --frozen-lockfile --network-timeout 600000) || \
     (echo "Retry 2..." && sleep 15 && yarn install --frozen-lockfile --network-timeout 600000)

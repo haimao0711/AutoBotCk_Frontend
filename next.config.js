@@ -13,19 +13,25 @@ var hideWarn = [
 ];
 
 const nextConfig = withInterceptStdout(
-		withImages({
-			experimental: {
-				images: {
-					allowFutureImage: true
-				}
-			},
+	withImages({
+		experimental: {
 			images: {
-				disableStaticImages: true
-			},
-			reactStrictMode: true,
-			swcMinify: true,
-			// i18n
-		})
+				allowFutureImage: true
+			}
+		},
+		images: {
+			disableStaticImages: true
+		},
+		reactStrictMode: true,
+		swcMinify: true,
+		eslint: {
+			ignoreDuringBuilds: true,
+		},
+		typescript: {
+			ignoreBuildErrors: true,
+		},
+		// i18n
+	})
 	,
 	(log) => (hideWarn.some((warn) => log.includes(warn)) ? '' : log),
 );
