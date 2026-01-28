@@ -161,7 +161,7 @@ const Index: NextPage = () => {
 
 	useEffect(() => {
 		fetchConfigs();
-		const intervalId = setInterval(fetchConfigs, 2000);
+		const intervalId = setInterval(fetchConfigs, 3000);
 		return () => clearInterval(intervalId);
 	}, []);
 

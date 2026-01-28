@@ -55,7 +55,7 @@ const ModalDelete: FC<any> = ({
 	const [takeProfit, setTakeProfit] = useState(false);
 	const [activeBuy, setActiveBuy] = useState(false);
 	const [volumeSell, setVolumeSell] = useState('all');
-	const [isUseChartAction, setIsUseChartAction] = useState(false);
+	const [isUseChartAction, setIsUseChartAction] = useState(true);
 	const [isCheckFollowing, setIsCheckFollowing] = useState(false);
 	// const getAccountVps = useGetAccountVps();
 
@@ -330,6 +330,12 @@ const ModalDelete: FC<any> = ({
 		}
 		fetchData();
 	}, [setIsOpen, info]);
+
+	useEffect(() => {
+		if (isOpen) {
+			setIsUseChartAction(true);
+		}
+	}, [isOpen]);
 	return (
 		<Modal isOpen={isOpen} setIsOpen={cancelModal} size='xl'>
 			<ModalHeader setIsOpen={cancelModal} className='p-4'>
@@ -453,8 +459,8 @@ const ModalDelete: FC<any> = ({
 												onChange={(e) =>
 													setIsUseChartAction(e.target.value === 'chart')
 												}>
-												<option value='immediate'>Bán ngay</option>
 												<option value='chart'>Bán theo Chart</option>
+												<option value='immediate'>Bán ngay</option>
 											</select>
 											<span
 												style={{
@@ -504,8 +510,8 @@ const ModalDelete: FC<any> = ({
 												onChange={(e) =>
 													setIsUseChartAction(e.target.value === 'chart')
 												}>
-												<option value='immediate'>Mua ngay</option>
 												<option value='chart'>Mua theo Chart</option>
+												<option value='immediate'>Mua ngay</option>
 											</select>
 											<span
 												style={{
