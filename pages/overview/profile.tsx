@@ -17,7 +17,7 @@ import ChangePassBotModal from '../account/ChangePassBotModal';
 import Cookies from 'js-cookie';
 import { API_BASE_URL, AuthCache } from '@constants/index';
 
-const Profile = () => {
+const Profile = ({ totalStocksPurchased = 0 }: { totalStocksPurchased?: number }) => {
 	const { mobileDesign } = useContext(ThemeContext);
 	const config = useContext(ConfigContext);
 	const router = useRouter();
@@ -150,6 +150,12 @@ const Profile = () => {
 										' '}
 								</strong>
 								VND
+							</span>
+						</div>
+						<div className='text-secondary'>
+							<Icon icon='ShoppingCart' className='btn-icon' /> Số cổ phiếu đã mua:
+							<span className='font-bold text-success ps-3'>
+								<strong> {totalStocksPurchased}</strong>
 							</span>
 						</div>
 						{profile?.limitNumberStocks && (

@@ -189,7 +189,12 @@ const Index: NextPage = () => {
 			<Page>
 				<div className='containerProfile'>
 					<div className='wrap-profile'>
-						<Profile />
+						<Profile
+							totalStocksPurchased={
+								userConfigs?.filter((item: any) => Number(item.volume_buy) > 0)
+									.length || 0
+							}
+						/>
 					</div>
 					<div
 						style={{
