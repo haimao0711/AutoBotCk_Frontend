@@ -36,7 +36,7 @@ export interface IConfig {
 	config_is_use_candle_second: boolean;
 }
 
-export interface IErrorConfig extends Omit<IConfig, 'name' | 'config_id'> {}
+export interface IErrorConfig extends Omit<IConfig, 'name' | 'config_id'> { }
 
 export interface IVNIndexBuyConfig {
 	vnindex_config_min_vnindex_buy: number;
@@ -377,11 +377,15 @@ export interface IStockOtherConfig {
 
 	stock_config_is_use_time_to_buy: boolean;
 	stock_config_time_start_buy: string;
+	stock_config_time_start_buy_second: string;
 	stock_config_time_end_buy: string;
+	stock_config_time_end_buy_second: string;
 	stock_config_days_buy: string;
 	stock_config_is_use_time_to_sell: boolean;
 	stock_config_time_start_sell: string;
+	stock_config_time_start_sell_second: string;
 	stock_config_time_end_sell: string;
+	stock_config_time_end_sell_second: string;
 	stock_config_days_sell: string;
 }
 

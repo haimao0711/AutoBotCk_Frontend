@@ -5,6 +5,7 @@ interface DaysPickerProps {
 	label: string;
 	value: string; // DB string: 1=Thứ 2 ... 7=CN
 	onChange: (val: string) => void;
+	labelClassName?: string;
 }
 
 const dayLabels = ['2', '3', '4', '5', '6', '7', 'CN'];
@@ -16,7 +17,7 @@ const labelToDbValue = (day: string) => {
 	return (parseInt(day) - 1).toString();
 };
 
-const DaysPicker: React.FC<DaysPickerProps> = ({ label, value, onChange }) => {
+const DaysPicker: React.FC<DaysPickerProps> = ({ label, value, onChange, labelClassName }) => {
 	const handleToggleDay = (day: string) => {
 		const dbValue = labelToDbValue(day);
 		let newValue = value ? value.split('') : [];
@@ -36,7 +37,7 @@ const DaysPicker: React.FC<DaysPickerProps> = ({ label, value, onChange }) => {
 		onChange(newValueStr);
 	};
 	return (
-		<FormGroup label={label}>
+		<FormGroup label={label} labelClassName={labelClassName}>
 			<div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
 				{dayLabels.map((day) => {
 					const selected = value?.includes(labelToDbValue(day));
