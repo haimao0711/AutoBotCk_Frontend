@@ -121,7 +121,7 @@ const CustomFollowingConfig = ({ formik }: CustomConfigProps) => {
 			<div className='py-4 px-2'>
 				<FormGroup>
 					<div className='col-12 d-flex flex-wrap gap-4'>
-						<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
+						<div className='col-12 mb-4 d-flex gap-5 flex-wrap'>
 							<div className='col-xl-3 col-lg-3 col-12 mb-3'>
 								<FormGroup label='SỬ DỤNG THỜI GIAN MUA ' labelClassName='fw-bold'>
 									<Checks
@@ -141,66 +141,101 @@ const CustomFollowingConfig = ({ formik }: CustomConfigProps) => {
 							{values.stock.other.stock_config_is_use_time_to_buy && (
 								<>
 									<div className='col-xl-3 col-lg-3 col-12 mb-3'>
-										<div className='fw-bold text-primary mb-2'>Khung giờ 1</div>
-										<FormGroup label='Giờ bắt đầu'>
-											<Input
-												type='time'
-												autoComplete='volume'
-												id='stock.other.stock_config_time_start_buy'
-												onChange={formik?.handleChange}
-												onBlur={formik?.handleBlur}
-												value={
-													values.stock.other.stock_config_time_start_buy
+										<div className='mb-2 d-flex justify-content-between align-items-center'>
+											<span className='fw-bold text-primary'>Khung giờ 1</span>
+											<Checks
+												id='stock.other.stock_config_is_use_time_to_buy_first'
+												type='switch'
+												label='Active'
+												onChange={(e: any) => handleChange(e, formik)}
+												checked={
+													values.stock.other
+														.stock_config_is_use_time_to_buy_first
 												}
-												isValid={formik?.isValid}
-												validFeedback='Looks good!'
+												ariaLabel='status'
 											/>
-										</FormGroup>
-										<FormGroup label='Giờ kết thúc'>
-											<Input
-												type='time'
-												placeholder='Nhập chỉ số'
-												autoComplete='volume'
-												id='stock.other.stock_config_time_end_buy'
-												onChange={formik?.handleChange}
-												onBlur={formik?.handleBlur}
-												value={values.stock.other.stock_config_time_end_buy}
-												min={0}
-												isValid={formik?.isValid}
-												validFeedback='Looks good!'
-											/>
-										</FormGroup>
+										</div>
+										{values.stock.other.stock_config_is_use_time_to_buy_first && (
+											<>
+												<FormGroup label='Giờ bắt đầu'>
+													<Input
+														type='time'
+														autoComplete='volume'
+														id='stock.other.stock_config_time_start_buy'
+														onChange={formik?.handleChange}
+														onBlur={formik?.handleBlur}
+														value={
+															values.stock.other.stock_config_time_start_buy
+														}
+														isValid={formik?.isValid}
+														validFeedback='Looks good!'
+													/>
+												</FormGroup>
+
+												<FormGroup label='Giờ kết thúc'>
+													<Input
+														type='time'
+														placeholder='Nhập chỉ số'
+														autoComplete='volume'
+														id='stock.other.stock_config_time_end_buy'
+														onChange={formik?.handleChange}
+														onBlur={formik?.handleBlur}
+														value={values.stock.other.stock_config_time_end_buy}
+														min={0}
+														isValid={formik?.isValid}
+														validFeedback='Looks good!'
+													/>
+												</FormGroup>
+											</>
+										)}
 									</div>
 									<div className='col-xl-3 col-lg-3 col-12 mb-3'>
-										<div className='fw-bold text-primary mb-2'>Khung giờ 2</div>
-										<FormGroup label='Giờ bắt đầu'>
-											<Input
-												type='time'
-												autoComplete='volume'
-												id='stock.other.stock_config_time_start_buy_second'
-												onChange={formik?.handleChange}
-												onBlur={formik?.handleBlur}
-												value={
-													values.stock.other.stock_config_time_start_buy_second
+										<div className='mb-2 d-flex justify-content-between align-items-center'>
+											<span className='fw-bold text-primary'>Khung giờ 2</span>
+											<Checks
+												id='stock.other.stock_config_is_use_time_to_buy_second'
+												type='switch'
+												label='Active'
+												onChange={(e: any) => handleChange(e, formik)}
+												checked={
+													values.stock.other
+														.stock_config_is_use_time_to_buy_second
 												}
-												isValid={formik?.isValid}
-												validFeedback='Looks good!'
+												ariaLabel='status'
 											/>
-										</FormGroup>
-										<FormGroup label='Giờ kết thúc'>
-											<Input
-												type='time'
-												placeholder='Nhập chỉ số'
-												autoComplete='volume'
-												id='stock.other.stock_config_time_end_buy_second'
-												onChange={formik?.handleChange}
-												onBlur={formik?.handleBlur}
-												value={values.stock.other.stock_config_time_end_buy_second}
-												min={0}
-												isValid={formik?.isValid}
-												validFeedback='Looks good!'
-											/>
-										</FormGroup>
+										</div>
+										{values.stock.other.stock_config_is_use_time_to_buy_second && (
+											<>
+												<FormGroup label='Giờ bắt đầu'>
+													<Input
+														type='time'
+														autoComplete='volume'
+														id='stock.other.stock_config_time_start_buy_second'
+														onChange={formik?.handleChange}
+														onBlur={formik?.handleBlur}
+														value={
+															values.stock.other.stock_config_time_start_buy_second
+														}
+														isValid={formik?.isValid}
+														validFeedback='Looks good!'
+													/>
+												</FormGroup>
+												<FormGroup label='Giờ kết thúc'>
+													<Input
+														type='time'
+														placeholder='Nhập chỉ số'
+														autoComplete='volume'
+														id='stock.other.stock_config_time_end_buy_second'
+														onChange={formik?.handleChange}
+														onBlur={formik?.handleBlur}
+														value={values.stock.other.stock_config_time_end_buy_second}
+														min={0}
+														isValid={formik?.isValid}
+														validFeedback='Looks good!'
+													/>
+												</FormGroup>
+											</>
+										)}
 									</div>
 									<DaysPicker
 										label='Chọn ngày mua'
@@ -216,7 +251,7 @@ const CustomFollowingConfig = ({ formik }: CustomConfigProps) => {
 								</>
 							)}
 						</div>
-						<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
+						<div className='col-12 mb-4 d-flex gap-5 flex-wrap'>
 							<div className='col-xl-3 col-lg-3 col-12 mb-4'>
 								<FormGroup label='SỬ DỤNG THỜI GIAN BÁN ' labelClassName='fw-bold'>
 									<Checks
@@ -238,72 +273,106 @@ const CustomFollowingConfig = ({ formik }: CustomConfigProps) => {
 							{values.stock.other.stock_config_is_use_time_to_sell && (
 								<>
 									<div className='col-xl-3 col-lg-3 col-12 mb-4'>
-										<div className='fw-bold text-primary mb-2'>Khung giờ 1</div>
-										<FormGroup label='Giờ bắt đầu'>
-											<Input
-												type='time'
-												autoComplete='volume'
-												id='stock.other.stock_config_time_start_sell'
-												onChange={formik?.handleChange}
-												onBlur={formik?.handleBlur}
-												value={
-													values.stock.other.stock_config_time_start_sell
+										<div className='mb-2 d-flex justify-content-between align-items-center'>
+											<span className='fw-bold text-primary'>Khung giờ 1</span>
+											<Checks
+												id='stock.other.stock_config_is_use_time_to_sell_first'
+												type='switch'
+												label='Active'
+												onChange={(e: any) => handleChange(e, formik)}
+												checked={
+													values.stock.other
+														.stock_config_is_use_time_to_sell_first
 												}
-												isValid={formik?.isValid}
-												validFeedback='Looks good!'
+												ariaLabel='status'
 											/>
-										</FormGroup>
-										<FormGroup label='Giờ kết thúc'>
-											<Input
-												type='time'
-												placeholder='Nhập chỉ số'
-												autoComplete='volume'
-												id='stock.other.stock_config_time_end_sell'
-												onChange={formik?.handleChange}
-												onBlur={formik?.handleBlur}
-												value={
-													values.stock.other.stock_config_time_end_sell
-												}
-												min={0}
-												isValid={formik?.isValid}
-												validFeedback='Looks good!'
-											/>
-										</FormGroup>
+										</div>
+										{values.stock.other.stock_config_is_use_time_to_sell_first && (
+											<>
+												<FormGroup label='Giờ bắt đầu'>
+													<Input
+														type='time'
+														autoComplete='volume'
+														id='stock.other.stock_config_time_start_sell'
+														onChange={formik?.handleChange}
+														onBlur={formik?.handleBlur}
+														value={
+															values.stock.other.stock_config_time_start_sell
+														}
+														isValid={formik?.isValid}
+														validFeedback='Looks good!'
+													/>
+												</FormGroup>
+												<FormGroup label='Giờ kết thúc'>
+													<Input
+														type='time'
+														placeholder='Nhập chỉ số'
+														autoComplete='volume'
+														id='stock.other.stock_config_time_end_sell'
+														onChange={formik?.handleChange}
+														onBlur={formik?.handleBlur}
+														value={
+															values.stock.other.stock_config_time_end_sell
+														}
+														min={0}
+														isValid={formik?.isValid}
+														validFeedback='Looks good!'
+													/>
+												</FormGroup>
+											</>
+										)}
 									</div>
 									<div className='col-xl-3 col-lg-3 col-12 mb-4'>
-										<div className='fw-bold text-primary mb-2'>Khung giờ 2</div>
-										<FormGroup label='Giờ bắt đầu'>
-											<Input
-												type='time'
-												autoComplete='volume'
-												id='stock.other.stock_config_time_start_sell_second'
-												onChange={formik?.handleChange}
-												onBlur={formik?.handleBlur}
-												value={
+										<div className='mb-2 d-flex justify-content-between align-items-center'>
+											<span className='fw-bold text-primary'>Khung giờ 2</span>
+											<Checks
+												id='stock.other.stock_config_is_use_time_to_sell_second'
+												type='switch'
+												label='Active'
+												onChange={(e: any) => handleChange(e, formik)}
+												checked={
 													values.stock.other
-														.stock_config_time_start_sell_second
+														.stock_config_is_use_time_to_sell_second
 												}
-												isValid={formik?.isValid}
-												validFeedback='Looks good!'
+												ariaLabel='status'
 											/>
-										</FormGroup>
-										<FormGroup label='Giờ kết thúc'>
-											<Input
-												type='time'
-												placeholder='Nhập chỉ số'
-												autoComplete='volume'
-												id='stock.other.stock_config_time_end_sell_second'
-												onChange={formik?.handleChange}
-												onBlur={formik?.handleBlur}
-												value={
-													values.stock.other
-														.stock_config_time_end_sell_second
-												}
-												min={0}
-												isValid={formik?.isValid}
-												validFeedback='Looks good!'
-											/>
-										</FormGroup>
+										</div>
+										{values.stock.other.stock_config_is_use_time_to_sell_second && (
+											<>
+												<FormGroup label='Giờ bắt đầu'>
+													<Input
+														type='time'
+														autoComplete='volume'
+														id='stock.other.stock_config_time_start_sell_second'
+														onChange={formik?.handleChange}
+														onBlur={formik?.handleBlur}
+														value={
+															values.stock.other
+																.stock_config_time_start_sell_second
+														}
+														isValid={formik?.isValid}
+														validFeedback='Looks good!'
+													/>
+												</FormGroup>
+												<FormGroup label='Giờ kết thúc'>
+													<Input
+														type='time'
+														placeholder='Nhập chỉ số'
+														autoComplete='volume'
+														id='stock.other.stock_config_time_end_sell_second'
+														onChange={formik?.handleChange}
+														onBlur={formik?.handleBlur}
+														value={
+															values.stock.other
+																.stock_config_time_end_sell_second
+														}
+														min={0}
+														isValid={formik?.isValid}
+														validFeedback='Looks good!'
+													/>
+												</FormGroup>
+											</>
+										)}
 									</div>
 									<DaysPicker
 										label='Chọn ngày bán'

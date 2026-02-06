@@ -376,12 +376,16 @@ export interface IStockOtherConfig {
 	stock_config_percent_first_buy: number;
 
 	stock_config_is_use_time_to_buy: boolean;
+	stock_config_is_use_time_to_buy_first: boolean;
+	stock_config_is_use_time_to_buy_second: boolean;
 	stock_config_time_start_buy: string;
 	stock_config_time_start_buy_second: string;
 	stock_config_time_end_buy: string;
 	stock_config_time_end_buy_second: string;
 	stock_config_days_buy: string;
 	stock_config_is_use_time_to_sell: boolean;
+	stock_config_is_use_time_to_sell_first: boolean;
+	stock_config_is_use_time_to_sell_second: boolean;
 	stock_config_time_start_sell: string;
 	stock_config_time_start_sell_second: string;
 	stock_config_time_end_sell: string;
