@@ -27,6 +27,8 @@ services:
         networks:
             - frontend_net
             - backend_net # gắn cùng network với backend
+        # Tự động reload nginx mỗi 24h để nhận chứng chỉ mới nếu có
+        command: "/bin/sh -c 'while :; do sleep 24h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
 
     certbot:
         image: certbot/certbot
@@ -37,7 +39,8 @@ services:
         networks:
             - frontend_net
         restart: unless-stopped
-        entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --quiet && nginx -s reload 2>/dev/null || true; sleep 12h & wait $${!}; done;'"
+        # Kiểm tra gia hạn mỗi 12h
+        entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --quiet; sleep 12h & wait $${!}; done;'"
         depends_on:
             - nginx
 
