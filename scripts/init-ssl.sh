@@ -22,7 +22,8 @@ if [ -d "./certbot/conf/live/${DOMAIN}" ]; then
 fi
 
 # Chạy Nginx nếu chưa chạy (cần cho xác thực webroot)
-echo "🚀 Đảm bảo Nginx đang chạy..."
+echo "🚀 Đảm bảo Nginx đang chạy và dừng Certbot background (để tránh lỗi lock)..."
+docker-compose stop certbot
 docker-compose up -d nginx
 
 # Tạo chứng chỉ mới
