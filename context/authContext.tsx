@@ -63,7 +63,7 @@ export const AuthContextProvider: FC<IAuthContextProviderProps> = ({ children })
 		() => getLocalStorageItem('facit_limitNumberStocks') || '',
 	);
 	const [limitTotalMarketValue, setLimitTotalMarketValue] = useState<string>(
-		() => getLocalStorageItem('facit_limitTotalMarketValue') || '',
+		() => getLocalStorageItem('facit_limitTotalMarketValue') || '500000000',
 	);
 
 	const [userData, setUserData] = useState<Partial<IUserProps>>({});
@@ -81,7 +81,7 @@ export const AuthContextProvider: FC<IAuthContextProviderProps> = ({ children })
 		setAccountName(localStorage.getItem('facit_accountName') || '');
 		setAccountNum(localStorage.getItem('facit_accountNum') || '');
 		setLimitNumberStocks(localStorage.getItem('facit_limitNumberStocks') || '');
-		setLimitTotalMarketValue(localStorage.getItem('facit_limitTotalMarketValue') || '');
+		setLimitTotalMarketValue(localStorage.getItem('facit_limitTotalMarketValue') || '500000000');
 	}, []);
 
 	// Ghi lại localStorage khi các giá trị thay đổi
