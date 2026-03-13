@@ -110,7 +110,7 @@ const EditProfileModal: FC<IAddAccountModalProps> = ({ isOpen, setIsOpen }) => {
 			accountName: accountName || '',
 			accountNum: accountNum || '',
 			limitNumberStocks: limitNumberStocks || '0',
-			limitTotalMarketValue: limitTotalMarketValue || '0',
+			limitTotalMarketValue: limitTotalMarketValue || '500000000',
 			accountPassword: '',
 			confirmPassword: '',
 		});
@@ -186,6 +186,7 @@ const EditProfileModal: FC<IAddAccountModalProps> = ({ isOpen, setIsOpen }) => {
 						<FormGroup label='Giới hạn tổng giá trị mua tối đa'>
 							<Input
 								id='limitTotalMarketValue'
+								name='limitTotalMarketValue'
 								type='number'
 								placeholder='Nhập tổng giá trị mua tối đa'
 								autoComplete='additional-name'
