@@ -61,6 +61,7 @@ const Index: NextPage = () => {
 	const {
 		isLogin,
 		setLimitNumberStocks,
+		setLimitTotalMarketValue,
 		setCashAvailable,
 		setTotalMarketValue,
 		setAccountName,
@@ -122,6 +123,7 @@ const Index: NextPage = () => {
 					setAccountName(response.account_name);
 					setAccountNum(response.account_num);
 					setLimitNumberStocks(response.limit_number_stocks);
+					setLimitTotalMarketValue(response.limit_total_market_value);
 				} else {
 					setIsTrading(false);
 				}

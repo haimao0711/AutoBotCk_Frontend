@@ -34,6 +34,7 @@ const Profile = ({ totalStocksPurchased = 0 }: { totalStocksPurchased?: number }
 		accountName,
 		accountNum,
 		limitNumberStocks,
+		limitTotalMarketValue,
 	} = useContext(AuthContext);
 
 	const profile = {
@@ -45,6 +46,7 @@ const Profile = ({ totalStocksPurchased = 0 }: { totalStocksPurchased?: number }
 		accountName,
 		accountNum,
 		limitNumberStocks,
+		limitTotalMarketValue,
 		src: 'https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg',
 		color: 'danger',
 	};
@@ -160,10 +162,20 @@ const Profile = ({ totalStocksPurchased = 0 }: { totalStocksPurchased?: number }
 						</div>
 						{profile?.limitNumberStocks && (
 							<div className='text-secondary'>
-								<Icon icon='ShoppingCart' className='btn-icon' /> Giới hạn số cổ
-								phiếu tối đa:
+								<Icon icon='ShoppingCart' className='btn-icon' /> Giới hạn số cổ phiếu tối đa:
 								<span className='font-bold text-danger ps-3'>
 									<strong> {profile?.limitNumberStocks}</strong>
+								</span>
+							</div>
+						)}
+						{profile?.limitTotalMarketValue && (
+							<div className='text-secondary'>
+								<Icon icon='MonetizationOn' className='btn-icon' /> Giới hạn giá trị cổ phiếu tối đa:
+								<span className='font-bold text-danger ps-3'>
+									<strong>
+										{Number(profile?.limitTotalMarketValue).toLocaleString('vi-VN') + ' '}
+									</strong>
+									VND
 								</span>
 							</div>
 						)}

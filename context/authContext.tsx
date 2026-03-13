@@ -12,6 +12,7 @@ export interface IAuthContextProps {
 	accountName: string;
 	accountNum: string;
 	limitNumberStocks: string;
+	limitTotalMarketValue: string;
 	setUserName: (value: ((prevState: string) => string) | string) => void;
 	setEmail: (value: ((prevState: string) => string) | string) => void;
 	setIsLogin: (value: ((prevState: string) => string) | string) => void;
@@ -21,6 +22,7 @@ export interface IAuthContextProps {
 	setAccountName: (value: ((prevState: string) => string) | string) => void;
 	setAccountNum: (value: ((prevState: string) => string) | string) => void;
 	setLimitNumberStocks: (value: ((prevState: string) => string) | string) => void;
+	setLimitTotalMarketValue: (value: ((prevState: string) => string) | string) => void;
 }
 
 const AuthContext = createContext<IAuthContextProps>({} as IAuthContextProps);
@@ -60,6 +62,9 @@ export const AuthContextProvider: FC<IAuthContextProviderProps> = ({ children })
 	const [limitNumberStocks, setLimitNumberStocks] = useState<string>(
 		() => getLocalStorageItem('facit_limitNumberStocks') || '',
 	);
+	const [limitTotalMarketValue, setLimitTotalMarketValue] = useState<string>(
+		() => getLocalStorageItem('facit_limitTotalMarketValue') || '',
+	);
 
 	const [userData, setUserData] = useState<Partial<IUserProps>>({});
 
@@ -76,6 +81,7 @@ export const AuthContextProvider: FC<IAuthContextProviderProps> = ({ children })
 		setAccountName(localStorage.getItem('facit_accountName') || '');
 		setAccountNum(localStorage.getItem('facit_accountNum') || '');
 		setLimitNumberStocks(localStorage.getItem('facit_limitNumberStocks') || '');
+		setLimitTotalMarketValue(localStorage.getItem('facit_limitTotalMarketValue') || '');
 	}, []);
 
 	// Ghi lại localStorage khi các giá trị thay đổi
@@ -89,6 +95,7 @@ export const AuthContextProvider: FC<IAuthContextProviderProps> = ({ children })
 		localStorage.setItem('facit_accountName', accountName);
 		localStorage.setItem('facit_accountNum', accountNum);
 		localStorage.setItem('facit_limitNumberStocks', limitNumberStocks);
+		localStorage.setItem('facit_limitTotalMarketValue', limitTotalMarketValue);
 	}, [
 		userName,
 		email,
@@ -99,6 +106,7 @@ export const AuthContextProvider: FC<IAuthContextProviderProps> = ({ children })
 		accountName,
 		accountNum,
 		limitNumberStocks,
+		limitTotalMarketValue,
 	]);
 
 	// Load user data mock khi userName thay đổi
@@ -121,6 +129,7 @@ export const AuthContextProvider: FC<IAuthContextProviderProps> = ({ children })
 			accountName,
 			accountNum,
 			limitNumberStocks,
+			limitTotalMarketValue,
 			setUserName,
 			setEmail,
 			setIsLogin,
@@ -130,6 +139,7 @@ export const AuthContextProvider: FC<IAuthContextProviderProps> = ({ children })
 			setAccountName,
 			setAccountNum,
 			setLimitNumberStocks,
+			setLimitTotalMarketValue,
 		}),
 		[
 			userName,
@@ -141,6 +151,7 @@ export const AuthContextProvider: FC<IAuthContextProviderProps> = ({ children })
 			accountName,
 			accountNum,
 			limitNumberStocks,
+			limitTotalMarketValue,
 		],
 	);
 
