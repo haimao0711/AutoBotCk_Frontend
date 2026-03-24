@@ -134,6 +134,82 @@ const ModalDelete: FC<any> = ({
 		onSubmit: async (values) => {
 			console.log('check options: ', options);
 			if (options?.isOpen) {
+				if (info?.isSellAll) {
+					setIsLoading(true);
+					let successCount = 0;
+					let errorCount = 0;
+
+					// Lọc ra các mã cần thay đổi trạng thái
+					const stocksToProcess = options?.isTrade
+						? info.ownedStocks.filter((stock: any) => stock.is_sell_hand) // Nếu isTrade=true (đang ON hết) -> Tắt các mã đang ON
+						: info.ownedStocks.filter((stock: any) => !stock.is_sell_hand); // Ngược lại Bật ON các mã đang OFF
+
+					if (stocksToProcess.length === 0) {
+						setIsLoading(false);
+						addToast(
+							<Toasts title='Thông báo' iconColor='warning' icon='Warning' isDismiss>
+								Không có mã nào cần thay đổi trạng thái
+							</Toasts>,
+							{ autoDismiss: true }
+						);
+						setIsOpen(false);
+						return;
+					}
+
+					const promises = stocksToProcess.map((stock: any) => {
+						return new Promise((resolve) => {
+							const data = {
+								stock_name: stock?.stock_name,
+								stock_id: stock?.stock_id,
+								account_name: stock?.account_vps,
+								is_buy_hand: options?.isBuy,
+								is_sell_hand: options?.isSell,
+								volume_sell: volumeSell,
+								is_use_chart_action: isUseChartAction,
+							};
+
+							if (options?.isTrade) {
+								stopTradeFast(
+									data,
+									() => { successCount++; resolve(true); },
+									() => { errorCount++; resolve(false); }
+								);
+							} else {
+								sellFast(
+									data,
+									() => { successCount++; resolve(true); },
+									() => { errorCount++; resolve(false); }
+								);
+							}
+						});
+					});
+
+					await Promise.all(promises);
+					setIsLoading(false);
+
+					if (successCount > 0) {
+						addToast(
+							<Toasts title='Update notifications' iconColor='success' icon='TaskAlt' isDismiss>
+								Đã gửi {successCount} yêu cầu bán thành công
+							</Toasts>,
+							{ autoDismiss: true }
+						);
+					}
+					if (errorCount > 0) {
+						addToast(
+							<Toasts title='Create notifications' icon='Cancel' iconColor='danger' isDismiss>
+								Lỗi khi gửi {errorCount} yêu cầu bán
+							</Toasts>,
+							{ autoDismiss: true }
+						);
+					}
+					setIsOpen(false);
+					if (getData) {
+						getData();
+					}
+					return;
+				}
+
 				const data = {
 					stock_name: info?.stock_name,
 					stock_id: info?.stock_id,

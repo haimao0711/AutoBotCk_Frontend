@@ -575,6 +575,58 @@ const Form: FC<IFormProps> = ({
 								</Button>
 							</FormGroup>
 						</div>
+
+						{isExistStock && (
+							<div className='col-12 d-flex align-items-center justify-content-end pe-4' style={{ gap: '10px', marginBottom: '10px' }}>
+								<span className="fw-bold fs-6">BÁN NHANH TẤT CẢ:</span>
+								{(() => {
+									const ownedStocks = arrConfig.filter(
+										(item: any) => Number(item.volume_trade) > 0,
+									);
+									const isAllON = ownedStocks.length > 0 && ownedStocks.every((item: any) => item.is_sell_hand);
+									return (
+										<StyledToggleButton
+											style={{
+												backgroundColor: isAllON ? '#5FD068' : '#a24022',
+												color: '#f5f5f5',
+												width: '60px',
+												marginRight: '12px'
+											}}
+											onClick={() => {
+												if (ownedStocks.length === 0) {
+													addToast(
+														<Toasts
+															title='Thông báo'
+															iconColor='warning'
+															icon='Warning'
+															isDismiss>
+															Không có cổ phiếu nào để bán
+														</Toasts>,
+														{ autoDismiss: true },
+													);
+													return;
+												}
+												setIsOpenDelete(true);
+												setInfo({
+													isSellAll: true,
+													ownedStocks,
+													stock_name: 'TẤT CẢ CỔ PHIẾU',
+													account_vps: Array.from(new Set(ownedStocks.map((s: any) => s.account_vps))).join(', '),
+												});
+												setIsOpenEdit(false);
+												setIsOptions({
+													isOpen: true,
+													isBuy: false,
+													isSell: true,
+													isTrade: isAllON, // if true (all are ON), it means we want to turn OFF (stopTradeFast).
+												});
+											}}>
+											{isAllON ? 'ON' : 'OFF'}
+										</StyledToggleButton>
+									);
+								})()}
+							</div>
+						)}
 					</form>
 					<div className='row g-4'>
 						<div className='col-lg-12'>
@@ -619,7 +671,9 @@ const Form: FC<IFormProps> = ({
 											<th>MUA TỰ ĐỘNG</th>
 											<th>BÁN TỰ ĐỘNG</th>
 											<th>MUA TAY</th>
-											<th>BÁN TAY</th>
+											<th>
+												<div className='mb-1'>BÁN TAY</div>
+											</th>
 											<th>TUỲ CHỌN</th>
 										</tr>
 									</thead>
