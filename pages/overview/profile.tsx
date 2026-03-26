@@ -31,6 +31,8 @@ const Profile = ({ totalStocksPurchased = 0 }: { totalStocksPurchased?: number }
 		totalEquity,
 		cashAvailable,
 		totalMarketValue,
+		gainLossValue,
+		gainLossOneDayValue,
 		accountName,
 		accountNum,
 		limitNumberStocks,
@@ -43,6 +45,8 @@ const Profile = ({ totalStocksPurchased = 0 }: { totalStocksPurchased?: number }
 		totalEquity,
 		cashAvailable,
 		totalMarketValue,
+		gainLossValue,
+		gainLossOneDayValue,
 		accountName,
 		accountNum,
 		limitNumberStocks,
@@ -150,6 +154,34 @@ const Profile = ({ totalStocksPurchased = 0 }: { totalStocksPurchased?: number }
 								<strong>
 									{Number(profile?.totalMarketValue).toLocaleString('vi-VN') +
 										' '}
+								</strong>
+								VND
+							</span>
+						</div>
+						<div className='text-secondary'>
+							<Icon icon='TrendingUp' className='btn-icon' />
+							<span className='font-medium'>Lãi/lỗ danh mục:</span>
+							<span
+								className='ml-2'
+								style={{
+									color: Number(profile?.gainLossValue) >= 0 ? '#5FD068' : '#a24022',
+								}}>
+								<strong>
+									{Number(profile?.gainLossValue).toLocaleString('vi-VN') + ' '}
+								</strong>
+								VND
+							</span>
+						</div>
+						<div className='text-secondary'>
+							<Icon icon='TrendingUp' className='btn-icon' />
+							<span className='font-medium'>Lãi/lỗ trong ngày:</span>
+							<span
+								className='ml-2'
+								style={{
+									color: Number(profile?.gainLossOneDayValue) >= 0 ? '#5FD068' : '#a24022',
+								}}>
+								<strong>
+									{Number(profile?.gainLossOneDayValue).toLocaleString('vi-VN') + ' '}
 								</strong>
 								VND
 							</span>

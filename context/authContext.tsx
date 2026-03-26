@@ -8,6 +8,8 @@ export interface IAuthContextProps {
 	isLogin: string;
 	totalEquity: string;
 	totalMarketValue: string;
+	gainLossValue: string;
+	gainLossOneDayValue: string;
 	cashAvailable: string;
 	accountName: string;
 	accountNum: string;
@@ -18,6 +20,8 @@ export interface IAuthContextProps {
 	setIsLogin: (value: ((prevState: string) => string) | string) => void;
 	setTotalEquity: (value: ((prevState: string) => string) | string) => void;
 	setTotalMarketValue: (value: ((prevState: string) => string) | string) => void;
+	setGainLossValue: (value: ((prevState: string) => string) | string) => void;
+	setGainLossOneDayValue: (value: ((prevState: string) => string) | string) => void;
 	setCashAvailable: (value: ((prevState: string) => string) | string) => void;
 	setAccountName: (value: ((prevState: string) => string) | string) => void;
 	setAccountNum: (value: ((prevState: string) => string) | string) => void;
@@ -50,6 +54,12 @@ export const AuthContextProvider: FC<IAuthContextProviderProps> = ({ children })
 	const [totalMarketValue, setTotalMarketValue] = useState<string>(
 		() => getLocalStorageItem('facit_totalMarketValue') || '',
 	);
+	const [gainLossValue, setGainLossValue] = useState<string>(
+		() => getLocalStorageItem('facit_gainLossValue') || '',
+	);
+	const [gainLossOneDayValue, setGainLossOneDayValue] = useState<string>(
+		() => getLocalStorageItem('facit_gainLossOneDayValue') || '',
+	);
 	const [cashAvailable, setCashAvailable] = useState<string>(
 		() => getLocalStorageItem('facit_cashAvailable') || '',
 	);
@@ -77,6 +87,8 @@ export const AuthContextProvider: FC<IAuthContextProviderProps> = ({ children })
 		setIsLogin(localStorage.getItem('facit_isLogin') || '');
 		setTotalEquity(localStorage.getItem('facit_totalEquity') || '');
 		setTotalMarketValue(localStorage.getItem('facit_totalMarketValue') || '');
+		setGainLossValue(localStorage.getItem('facit_gainLossValue') || '');
+		setGainLossOneDayValue(localStorage.getItem('facit_gainLossOneDayValue') || '');
 		setCashAvailable(localStorage.getItem('facit_cashAvailable') || '');
 		setAccountName(localStorage.getItem('facit_accountName') || '');
 		setAccountNum(localStorage.getItem('facit_accountNum') || '');
@@ -91,6 +103,8 @@ export const AuthContextProvider: FC<IAuthContextProviderProps> = ({ children })
 		localStorage.setItem('facit_isLogin', isLogin);
 		localStorage.setItem('facit_totalEquity', totalEquity);
 		localStorage.setItem('facit_totalMarketValue', totalMarketValue);
+		localStorage.setItem('facit_gainLossValue', gainLossValue);
+		localStorage.setItem('facit_gainLossOneDayValue', gainLossOneDayValue);
 		localStorage.setItem('facit_cashAvailable', cashAvailable);
 		localStorage.setItem('facit_accountName', accountName);
 		localStorage.setItem('facit_accountNum', accountNum);
@@ -102,6 +116,8 @@ export const AuthContextProvider: FC<IAuthContextProviderProps> = ({ children })
 		isLogin,
 		totalEquity,
 		totalMarketValue,
+		gainLossValue,
+		gainLossOneDayValue,
 		cashAvailable,
 		accountName,
 		accountNum,
@@ -125,6 +141,8 @@ export const AuthContextProvider: FC<IAuthContextProviderProps> = ({ children })
 			isLogin,
 			totalEquity,
 			totalMarketValue,
+			gainLossValue,
+			gainLossOneDayValue,
 			cashAvailable,
 			accountName,
 			accountNum,
@@ -136,6 +154,8 @@ export const AuthContextProvider: FC<IAuthContextProviderProps> = ({ children })
 			setTotalEquity,
 			setCashAvailable,
 			setTotalMarketValue,
+			setGainLossValue,
+			setGainLossOneDayValue,
 			setAccountName,
 			setAccountNum,
 			setLimitNumberStocks,
@@ -147,6 +167,8 @@ export const AuthContextProvider: FC<IAuthContextProviderProps> = ({ children })
 			isLogin,
 			totalEquity,
 			totalMarketValue,
+			gainLossValue,
+			gainLossOneDayValue,
 			cashAvailable,
 			accountName,
 			accountNum,

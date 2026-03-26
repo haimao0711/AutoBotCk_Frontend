@@ -64,6 +64,8 @@ const Index: NextPage = () => {
 		setLimitTotalMarketValue,
 		setCashAvailable,
 		setTotalMarketValue,
+		setGainLossValue,
+		setGainLossOneDayValue,
 		setAccountName,
 		setAccountNum,
 		setTotalEquity,
@@ -120,6 +122,8 @@ const Index: NextPage = () => {
 					setTotalEquity(response.total_equity);
 					setCashAvailable(response.cash_available);
 					setTotalMarketValue(response.total_market_value);
+					setGainLossValue(response.gain_loss_value);
+					setGainLossOneDayValue(response.gain_loss_oneday_value);
 					setAccountName(response.account_name);
 					setAccountNum(response.account_num);
 					setLimitNumberStocks(response.limit_number_stocks);
