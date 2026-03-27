@@ -162,10 +162,8 @@ const Profile = ({ totalStocksPurchased = 0 }: { totalStocksPurchased?: number }
 							<Icon icon='TrendingUp' className='btn-icon' />
 							<span className='font-medium'>Lãi/lỗ danh mục:</span>
 							<span
-								className='ml-2'
-								style={{
-									color: Number(profile?.gainLossValue) >= 0 ? '#5FD068' : '#a24022',
-								}}>
+								className={Number(profile?.gainLossValue) < 0 ? 'ml-2 text-danger' : 'ml-2'}
+								style={Number(profile?.gainLossValue) >= 0 ? { color: '#5FD068' } : undefined}>
 								<strong>
 									{Number(profile?.gainLossValue).toLocaleString('vi-VN') + ' '}
 								</strong>
@@ -176,10 +174,8 @@ const Profile = ({ totalStocksPurchased = 0 }: { totalStocksPurchased?: number }
 							<Icon icon='TrendingUp' className='btn-icon' />
 							<span className='font-medium'>Lãi/lỗ trong ngày:</span>
 							<span
-								className='ml-2'
-								style={{
-									color: Number(profile?.gainLossOneDayValue) >= 0 ? '#5FD068' : '#a24022',
-								}}>
+								className={Number(profile?.gainLossOneDayValue) < 0 ? 'ml-2 text-danger' : 'ml-2'}
+								style={Number(profile?.gainLossOneDayValue) >= 0 ? { color: '#5FD068' } : undefined}>
 								<strong>
 									{Number(profile?.gainLossOneDayValue).toLocaleString('vi-VN') + ' '}
 								</strong>

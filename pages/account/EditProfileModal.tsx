@@ -24,7 +24,17 @@ interface IValidate {
 
 const EditProfileModal: FC<IAddAccountModalProps> = ({ isOpen, setIsOpen }) => {
 	const { addToast } = useToasts();
-	const { userName, accountName, accountNum, limitNumberStocks, limitTotalMarketValue } = useContext(AuthContext);
+	const {
+		userName,
+		accountName,
+		accountNum,
+		limitNumberStocks,
+		limitTotalMarketValue,
+		setAccountName,
+		setAccountNum,
+		setLimitNumberStocks,
+		setLimitTotalMarketValue,
+	} = useContext(AuthContext);
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const togglePassword = () => setShowPassword((prev) => !prev);
@@ -81,8 +91,12 @@ const EditProfileModal: FC<IAddAccountModalProps> = ({ isOpen, setIsOpen }) => {
 						</Toasts>,
 						{ autoDismiss: true },
 					);
+					setAccountName(values.accountName);
+					setAccountNum(values.accountNum);
+					setLimitNumberStocks(values.limitNumberStocks.toString());
+					setLimitTotalMarketValue(values.limitTotalMarketValue.toString());
 					setTimeout(() => {
-						setIsOpen;
+						setIsOpen();
 					}, 500);
 				} else {
 					addToast(
@@ -187,10 +201,15 @@ const EditProfileModal: FC<IAddAccountModalProps> = ({ isOpen, setIsOpen }) => {
 							<Input
 								id='limitTotalMarketValue'
 								name='limitTotalMarketValue'
-								type='number'
+								component='NumberFormat'
+								thousandSeparator='.'
+								decimalSeparator=','
+								suffix=' VNĐ'
 								placeholder='Nhập tổng giá trị mua tối đa'
 								autoComplete='additional-name'
-								onChange={formik?.handleChange}
+								onValueChange={(values: any) => {
+									formik.setFieldValue('limitTotalMarketValue', values.value);
+								}}
 								onBlur={formik?.handleBlur}
 								value={formik?.values.limitTotalMarketValue}
 								isValid={formik?.isValid}

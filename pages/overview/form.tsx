@@ -681,13 +681,16 @@ const Form: FC<IFormProps> = ({
 										{arrRender?.map((item: any, index: any) => (
 											<tr key={item?.id}>
 												<th>{index + 1 + (currentPage - 1) * perPage}</th>
-												<th
-													style={
-														removePercentage(item?.current_profit) > 0
-															? { color: '#02FF00' }
-															: { color: '#FF3737' }
-													}>
-													{item?.stock_name}{' '}
+												<th style={{ verticalAlign: 'middle' }}>
+													<span
+														style={{
+															color:
+																removePercentage(item?.current_profit) > 0
+																	? '#02FF00'
+																	: '#f35421',
+														}}>
+														{item?.stock_name}{' '}
+													</span>
 												</th>
 												<th>{item?.account_vps}</th>
 												<th
@@ -719,13 +722,16 @@ const Form: FC<IFormProps> = ({
 													{Number(item?.current_price).toFixed(2)}
 												</th>
 												<th>{Number(item?.aver_price_buy).toFixed(2)}</th>
-												<th
-													style={
-														removePercentage(item?.current_profit) > 0
-															? { color: '#02FF00' }
-															: { color: '#F32F35' }
-													}>
-													{item?.current_profit}
+												<th style={{ verticalAlign: 'middle' }}>
+													<span
+														style={{
+															color:
+																removePercentage(item?.current_profit) > 0
+																	? '#02FF00'
+																	: '#f35421',
+														}}>
+														{item?.current_profit}
+													</span>
 												</th>
 												<th>
 													<div>{`${item?.following_chart_buy} - ${item?.trading_chart_buy}`}</div>
