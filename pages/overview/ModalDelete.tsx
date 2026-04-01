@@ -189,10 +189,16 @@ const ModalDelete: FC<any> = ({
 
 					if (successCount > 0) {
 						addToast(
-							<Toasts title='Update notifications' iconColor='success' icon='TaskAlt' isDismiss>
-								Đã gửi {successCount} yêu cầu bán thành công
+							<Toasts
+								title='Update notifications'
+								iconColor='success'
+								icon='TaskAlt'
+								isDismiss>
+								{options?.isTrade
+									? 'Yêu cầu dừng bán nhanh tất cả thành công'
+									: 'Yêu cầu bán nhanh tất cả thành công'}
 							</Toasts>,
-							{ autoDismiss: true }
+							{ autoDismiss: true },
 						);
 					}
 					if (errorCount > 0) {

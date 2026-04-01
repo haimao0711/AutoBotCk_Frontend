@@ -112,6 +112,28 @@ const Index: NextPage = () => {
 			);
 		}
 	};
+	const handleResetBot = async () => {
+		const response = await authService.resetBotTrading({});
+		if (response) {
+			addToast(
+				<Toasts title='Create notifications' iconColor='success' icon='TaskAlt' isDismiss>
+					{`Reset Bot thành công!`}
+				</Toasts>,
+				{
+					autoDismiss: true,
+				},
+			);
+		} else {
+			addToast(
+				<Toasts title='Create notifications' iconColor='danger' icon='Error' isDismiss>
+					{`Reset Bot không thành công!`}
+				</Toasts>,
+				{
+					autoDismiss: true,
+				},
+			);
+		}
+	};
 	useEffect(() => {
 		async function checkIsTrading() {
 			try {
@@ -220,18 +242,28 @@ const Index: NextPage = () => {
 						</div>
 						<div className='topBuySell' style={{ display: 'flex', gap: '10px' }}>
 							<StyledActionButton
+								style={{ backgroundColor: !isTrading ? '#f44336' : '#4caf50' }}
 								onClick={(e: any) => {
 									setIsOpen(!isOpen);
 								}}>
-								{!isTrading ? 'Đang Dừng Bot' : 'Đang Chạy Bot'}
+								{!isTrading ? 'Đang Dừng Bot 🛑' : 'Đang Chạy Bot ⚡'}
 							</StyledActionButton>
 							<StyledActionButton
+								style={{ backgroundColor: isBlockBuy ? '#f44336' : '#4caf50' }}
 								onClick={() => handleStopTrade('B')}>
-								{isBlockBuy ? 'Đang chặn MUA' : 'Đang MUA'}
+								{isBlockBuy ? 'Đang chặn MUA 🛑' : 'Đang MUA ⚡'}
 							</StyledActionButton>
 							<StyledActionButton
+								style={{ backgroundColor: isBlockSell ? '#f44336' : '#4caf50' }}
 								onClick={() => handleStopTrade('S')}>
-								{isBlockSell ? 'Đang chặn BÁN' : 'Đang BÁN'}
+								{isBlockSell ? 'Đang chặn BÁN 🛑' : 'Đang BÁN ⚡'}
+							</StyledActionButton>
+						</div>
+						<div style={{ marginTop: '10px' }}>
+							<StyledActionButton
+								style={{ backgroundColor: '#f57c00' }}
+								onClick={() => handleResetBot()}>
+								RESET BOT 🔄
 							</StyledActionButton>
 						</div>
 					</div>

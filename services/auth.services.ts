@@ -76,9 +76,9 @@ const updateOtp = async (body: any) => {
 			err
 				? err
 				: {
-						...err,
-						status_code: 500,
-				  },
+					...err,
+					status_code: 500,
+				},
 		);
 	return listOTP;
 };
@@ -170,6 +170,17 @@ const openBlockTrading = async (body: any) => {
 		});
 	return respon;
 };
+const resetBotTrading = async (body: any) => {
+	const respon = await fetchWrapper
+		.post(`${apiBaseUrl}/api/account/reset_bot`, body)
+		.then((res) => {
+			if (res && res?.data) {
+				// console.log('check data resetBotTrading: ', res?.data);
+				return res?.data;
+			}
+		});
+	return respon;
+};
 
 const logout = () => {
 	Cookies.remove(AuthCache.AUTH_TOKEN_CACHE);
@@ -222,4 +233,5 @@ export default {
 	getIsTrading,
 	getIsBlockBuy,
 	openBlockTrading,
+	resetBotTrading,
 };
