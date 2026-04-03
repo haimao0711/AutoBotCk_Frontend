@@ -23,7 +23,7 @@ import styled from 'styled-components';
 const StyledActionButton = styled(Button)`
 	background-color: #4caf50;
 	color: white;
-	padding: 10px 20px;
+	padding: 10px 14px 10px 8px;
 	border: none;
 	border-radius: 5px;
 	font-size: 16px;
@@ -246,24 +246,24 @@ const Index: NextPage = () => {
 								onClick={(e: any) => {
 									setIsOpen(!isOpen);
 								}}>
-								{!isTrading ? 'Đang Dừng Bot 🛑' : 'Đang Chạy Bot ⚡'}
+								{!isTrading ? '🛑 Đang Dừng Bot' : '⚡ Đang Chạy Bot'}
 							</StyledActionButton>
 							<StyledActionButton
 								style={{ backgroundColor: isBlockBuy ? '#f44336' : '#4caf50' }}
 								onClick={() => handleStopTrade('B')}>
-								{isBlockBuy ? 'Đang chặn MUA 🛑' : 'Đang MUA ⚡'}
+								{isBlockBuy ? '🛑 Đang chặn MUA' : '⚡ Đang MUA'}
 							</StyledActionButton>
 							<StyledActionButton
 								style={{ backgroundColor: isBlockSell ? '#f44336' : '#4caf50' }}
 								onClick={() => handleStopTrade('S')}>
-								{isBlockSell ? 'Đang chặn BÁN 🛑' : 'Đang BÁN ⚡'}
+								{isBlockSell ? '🛑 Đang chặn BÁN' : '⚡ Đang BÁN'}
 							</StyledActionButton>
 						</div>
 						<div style={{ marginTop: '10px' }}>
 							<StyledActionButton
 								style={{ backgroundColor: '#f57c00' }}
 								onClick={() => handleResetBot()}>
-								RESET BOT 🔄
+								🔄 RESET BOT
 							</StyledActionButton>
 						</div>
 					</div>

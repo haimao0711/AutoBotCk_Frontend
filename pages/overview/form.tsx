@@ -590,7 +590,8 @@ const Form: FC<IFormProps> = ({
 												backgroundColor: isAllON ? '#5FD068' : '#a24022',
 												color: '#f5f5f5',
 												width: '85px',
-												marginRight: '12px'
+												marginRight: '12px',
+												padding: '10px 14px 10px 8px'
 											}}
 											onClick={() => {
 												if (ownedStocks.length === 0) {
@@ -621,7 +622,7 @@ const Form: FC<IFormProps> = ({
 													isTrade: isAllON, // if true (all are ON), it means we want to turn OFF (stopTradeFast).
 												});
 											}}>
-											{isAllON ? 'ON ⚡' : 'OFF 🛑'}
+											{isAllON ? '⚡ ON' : '🛑 OFF'}
 										</StyledToggleButton>
 									);
 								})()}

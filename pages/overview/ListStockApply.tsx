@@ -10,6 +10,8 @@ type StockItem = {
 	stock_name: string;
 	level: string;
 	current_price: string;
+	volume_buy?: number | string;
+	volume_trade?: number | string;
 };
 
 type ListStockApplyProps = {
@@ -36,20 +38,31 @@ const ListStockApply: React.FC<ListStockApplyProps> = ({
 	selectedSymbols = [],
 	setSelectedSymbols,
 }) => {
-	const isAllSelected = selectedSymbols.length === allSymbols.length && allSymbols.length > 0;
-	const [sortOption, setSortOption] = React.useState<'ABC' | 'Level' | 'Price'>('ABC');
+	const [sortOption, setSortOption] = React.useState<'ABC' | 'Level' | 'Price' | 'Holding'>(
+		'ABC',
+	);
 
 	const sortedSymbols = React.useMemo(() => {
-		const symbolsCopy = [...(allSymbols ?? [])];
+		let symbolsCopy = [...(allSymbols ?? [])];
 
-		if (sortOption === 'ABC') {
-			return symbolsCopy.sort((a, b) => a.stock_name.localeCompare(b.stock_name));
-		} else if (sortOption === 'Level') {
+		if (sortOption === 'Holding') {
+			symbolsCopy = symbolsCopy.filter(
+				(item) => Number(item.volume_buy) > 0 || Number(item.volume_trade) > 0,
+			);
+		}
+
+		if (sortOption === 'Level') {
 			return symbolsCopy.sort((a, b) => Number(a.level) - Number(b.level));
-		} else {
+		} else if (sortOption === 'Price') {
 			return symbolsCopy.sort((a, b) => Number(a.current_price) - Number(b.current_price));
+		} else {
+			return symbolsCopy.sort((a, b) => a.stock_name.localeCompare(b.stock_name));
 		}
 	}, [allSymbols, sortOption]);
+
+	const isAllSelected =
+		sortedSymbols.length > 0 &&
+		sortedSymbols.every((s) => selectedSymbols.some((sel) => sel.stock_id === s.stock_id));
 
 	const toggleSymbol = (item: StockItem): void => {
 		setSelectedSymbols((prev: StockItem[]) => {
@@ -57,29 +70,37 @@ const ListStockApply: React.FC<ListStockApplyProps> = ({
 			return exists
 				? prev.filter((s) => s.stock_id !== item.stock_id)
 				: [
-						...prev,
-						{
-							stock_id: item.stock_id,
-							stock_name: item.stock_name,
-							level: item.level,
-							current_price: item.current_price,
-						},
-				  ];
+					...prev,
+					{
+						stock_id: item.stock_id,
+						stock_name: item.stock_name,
+						level: item.level,
+						current_price: item.current_price,
+					},
+				];
 		});
 	};
 
 	const toggleSelectAll = (): void => {
 		if (isAllSelected) {
-			setSelectedSymbols([]);
-		} else {
-			setSelectedSymbols(
-				allSymbols.map(({ stock_id, stock_name, level, current_price }) => ({
-					stock_id,
-					stock_name,
-					level,
-					current_price,
-				})),
+			setSelectedSymbols((prev) =>
+				prev.filter((p) => !sortedSymbols.some((s) => s.stock_id === p.stock_id)),
 			);
+		} else {
+			setSelectedSymbols((prev) => {
+				const newItems = sortedSymbols.filter(
+					(s) => !prev.some((p) => p.stock_id === s.stock_id),
+				);
+				return [
+					...prev,
+					...newItems.map(({ stock_id, stock_name, level, current_price }) => ({
+						stock_id,
+						stock_name,
+						level,
+						current_price,
+					})),
+				];
+			});
 		}
 	};
 
@@ -115,13 +136,16 @@ const ListStockApply: React.FC<ListStockApplyProps> = ({
 								id='sortOption'
 								value={sortOption}
 								onChange={(e) =>
-									setSortOption(e.target.value as 'ABC' | 'Level' | 'Price')
+									setSortOption(
+										e.target.value as 'ABC' | 'Level' | 'Price' | 'Holding',
+									)
 								}
 								className='form-select form-select-sm'
 								style={{ width: '130px' }}>
 								<option value='ABC'>ABC</option>
 								<option value='Level'>Level</option>
 								<option value='Price'>Giá hiện tại</option>
+								<option value='Holding'>Danh mục nắm giữ</option>
 							</select>
 						</div>
 					</div>
