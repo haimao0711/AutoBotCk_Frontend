@@ -1,7 +1,5 @@
 import type { NextPage } from 'next';
-import { GetStaticProps } from 'next';
 import Head from 'next/head';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
 import { FC, useContext, useState, useEffect } from 'react';
 import AuthContext from '@context/authContext';
@@ -87,6 +85,8 @@ const Login: NextPage = () => {
 					username: values.loginEmail,
 					password: values.loginPassword,
 				});
+				console.log('Login response:', data);
+				console.log('Cookies after login:', document.cookie);
 				if (data?.userName) {
 					setIsLogin('true');
 					setUserName(data?.userName);
@@ -99,9 +99,11 @@ const Login: NextPage = () => {
 							autoDismiss: true,
 						},
 					);
-					setTimeout(() => {
-						router.push('/overview');
-					}, 0);
+					try {
+						router.replace('/overview');
+					} catch (e) {
+						window.location.href = '/overview';
+					}
 				} else {
 					addToast(
 						<Toasts title='Thông báo ' icon='Cancel' iconColor='danger' isDismiss>
@@ -487,12 +489,5 @@ Login.propTypes = {
 Login.defaultProps = {
 	isSignUp: false,
 };
-
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-	props: {
-		// @ts-ignore
-		...(await serverSideTranslations(locale, ['common', 'menu'])),
-	},
-});
 
 export default Login;

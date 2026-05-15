@@ -20,6 +20,7 @@ export const transformConfigData = (config: IBaseConfig): Record<string, any> =>
 		is_sell: config.base.config_is_sell,
 		is_use_vnindex_config: config.base.config_is_use_vnindex_config,
 		is_use_stock_config: config.base.config_is_use_stock_config,
+		is_use_candle_second: config.base.config_is_use_candle_second,
 		level: DEFAULT_INIT_LEVEL,
 	};
 
@@ -28,6 +29,7 @@ export const transformConfigData = (config: IBaseConfig): Record<string, any> =>
 		'config_is_sell',
 		'config_is_use_vnindex_config',
 		'config_is_use_stock_config',
+		'config_is_use_candle_second',
 	];
 
 	(Object.keys(config.base) as Array<keyof IConfig>).forEach((key) => {

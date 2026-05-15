@@ -11,7 +11,7 @@ import Toasts from '@components/bootstrap/Toasts';
 import { useToasts } from 'react-toast-notifications';
 import { useGetCreateUser } from '@hooks/useGetCreateUser';
 import {
-	useGetAccountVps,
+	getAccountVpsApi,
 	useGetStopTrade,
 	useGetBuy,
 	useGetCreateAccountVps,
@@ -30,7 +30,15 @@ interface IValues {
 	otp: number;
 }
 
-const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, setIsOptions }) => {
+const ModalDelete: FC<any> = ({
+	isOpenEdit,
+	isOpen,
+	setIsOpen,
+	info,
+	options,
+	setIsOptions,
+	getData,
+}) => {
 	const { addToast } = useToasts();
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -47,8 +55,9 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 	const [takeProfit, setTakeProfit] = useState(false);
 	const [activeBuy, setActiveBuy] = useState(false);
 	const [volumeSell, setVolumeSell] = useState('all');
+	const [isUseChartAction, setIsUseChartAction] = useState(true);
 	const [isCheckFollowing, setIsCheckFollowing] = useState(false);
-	const getAccountVps = useGetAccountVps();
+	// const getAccountVps = useGetAccountVps();
 
 	const updateConfig = useGetUpdateApiStock();
 	const cancelModal: any = (value: boolean) => {
@@ -61,7 +70,7 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 
 	useEffect(() => {
 		async function fetchAccount() {
-			const accounts = await getAccountVps;
+			const accounts = await getAccountVpsApi();
 			setListAccount(accounts);
 		}
 		fetchAccount();
@@ -100,6 +109,9 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 					},
 				);
 				setIsOpen(false);
+				if (getData) {
+					getData();
+				}
 			},
 			(res: any) => {
 				setIsLoading(false);
@@ -122,6 +134,88 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 		onSubmit: async (values) => {
 			console.log('check options: ', options);
 			if (options?.isOpen) {
+				if (info?.isSellAll) {
+					setIsLoading(true);
+					let successCount = 0;
+					let errorCount = 0;
+
+					// Lọc ra các mã cần thay đổi trạng thái
+					const stocksToProcess = options?.isTrade
+						? info.ownedStocks.filter((stock: any) => stock.is_sell_hand) // Nếu isTrade=true (đang ON hết) -> Tắt các mã đang ON
+						: info.ownedStocks.filter((stock: any) => !stock.is_sell_hand); // Ngược lại Bật ON các mã đang OFF
+
+					if (stocksToProcess.length === 0) {
+						setIsLoading(false);
+						addToast(
+							<Toasts title='Thông báo' iconColor='warning' icon='Warning' isDismiss>
+								Không có mã nào cần thay đổi trạng thái
+							</Toasts>,
+							{ autoDismiss: true }
+						);
+						setIsOpen(false);
+						return;
+					}
+
+					const promises = stocksToProcess.map((stock: any) => {
+						return new Promise((resolve) => {
+							const data = {
+								stock_name: stock?.stock_name,
+								stock_id: stock?.stock_id,
+								account_name: stock?.account_vps,
+								is_buy_hand: options?.isBuy,
+								is_sell_hand: options?.isSell,
+								volume_sell: volumeSell,
+								is_use_chart_action: isUseChartAction,
+							};
+
+							if (options?.isTrade) {
+								stopTradeFast(
+									data,
+									() => { successCount++; resolve(true); },
+									() => { errorCount++; resolve(false); }
+								);
+							} else {
+								sellFast(
+									data,
+									() => { successCount++; resolve(true); },
+									() => { errorCount++; resolve(false); }
+								);
+							}
+						});
+					});
+
+					await Promise.all(promises);
+					setIsLoading(false);
+
+					if (successCount > 0) {
+						addToast(
+							<Toasts
+								title='Update notifications'
+								iconColor='success'
+								icon='TaskAlt'
+								isDismiss>
+								{options?.isTrade
+									? 'Yêu cầu dừng bán nhanh tất cả thành công'
+									: 'Yêu cầu bán nhanh tất cả thành công'}
+							</Toasts>,
+							{ autoDismiss: true },
+						);
+					}
+					if (errorCount > 0) {
+						addToast(
+							<Toasts title='Create notifications' icon='Cancel' iconColor='danger' isDismiss>
+								Lỗi khi gửi {errorCount} yêu cầu bán
+							</Toasts>,
+							{ autoDismiss: true }
+						);
+					}
+					setIsOpen(false);
+					if (getData) {
+						getData();
+					}
+					return;
+				}
+
 				const data = {
 					stock_name: info?.stock_name,
 					stock_id: info?.stock_id,
@@ -129,6 +223,7 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 					is_buy_hand: options?.isBuy,
 					is_sell_hand: options?.isSell,
 					volume_sell: volumeSell,
+					is_use_chart_action: isUseChartAction,
 				};
 				if (options?.isTrade) {
 					stopTradeFast(
@@ -148,6 +243,9 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 								},
 							);
 							setIsOpen(false);
+							if (getData) {
+								getData();
+							}
 						},
 						(res: any) => {
 							setIsLoading(false);
@@ -183,6 +281,9 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 								},
 							);
 							setIsOpen(false);
+							if (getData) {
+								getData();
+							}
 						},
 						(res: any) => {
 							setIsLoading(false);
@@ -218,6 +319,9 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 								},
 							);
 							setIsOpen(false);
+							if (getData) {
+								getData();
+							}
 						},
 						(res: any) => {
 							setIsLoading(false);
@@ -261,6 +365,9 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 								},
 							);
 							setIsOpen(false);
+							if (getData) {
+								getData();
+							}
 						},
 						(data: any) => {
 							setIsLoading(false);
@@ -305,6 +412,12 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 		}
 		fetchData();
 	}, [setIsOpen, info]);
+
+	useEffect(() => {
+		if (isOpen) {
+			setIsUseChartAction(true);
+		}
+	}, [isOpen]);
 	return (
 		<Modal isOpen={isOpen} setIsOpen={cancelModal} size='xl'>
 			<ModalHeader setIsOpen={cancelModal} className='p-4'>
@@ -353,7 +466,7 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 							/>
 						</FormGroup>
 					</div>
-					{options?.isOpen && options?.isSell && (
+					{options?.isOpen && options?.isSell && !options?.isTrade && (
 						<>
 							<div>
 								<FormGroup id='volume_sell'>
@@ -400,10 +513,109 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 									</div>
 								</FormGroup>
 							</div>
+							<div>
+								<FormGroup id='sell_method'>
+									<div style={{ display: 'flex', alignItems: 'center' }}>
+										<label
+											htmlFor='sell_method'
+											style={{ minWidth: '150px', marginBottom: 0 }}>
+											Chọn hình thức bán
+										</label>
+										<div
+											style={{
+												position: 'relative',
+												display: 'inline-block',
+											}}>
+											<select
+												id='sell_method'
+												className='form-control'
+												style={{
+													appearance: 'none',
+													WebkitAppearance: 'none',
+													MozAppearance: 'none',
+													paddingRight: '30px',
+													minWidth: '110px',
+													width: 'auto',
+												}}
+												value={isUseChartAction ? 'chart' : 'immediate'}
+												onChange={(e) =>
+													setIsUseChartAction(e.target.value === 'chart')
+												}>
+												<option value='chart'>Bán theo Chart</option>
+												<option value='immediate'>Bán ngay</option>
+											</select>
+											<span
+												style={{
+													position: 'absolute',
+													right: '6px',
+													top: '50%',
+													transform: 'translateY(-50%)',
+													pointerEvents: 'none',
+													fontSize: '12px',
+													color: '#666',
+												}}>
+												▼
+											</span>
+										</div>
+									</div>
+								</FormGroup>
+							</div>
+						</>
+					)}
+					{options?.isOpen && options?.isBuy && !options?.isTrade && (
+						<>
+							<div className='col-12'>
+								<FormGroup id='buy_method'>
+									<div style={{ display: 'flex', alignItems: 'center' }}>
+										<label
+											htmlFor='buy_method'
+											style={{ minWidth: '150px', marginBottom: 0 }}>
+											Chọn hình thức mua
+										</label>
+										<div
+											style={{
+												position: 'relative',
+												display: 'inline-block',
+											}}>
+											<select
+												id='buy_method'
+												className='form-control'
+												style={{
+													appearance: 'none',
+													WebkitAppearance: 'none',
+													MozAppearance: 'none',
+													paddingRight: '30px',
+													minWidth: '110px',
+													width: 'auto',
+												}}
+												value={isUseChartAction ? 'chart' : 'immediate'}
+												onChange={(e) =>
+													setIsUseChartAction(e.target.value === 'chart')
+												}>
+												<option value='chart'>Mua theo Chart</option>
+												<option value='immediate'>Mua ngay</option>
+											</select>
+											<span
+												style={{
+													position: 'absolute',
+													right: '6px',
+													top: '50%',
+													transform: 'translateY(-50%)',
+													pointerEvents: 'none',
+													fontSize: '12px',
+													color: '#666',
+												}}>
+												▼
+											</span>
+										</div>
+									</div>
+								</FormGroup>
+							</div>
 						</>
 					)}
 					{isOpenEdit && (
 						<>
+
 							<div className='col-md-6'>
 								<FormGroup id='account' label='KHỐI LƯỢNG MUA DỰ KIẾN ' isFloating>
 									<Input
@@ -420,21 +632,7 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 								</FormGroup>
 							</div>
 
-							{/* <div className='col-md-6'>
-								<FormGroup id='otp' label='GIÁ KÍCH HOẠT LỆNH MUA' isFloating>
-									<Input
-										type='number'
-										placeholder='Số lượng'
-										autoComplete='volume'
-										min={0}
-										onChange={(e: any) => {
-											setAmountActiveBuy(e.target.value);
-										}}
-										style={{ width: '100%' }}
-										value={amountActiveBuy}
-									/>
-								</FormGroup>
-							</div> */}
+
 							<div className='col-md-6'>
 								<FormGroup id='otp' label='LEVEL' isFloating>
 									<Input
@@ -450,25 +648,7 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 									/>
 								</FormGroup>
 							</div>
-							{/* {info?.account_type === 'Margin' ? (
-								<div className='col-md-6'>
-									<FormGroup id='otp' label='TỶ LỆ MARGIN' isFloating>
-										<Input
-											type='number'
-											placeholder='Tỷ lệ margin'
-											autoComplete='marginPercentage'
-											min={0}
-											onChange={(e: any) => {
-												handleMarginPercentage(e.target.value);
-											}}
-											style={{ width: '100%' }}
-											value={marginPercentage}
-										/>
-									</FormGroup>
-								</div>
-							) : (
-								<div className='col-md-6'></div>
-							)} */}
+
 							<div className='col-md-6'>
 								<Button
 									icon={isLoading ? undefined : 'Run'}
@@ -492,60 +672,6 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 									Theo dõi hành động mua bán
 								</Button>
 							</div>
-							{/* <div className='col-ml-12 d-flex'>
-								<FormGroup
-									label='TRẠNG THÁI CẮT LỖ'
-									className='col-lg-3 col-4 mb-4'>
-									<Checks
-										id='checkedAll'
-										type='switch'
-										label='Active'
-										style={{
-											display: 'flex',
-											alignItems: 'center',
-										}}
-										onChange={(e: any) => setCutLoss(e.target.checked)}
-										checked={cutLoss}
-										ariaLabel='status'
-									/>
-								</FormGroup>
-								<FormGroup
-									label='TRẠNG THÁI CHẶN LÃI'
-									className='col-lg-3 col-4 mb-4'>
-									<Checks
-										id='checkedAll'
-										type='switch'
-										label='Active'
-										style={{
-											display: 'flex',
-											alignItems: 'center',
-										}}
-										onChange={(e: any) => {
-											setTakeProfit(e.target.checked);
-										}}
-										checked={takeProfit}
-										ariaLabel='status'
-									/>
-								</FormGroup>
-								<FormGroup
-									label='TRẠNG THÁI KÍCH HOẠT LỆNH MUA'
-									className='col-lg-3 col-4 mb-4'>
-									<Checks
-										id='checkedAll'
-										type='switch'
-										label='Active'
-										style={{
-											display: 'flex',
-											alignItems: 'center',
-										}}
-										onChange={(e: any) => {
-											setActiveBuy(e.target.checked);
-										}}
-										checked={activeBuy}
-										ariaLabel='status'
-									/>
-								</FormGroup>
-							</div> */}
 						</>
 					)}
 				</div>
@@ -554,8 +680,8 @@ const ModalDelete: FC<any> = ({ isOpenEdit, isOpen, setIsOpen, info, options, se
 						Confirm
 					</Button>
 				</div>
-			</ModalBody>
-		</Modal>
+			</ModalBody >
+		</Modal >
 	);
 };
 

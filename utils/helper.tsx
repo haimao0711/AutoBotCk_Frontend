@@ -70,11 +70,18 @@ export const transformVNIndexBuy = (data: Record<string, number | boolean>): IVN
 		'vnindex_config_value_stoch_rsi_obl_to_buy',
 		'vnindex_config_use_stoch_rsi_increase',
 		'vnindex_config_use_macd_to_buy',
+		'vnindex_config_use_histogram_to_buy',
 		'vnindex_config_use_macd_obl_to_buy',
+		'vnindex_config_use_histogram_obl_to_buy',
+		'vnindex_config_use_macd_obl_increase',
+		'vnindex_config_use_sma_obl_increase',
 		'vnindex_config_use_macd_reversed_increase',
 		'vnindex_config_value_macd_to_buy',
+		'vnindex_config_value_histogram_to_buy',
 		'vnindex_config_value_macd_obl_to_buy',
+		'vnindex_config_value_histogram_obl_to_buy',
 		'vnindex_config_use_macd_increase',
+		'vnindex_config_use_sma_increase',
 		'vnindex_config_use_histogram_reversed_increase',
 		'vnindex_config_use_histogram_increase',
 		'vnindex_config_use_volume_to_buy',
@@ -103,9 +110,12 @@ export const transformVNIndexSell = (
 		'vnindex_config_value_stoch_rsi_to_sell',
 		'vnindex_config_use_stoch_rsi_decrease',
 		'vnindex_config_use_macd_to_sell',
+		'vnindex_config_use_histogram_to_sell',
 		'vnindex_config_use_macd_reversed_decrease',
 		'vnindex_config_value_macd_to_sell',
+		'vnindex_config_value_histogram_to_sell',
 		'vnindex_config_use_macd_decrease',
+		'vnindex_config_use_sma_decrease',
 		'vnindex_config_use_histogram_reversed_decrease',
 		'vnindex_config_use_histogram_decrease',
 		'vnindex_config_use_bolinger_to_sell',
@@ -141,11 +151,15 @@ export const transformVNIndexBuyPriority = (
 		'vnindex_config_stoch_rsi_increase_necessary_condition',
 		'vnindex_config_stoch_rsi_increase_sufficient_condition',
 		'vnindex_config_macd_to_buy_necessary_condition',
+		'vnindex_config_histogram_to_buy_necessary_condition',
 		'vnindex_config_macd_to_buy_sufficient_condition',
+		'vnindex_config_histogram_to_buy_sufficient_condition',
 		'vnindex_config_macd_reversed_increase_necessary_condition',
 		'vnindex_config_macd_reversed_increase_sufficient_condition',
 		'vnindex_config_macd_increase_necessary_condition',
+		'vnindex_config_sma_increase_necessary_condition',
 		'vnindex_config_macd_increase_sufficient_condition',
+		'vnindex_config_sma_increase_sufficient_condition',
 		'vnindex_config_histogram_reversed_increase_necessary_condition',
 		'vnindex_config_histogram_reversed_increase_sufficient_condition',
 		'vnindex_config_histogram_increase_necessary_condition',
@@ -186,11 +200,16 @@ export const transformVNIndexSellPriority = (
 		'vnindex_config_stoch_rsi_decrease_necessary_condition',
 		'vnindex_config_stoch_rsi_decrease_sufficient_condition',
 		'vnindex_config_macd_to_sell_necessary_condition',
+		'vnindex_config_histogram_to_sell_necessary_condition',
 		'vnindex_config_macd_to_sell_sufficient_condition',
+		'vnindex_config_histogram_to_sell_sufficient_condition',
 		'vnindex_config_macd_reversed_decrease_necessary_condition',
 		'vnindex_config_macd_reversed_decrease_sufficient_condition',
 		'vnindex_config_macd_decrease_necessary_condition',
+		'vnindex_config_sma_decrease_necessary_condition',
+		'vnindex_config_sma_decrease_sufficient_condition',
 		'vnindex_config_macd_decrease_sufficient_condition',
+		'vnindex_config_sma_decrease_sufficient_condition',
 		'vnindex_config_histogram_reversed_decrease_necessary_condition',
 		'vnindex_config_histogram_reversed_decrease_sufficient_condition',
 		'vnindex_config_histogram_decrease_necessary_condition',
@@ -223,15 +242,24 @@ export const transformStockBuy = (data: Record<string, number | boolean>): IStoc
 		'stock_config_value_stoch_rsi_obl_to_buy',
 		'stock_config_use_stoch_rsi_increase',
 		'stock_config_use_macd_to_buy',
+		'stock_config_use_histogram_to_buy',
 		'stock_config_use_macd_obl_to_buy',
+		'stock_config_use_histogram_obl_to_buy',
+		'stock_config_use_macd_obl_increase',
+		'stock_config_use_sma_obl_increase',
 		'stock_config_use_buy_up_obl_to_buy',
 		'stock_config_use_buy_foreign_obl_to_buy',
+		'stock_config_use_volume_trade_obl_to_buy',
 		'stock_config_use_macd_reversed_increase',
 		'stock_config_value_macd_to_buy',
+		'stock_config_value_histogram_to_buy',
 		'stock_config_value_macd_obl_to_buy',
+		'stock_config_value_histogram_obl_to_buy',
 		'stock_config_value_buy_up_obl_to_buy',
 		'stock_config_value_buy_foreign_obl_to_buy',
+		'stock_config_value_volume_trade_obl_to_buy',
 		'stock_config_use_macd_increase',
+		'stock_config_use_sma_increase',
 		'stock_config_use_histogram_reversed_increase',
 		'stock_config_use_histogram_increase',
 		'stock_config_use_volume_to_buy',
@@ -253,9 +281,12 @@ export const transformStockSell = (data: Record<string, number | boolean>): ISto
 		'stock_config_value_stoch_rsi_to_sell',
 		'stock_config_use_stoch_rsi_decrease',
 		'stock_config_use_macd_to_sell',
+		'stock_config_use_histogram_to_sell',
 		'stock_config_use_macd_reversed_decrease',
 		'stock_config_value_macd_to_sell',
+		'stock_config_value_histogram_to_sell',
 		'stock_config_use_macd_decrease',
+		'stock_config_use_sma_decrease',
 		'stock_config_use_histogram_reversed_decrease',
 		'stock_config_use_histogram_decrease',
 	];
@@ -283,11 +314,15 @@ export const transformStockBuyPriority = (
 		'stock_config_stoch_rsi_increase_necessary_condition',
 		'stock_config_stoch_rsi_increase_sufficient_condition',
 		'stock_config_macd_to_buy_necessary_condition',
+		'stock_config_histogram_to_buy_necessary_condition',
 		'stock_config_macd_to_buy_sufficient_condition',
+		'stock_config_histogram_to_buy_sufficient_condition',
 		'stock_config_macd_reversed_increase_necessary_condition',
 		'stock_config_macd_reversed_increase_sufficient_condition',
 		'stock_config_macd_increase_necessary_condition',
+		'stock_config_sma_increase_necessary_condition',
 		'stock_config_macd_increase_sufficient_condition',
+		'stock_config_sma_increase_sufficient_condition',
 		'stock_config_histogram_reversed_increase_necessary_condition',
 		'stock_config_histogram_reversed_increase_sufficient_condition',
 		'stock_config_histogram_increase_necessary_condition',
@@ -322,11 +357,15 @@ export const transformStockSellPriority = (
 		'stock_config_stoch_rsi_decrease_necessary_condition',
 		'stock_config_stoch_rsi_decrease_sufficient_condition',
 		'stock_config_macd_to_sell_necessary_condition',
+		'stock_config_histogram_to_sell_necessary_condition',
 		'stock_config_macd_to_sell_sufficient_condition',
+		'stock_config_histogram_to_sell_sufficient_condition',
 		'stock_config_macd_reversed_decrease_necessary_condition',
 		'stock_config_macd_reversed_decrease_sufficient_condition',
 		'stock_config_macd_decrease_necessary_condition',
+		'stock_config_sma_decrease_necessary_condition',
 		'stock_config_macd_decrease_sufficient_condition',
+		'stock_config_sma_decrease_sufficient_condition',
 		'stock_config_histogram_reversed_decrease_necessary_condition',
 		'stock_config_histogram_reversed_decrease_sufficient_condition',
 		'stock_config_histogram_decrease_necessary_condition',
@@ -364,11 +403,20 @@ export const transformStockOther = (data: Record<string, number | boolean>): ISt
 		'stock_config_percent_stop_loss_sell_second',
 
 		'stock_config_use_take_profit_first_part',
+		'stock_config_use_stoch_rsi_to_take_profit',
+		'stock_config_use_rsi_decrease_to_take_profit',
+		'stock_config_use_take_profit_first_part_two',
 		'stock_config_percent_take_profit_sell_first',
+		'stock_config_value_stoch_rsi_to_take_profit',
+		'stock_config_percent_take_profit_sell_first_two',
 		'stock_config_use_take_profit_trigger',
 		'stock_config_take_profit_percent',
 		'stock_config_use_take_profit_second_part',
+		'stock_config_use_take_profit_second_part_two',
 		'stock_config_percent_take_profit_sell_second',
+		'stock_config_percent_stoch_rsi_to_take_profit',
+		'stock_config_percent_rsi_decrease_to_take_profit',
+		'stock_config_percent_take_profit_sell_second_two',
 		'stock_config_use_bolinger_to_take_profit',
 		'stock_config_use_bolinger_a_part_to_take_profit',
 		'stock_config_percent_bolinger_a_part_to_take_profit',
@@ -385,11 +433,21 @@ export const transformStockOther = (data: Record<string, number | boolean>): ISt
 		'stock_config_percent_first_buy',
 
 		'stock_config_is_use_time_to_buy',
+		'stock_config_is_use_time_to_buy_first',
+		'stock_config_is_use_time_to_buy_second',
 		'stock_config_time_start_buy',
+		'stock_config_time_start_buy_second',
 		'stock_config_time_end_buy',
+		'stock_config_time_end_buy_second',
+		'stock_config_days_buy',
 		'stock_config_is_use_time_to_sell',
+		'stock_config_is_use_time_to_sell_first',
+		'stock_config_is_use_time_to_sell_second',
 		'stock_config_time_start_sell',
+		'stock_config_time_start_sell_second',
 		'stock_config_time_end_sell',
+		'stock_config_time_end_sell_second',
+		'stock_config_days_sell',
 	];
 
 	const obj: IStockOtherConfig = transformConfig(data, iStockOtherConfigKeys, 'stock_config_');
@@ -418,8 +476,16 @@ export const transformConfigData = (data: Record<string, any>): IConfig => {
 	if ('chart' in data) {
 		obj.chart = data['chart'] ? data['chart'].toString() : undefined;
 	}
+	if ('chart_second' in data) {
+		obj.chart_second = data['chart_second'] ? data['chart_second'].toString() : undefined;
+	}
 	if ('chart_sell' in data) {
 		obj.chart_sell = data['chart_sell'] ? data['chart_sell'].toString() : undefined;
+	}
+	if ('chart_sell_second' in data) {
+		obj.chart_sell_second = data['chart_sell_second']
+			? data['chart_sell_second'].toString()
+			: undefined;
 	}
 	if ('chart_type' in data) {
 		obj.chart_type = data['chart_type'] ? data['chart_type'].toString() : undefined;
@@ -443,6 +509,9 @@ export const transformConfigData = (data: Record<string, any>): IConfig => {
 
 	if ('is_use_vnindex_config' in data) {
 		obj.config_is_use_vnindex_config = Boolean(data['is_use_vnindex_config']);
+	}
+	if ('is_use_candle_second' in data) {
+		obj.config_is_use_candle_second = Boolean(data['is_use_candle_second']);
 	}
 
 	return obj as IConfig;

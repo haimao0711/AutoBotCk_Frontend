@@ -57,7 +57,7 @@ const FormStyled = styled.div`
 `;
 
 const BoxShadowStyled = styled.div`
-	padding: 24px;
+	padding: 12px;
 	border-radius: 12px;
 	box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px,
 		rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px,
@@ -84,7 +84,7 @@ type FormType = {
 export const handleChange = (e: any, formik: any) => {
 	const { value } = e.target;
 
-	if (/^\d*\.?\d*$/.test(value)) {
+	if (/^-?\d*\.?\d*$/.test(value)) {
 		formik?.handleChange(e);
 	}
 };
@@ -222,7 +222,7 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 					(formik?.values?.base.config_is_sell &&
 						(formik?.values?.base.config_is_use_vnindex_config ||
 							formik?.values?.base.config_is_use_stock_config))
-						? 'col-xl-9  col-12'
+						? 'col-xl-8  col-12'
 						: 'col-12'
 				}>
 				<Card>
@@ -348,21 +348,27 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 					</FormStyled>
 				</Card>
 			</div>
-			<div className='col-xl-3 col-12'>
-				{(config?.base.config_is_buy &&
-					config?.base.config_is_sell &&
-					config?.base.config_is_use_vnindex_config &&
-					config?.base.config_is_use_stock_config) ||
-				(formik?.values?.base.config_is_buy &&
-					(formik?.values?.base.config_is_use_vnindex_config ||
-						formik?.values?.base.config_is_use_stock_config)) ||
-				(formik?.values?.base.config_is_sell &&
-					(formik?.values?.base.config_is_use_vnindex_config ||
-						formik?.values?.base.config_is_use_stock_config)) ? (
-					<ModalPrioritize formik={formik} />
-				) : (
-					<></>
-				)}
+			<div className='col-xl-4 col-12'>
+				<div
+					style={{
+						position: 'sticky',
+						top: '20px',
+						maxHeight: '80vh',
+						overflow: 'auto',
+					}}>
+					{(config?.base.config_is_buy &&
+						config?.base.config_is_sell &&
+						config?.base.config_is_use_vnindex_config &&
+						config?.base.config_is_use_stock_config) ||
+					(formik?.values?.base.config_is_buy &&
+						(formik?.values?.base.config_is_use_vnindex_config ||
+							formik?.values?.base.config_is_use_stock_config)) ||
+					(formik?.values?.base.config_is_sell &&
+						(formik?.values?.base.config_is_use_vnindex_config ||
+							formik?.values?.base.config_is_use_stock_config)) ? (
+						<ModalPrioritize formik={formik} />
+					) : null}
+				</div>
 			</div>
 		</div>
 	);

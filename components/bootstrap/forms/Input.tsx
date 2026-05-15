@@ -61,6 +61,13 @@ export interface IInputProps extends HTMLAttributes<HTMLInputElement>, Partial<I
 	 */
 	formatChars?: object;
 	accept?: string;
+	// NumericFormat props
+	thousandSeparator?: boolean | string;
+	decimalSeparator?: string;
+	suffix?: string;
+	prefix?: string;
+	thousandsGroupStyle?: 'thousand' | 'lakh' | 'wan' | 'none';
+	onValueChange?: (values: any, sourceInfo: any) => void;
 }
 const Input = forwardRef<HTMLInputElement, IInputProps>(
 	(

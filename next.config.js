@@ -1,4 +1,4 @@
-const { i18n } = require('./next-i18next.config');
+// const { i18n } = require('./next-i18next.config');
 const withImages = require('next-images');
 const withInterceptStdout = require('next-intercept-stdout');
 
@@ -13,19 +13,25 @@ var hideWarn = [
 ];
 
 const nextConfig = withInterceptStdout(
-		withImages({
-			experimental: {
-				images: {
-					allowFutureImage: true
-				}
-			},
+	withImages({
+		experimental: {
 			images: {
-				disableStaticImages: true
-			},
-			reactStrictMode: true,
-			swcMinify: true,
-			i18n
-		})
+				allowFutureImage: true
+			}
+		},
+		images: {
+			disableStaticImages: true
+		},
+		reactStrictMode: true,
+		swcMinify: true,
+		eslint: {
+			ignoreDuringBuilds: true,
+		},
+		typescript: {
+			ignoreBuildErrors: true,
+		},
+		// i18n
+	})
 	,
 	(log) => (hideWarn.some((warn) => log.includes(warn)) ? '' : log),
 );

@@ -16,7 +16,7 @@ import {
 	// useGetAccountVps,
 	useGetCreateConfig,
 	useGetCreateConfigRun,
-	useGetTemplateConfig,
+	getTemplateConfigApi,
 	useGetUpdateApiStock,
 } from '@hooks/useGetCreateConfig';
 import { useToasts } from 'react-toast-notifications';
@@ -44,11 +44,29 @@ interface IFormProps {
 	setInfo(...args: unknown[]): unknown;
 	setIsOpenDelete(...args: unknown[]): unknown;
 	setIsOptions(...args: unknown[]): unknown;
+	userConfigs: any[];
 }
 
 const FormStyled = styled.div``;
 
+const StyledToggleButton = styled(Button)`
+	transition: all 0.2s ease-in-out;
+	position: relative;
+	overflow: hidden;
+
+	&:hover {
+		filter: brightness(1.25); /* Brighten significantly */
+		box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+		z-index: 1;
+	}
+
+	&:active {
+		filter: brightness(0.9);
+	}
+`;
+
 export const times = ['M1', 'M5', 'M15', 'H1', 'D1', 'W1'];
+export const times_second = ['OFF', 'M1', 'M5', 'M15', 'H1', 'D1', 'W1'];
 const CHECK_ALL_OBJECT: { [key: string]: boolean } = {
 	statusList: true,
 	provinceList: true,
@@ -71,16 +89,16 @@ const Form: FC<IFormProps> = ({
 	setIsOpenDelete,
 	isOptions,
 	setIsOptions,
+	userConfigs,
 }) => {
 	const { addToast } = useToasts();
 	const createConfig = useGetCreateConfig();
 	const createConfigRun = useGetCreateConfigRun();
-	const getTemplate = useGetTemplateConfig();
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isLoadingStatus, setIsLoadingStatus] = useState<boolean>(false);
 	const [accountsVps, setAccountVps] = useState<AccountType[] | any[]>([]);
-	const [arrayStocks, setArrayStocks] = useState([]);
+	const [arrayStocks, setArrayStocks] = useState<any[]>([]);
 	const [isEdit, setIsEdit] = useState<any>();
 	// const getAccountVps = useGetAccountVps();
 	const [currentId, setCurrentId] = useState<any>();
@@ -91,12 +109,12 @@ const Form: FC<IFormProps> = ({
 	const [searchType, setSearchType] = useState('symbol');
 	const [searchKey, setSearchKey] = useState<string>();
 	const [isSearch, setIsSearch] = useState(false);
-	const [arrStocksOrigin, setArrayStocksOrigin] = useState([]);
+	const [arrStocksOrigin, setArrayStocksOrigin] = useState<any[]>([]);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [perPage, setPerPage] = useState<number>(PER_COUNT['10']);
 	const [arrConfig, setArrayConfig] = useState<any>([]);
-	const [arrRender, setArrayRender] = useState([]);
-	const [arrSearch, setArraySearch] = useState([]);
+	const [arrRender, setArrayRender] = useState<any[]>([]);
+	const [arrSearch, setArraySearch] = useState<any[]>([]);
 	const [amountBuy, setAmountBuy] = useState('');
 	const [keyStockSearch, setKeyStockSearch] = useState('');
 	const [isTemplate, setIsTemplate] = useState(false);
@@ -129,16 +147,17 @@ const Form: FC<IFormProps> = ({
 				return item?.volume_to_buy == keyStockSearch;
 			} else if (searchType === 'level') {
 				return item?.level == keyStockSearch;
+			} else if (searchType === 'is_buy_hand') {
+				return !!item?.is_buy_hand;
 			}
 		});
 		setArraySearch(newArr);
-		keyStockSearch
-			? setArrayRender(newArr?.slice((currentPage - 1) * perPage, currentPage * perPage))
-			: setArrayRender(arrConfig?.slice((currentPage - 1) * perPage, currentPage * perPage));
+		setArrayRender(newArr?.slice(0, perPage));
 		setIsSearch(true);
 	};
 	const handleRefresh = () => {
 		setKeyStockSearch('');
+		setSearchType('symbol');
 		setIsSearch(false);
 		setArraySearch([]);
 		setArrayRender(arrConfig?.slice(0, perPage));
@@ -146,8 +165,8 @@ const Form: FC<IFormProps> = ({
 	const updateConfig = useGetUpdateApiStock();
 	// Xử lý sắp xếp
 	const sortArrHandle = (arr: any, sortKey: string) => {
+		if (!Array.isArray(arr)) return [];
 		const sorted = [...arr];
-
 		sorted.sort((a, b) => {
 			const valA = a[sortKey];
 			const valB = b[sortKey];
@@ -158,6 +177,14 @@ const Form: FC<IFormProps> = ({
 			if (['level', 'current_price'].includes(sortKey)) {
 				return Number(valA) - Number(valB);
 			}
+
+			if (sortKey === 'is_buy_hand') {
+				if (!!valA === !!valB) {
+					return String(a.stock_name).localeCompare(String(b.stock_name), 'vi', { sensitivity: 'base' });
+				}
+				return Number(!!valB) - Number(!!valA);
+			}
+
 			if (['current_profit'].includes(sortKey)) {
 				return (
 					Number(String(valB).replace(/%$/, '')) - Number(String(valA).replace(/%$/, ''))
@@ -191,15 +218,14 @@ const Form: FC<IFormProps> = ({
 			data,
 			async (res: any) => {
 				const dataRes = res.data;
-				// console.log('data res: ', dataRes);
 				setArrayConfig(() =>
 					arrConfig.map((item: any) =>
 						item.stock_id == dataRes.stock_id
 							? {
-									...item,
-									is_block_buy: dataRes.is_block_buy,
-									is_block_sell: dataRes.is_block_sell,
-							  }
+								...item,
+								is_block_buy: dataRes.is_block_buy,
+								is_block_sell: dataRes.is_block_sell,
+							}
 							: item,
 					),
 				);
@@ -232,11 +258,11 @@ const Form: FC<IFormProps> = ({
 	};
 	useEffect(() => {
 		async function fetchData() {
-			const template = await getTemplate;
+			const template = await getTemplateConfigApi();
 			setIsTemplate(JSON.stringify(template) !== '{}' ? true : false);
 		}
 		fetchData();
-	}, [getTemplate]);
+	}, []);
 	const { setValues, ...formik } = useFormik({
 		initialValues: {
 			...stocks,
@@ -244,7 +270,6 @@ const Form: FC<IFormProps> = ({
 			checked: [],
 		},
 		onSubmit: async (values) => {
-			// if (values?.checked?.length > 0) {
 			if (isTemplate) {
 				const mappedArray = values.checked.map((value: any) => ({
 					account_id: value,
@@ -255,6 +280,7 @@ const Form: FC<IFormProps> = ({
 					stock_id: currentId,
 					vpses: mappedArray,
 				};
+				console.log('check data create config: ', data);
 				setIsLoading(true);
 				createConfigRun(
 					data,
@@ -320,36 +346,64 @@ const Form: FC<IFormProps> = ({
 	// Selected Event
 	useEffect(() => {
 		if (stocks) setValues({ ...stocks });
-		return () => {};
+		return () => { };
 		//	eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setValues, stocks]);
 
 	// Get list stock config
 	useEffect(() => {
-		async function fetchData() {
-			const { stocks, userConfigs } = await authService.getConfig();
-			const currentSortKey = sortKeyRef.current;
-			const sortedUserConfigs = sortArrHandle(userConfigs, currentSortKey);
-			if (isExistStock && sortedUserConfigs) {
-				const filteredConfigs = sortedUserConfigs.filter(
-					(item: any) => Number(item.volume_buy) > 0,
-				);
-				if (!isSearch) {
-					setArrayConfig(filteredConfigs);
-				}
-			} else {
-				if (!isSearch) {
-					setArrayConfig(sortedUserConfigs);
-				}
-			}
+		async function fetchStocks() {
+			const stocks = await authService.getStocks();
 			setArrayStocks(stocks ? stocks?.slice(0, 10) : []);
 			setArrayStocksOrigin(stocks);
 		}
+		fetchStocks();
+	}, []);
+
+	useEffect(() => {
+		async function fetchData() {
+			// const { userConfigs } = await authService.getConfig();
+			const currentSortKey = sortKeyRef.current;
+			const sortedUserConfigs = sortArrHandle(userConfigs, currentSortKey);
+			let nextConfigs = sortedUserConfigs;
+
+			if (isExistStock && sortedUserConfigs) {
+				nextConfigs = sortedUserConfigs.filter(
+					(item: any) => Number(item.volume_buy) > 0,
+				);
+			}
+
+			setArrayConfig(nextConfigs);
+
+			if (isSearch) {
+				const newArr = nextConfigs?.filter(function (item: any) {
+					if (searchType === 'symbol') {
+						return (
+							item?.account_vps
+								?.toString()
+								.toLocaleLowerCase()
+								.includes(keyStockSearch && keyStockSearch?.toLocaleLowerCase()) ||
+							item?.stock_name
+								?.toString()
+								.toLocaleLowerCase()
+								.includes(keyStockSearch && keyStockSearch.toLocaleLowerCase())
+						);
+					} else if (searchType === 'volume') {
+						return item?.volume_to_buy == keyStockSearch;
+					} else if (searchType === 'level') {
+						return item?.level == keyStockSearch;
+					} else if (searchType === 'is_buy_hand') {
+						return !!item?.is_buy_hand;
+					}
+				});
+				setArraySearch(newArr);
+			}
+		}
 		fetchData();
-		const intervalId = setInterval(fetchData, 20000);
-		return () => clearInterval(intervalId);
+		// const intervalId = setInterval(fetchData, 3000);
+		// return () => clearInterval(intervalId);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isBlockBuy, isBlockSell]);
+	}, [isBlockBuy, isBlockSell, userConfigs, isSearch, keyStockSearch, searchType]);
 
 	useEffect(() => {
 		const newArr = arrStocksOrigin?.filter(function (item: any) {
@@ -439,7 +493,7 @@ const Form: FC<IFormProps> = ({
 					<form className='row g-3 align-items-center mb-4'>
 						<div className='d-flex align-items-center'>
 							<label htmlFor='sortOption' className='me-2 fw-bold mb-0'>
-								Sắp xếp theo:
+								Sắp xếp theo
 							</label>
 							<select
 								id='sortKey'
@@ -448,6 +502,7 @@ const Form: FC<IFormProps> = ({
 								className='form-select form-select-sm'
 								style={{ minWidth: '180px', width: 'auto' }}>
 								<option value='stock_name'>ABC</option>
+								<option value='is_buy_hand'>Danh sách mua tay</option>
 								<option value='level'>Level</option>
 								<option value='volume_to_buy'>Khối lượng mua dự kiến</option>
 								<option value='volume_buy'>Khối lượng đã mua</option>
@@ -459,46 +514,61 @@ const Form: FC<IFormProps> = ({
 						<div className='col-8 col-md-3 col-lg-2'>
 							<FormItem label='Tìm kiếm theo'>
 								<select
-									className='form-control'
-									style={{ minHeight: '48px' }}
+									className='form-select cursor-pointer'
+									style={{ height: '48px' }}
 									value={searchType}
-									onChange={(e) => setSearchType(e.target.value)}>
+									onChange={(e) => {
+										setSearchType(e.target.value);
+										if (e.target.value === 'is_buy_hand') {
+											setIsSearch(true);
+											setCurrentPage(1);
+										}
+									}}>
 									<option value='symbol'>Mã cổ phiếu</option>
 									<option value='volume'>Khối lượng mua dự kiến</option>
 									<option value='level'>Level</option>
+									<option value='is_buy_hand'>Các mã đang mua tay</option>
 								</select>
 							</FormItem>
 						</div>
 
-						<div className='col-8 col-md-3 col-lg-3'>
-							<FormItem
-								label={
-									searchType === 'symbol'
-										? 'Mã cổ phiếu'
-										: searchType === 'volume'
-										? 'Khối lượng'
-										: 'Level'
-								}>
-								<Input
-									id='search'
-									type={searchType === 'symbol' ? 'text' : 'number'}
-									placeholder={
+						{searchType !== 'is_buy_hand' && (
+							<div className='col-8 col-md-3 col-lg-3'>
+								<FormItem
+									label={
 										searchType === 'symbol'
-											? 'Chọn mã cổ phiếu'
+											? 'Mã cổ phiếu'
 											: searchType === 'volume'
-											? 'Chọn khối lượng'
-											: 'Chọn level'
-									}
-									autoComplete='search'
-									value={keyStockSearch}
-									onChange={(e: any) => setKeyStockSearch(e.target.value)}
-									style={{ minHeight: '48px' }}
-									onFocus={() => {
-										formik.setErrors({});
-									}}
-								/>
-							</FormItem>
-						</div>
+												? 'Khối lượng'
+												: 'Level'
+									}>
+									<Input
+										id='search'
+										type={searchType === 'symbol' ? 'text' : 'number'}
+										placeholder={
+											searchType === 'symbol'
+												? 'Chọn mã cổ phiếu'
+												: searchType === 'volume'
+													? 'Chọn khối lượng'
+													: 'Chọn level'
+										}
+										autoComplete='search'
+										value={keyStockSearch}
+										onChange={(e: any) => setKeyStockSearch(e.target.value)}
+										style={{ minHeight: '48px' }}
+										onFocus={() => {
+											formik.setErrors({});
+										}}
+										onKeyDown={(e: any) => {
+											if (e.key === 'Enter') {
+												e.preventDefault();
+												handleSearch();
+											}
+										}}
+									/>
+								</FormItem>
+							</div>
+						)}
 
 						<div className='col-6 col-md-3 col-lg-2 d-flex align-self-end justify-content-md-end '>
 							<FormGroup className='w-100'>
@@ -526,6 +596,59 @@ const Form: FC<IFormProps> = ({
 								</Button>
 							</FormGroup>
 						</div>
+
+						{isExistStock && (
+							<div className='col-12 d-flex align-items-center justify-content-end pe-4' style={{ gap: '10px', marginBottom: '10px' }}>
+								<span className="fw-bold fs-6">BÁN NHANH TẤT CẢ:</span>
+								{(() => {
+									const ownedStocks = arrConfig.filter(
+										(item: any) => Number(item.volume_trade) > 0,
+									);
+									const isAllON = ownedStocks.length > 0 && ownedStocks.every((item: any) => item.is_sell_hand);
+									return (
+										<StyledToggleButton
+											style={{
+												backgroundColor: isAllON ? '#5FD068' : '#a24022',
+												color: '#f5f5f5',
+												width: '85px',
+												marginRight: '12px',
+												padding: '10px 14px 10px 8px'
+											}}
+											onClick={() => {
+												if (ownedStocks.length === 0) {
+													addToast(
+														<Toasts
+															title='Thông báo'
+															iconColor='warning'
+															icon='Warning'
+															isDismiss>
+															Không có cổ phiếu nào để bán
+														</Toasts>,
+														{ autoDismiss: true },
+													);
+													return;
+												}
+												setIsOpenDelete(true);
+												setInfo({
+													isSellAll: true,
+													ownedStocks,
+													stock_name: 'TẤT CẢ CỔ PHIẾU',
+													account_vps: Array.from(new Set(ownedStocks.map((s: any) => s.account_vps))).join(', '),
+												});
+												setIsOpenEdit(false);
+												setIsOptions({
+													isOpen: true,
+													isBuy: false,
+													isSell: true,
+													isTrade: isAllON, // if true (all are ON), it means we want to turn OFF (stopTradeFast).
+												});
+											}}>
+											{isAllON ? '⚡ ON' : '🛑 OFF'}
+										</StyledToggleButton>
+									);
+								})()}
+							</div>
+						)}
 					</form>
 					<div className='row g-4'>
 						<div className='col-lg-12'>
@@ -542,26 +665,26 @@ const Form: FC<IFormProps> = ({
 											<th>STT</th>
 											<th>MÃ CHỨNG KHOÁN </th>
 											<th>TÀI KHOẢN VPS</th>
-											<th>KHỐI LƯỢNG MUA DỰ KIẾN </th>
+											<th>KL MUA DỰ KIẾN </th>
 											<th>LEVEL</th>
 											<th>
-												KHỐI LƯỢNG ĐÃ MUA
+												KL ĐÃ MUA
 												<span
 													style={{
 														color: '#02FF00',
 														whiteSpace: 'nowrap',
 													}}>
-													{` (${percentBuy} %)`}
+													{isExistStock ? ` (${percentBuy} %)` : ''}
 												</span>
 											</th>
 											<th>
-												KHỐI LƯỢNG ĐÃ VỀ
+												KL ĐÃ VỀ
 												<span
 													style={{
 														color: '#02FF00',
 														whiteSpace: 'nowrap',
 													}}>
-													{` (${percentTrade} %)`}
+													{isExistStock ? ` (${percentTrade} %)` : ''}
 												</span>
 											</th>
 											<th>GIÁ HIỆN TẠI </th>
@@ -570,7 +693,9 @@ const Form: FC<IFormProps> = ({
 											<th>MUA TỰ ĐỘNG</th>
 											<th>BÁN TỰ ĐỘNG</th>
 											<th>MUA TAY</th>
-											<th>BÁN TAY</th>
+											<th>
+												<div className='mb-1'>BÁN TAY</div>
+											</th>
 											<th>TUỲ CHỌN</th>
 										</tr>
 									</thead>
@@ -578,13 +703,16 @@ const Form: FC<IFormProps> = ({
 										{arrRender?.map((item: any, index: any) => (
 											<tr key={item?.id}>
 												<th>{index + 1 + (currentPage - 1) * perPage}</th>
-												<th
-													style={
-														removePercentage(item?.current_profit) > 0
-															? { color: '#02FF00' }
-															: { color: '#FF3737' }
-													}>
-													{item?.stock_name}{' '}
+												<th style={{ verticalAlign: 'middle' }}>
+													<span
+														style={{
+															color:
+																removePercentage(item?.current_profit) > 0
+																	? '#02FF00'
+																	: '#f35421',
+														}}>
+														{item?.stock_name}{' '}
+													</span>
 												</th>
 												<th>{item?.account_vps}</th>
 												<th
@@ -612,20 +740,24 @@ const Form: FC<IFormProps> = ({
 												<th>
 													{Number(item?.volume_trade).toLocaleString()}
 												</th>
-												<th style={{ color: '#FFD900' }}>
+												<th style={{ color: '#5FD068' }}>
 													{Number(item?.current_price).toFixed(2)}
 												</th>
 												<th>{Number(item?.aver_price_buy).toFixed(2)}</th>
-												<th
-													style={
-														removePercentage(item?.current_profit) > 0
-															? { color: '#02FF00' }
-															: { color: '#F32F35' }
-													}>
-													{item?.current_profit}
+												<th style={{ verticalAlign: 'middle' }}>
+													<span
+														style={{
+															color:
+																removePercentage(item?.current_profit) > 0
+																	? '#02FF00'
+																	: '#f35421',
+														}}>
+														{item?.current_profit}
+													</span>
 												</th>
 												<th>
-													<Button
+													<div>{`${item?.following_chart_buy} - ${item?.trading_chart_buy}`}</div>
+													<StyledToggleButton
 														style={{
 															backgroundColor: item?.is_block_buy
 																? '#a24022'
@@ -642,10 +774,11 @@ const Form: FC<IFormProps> = ({
 															);
 														}}>
 														{item?.is_block_buy ? 'OFF' : 'ON'}
-													</Button>
+													</StyledToggleButton>
 												</th>
 												<th>
-													<Button
+													<div>{`${item?.following_chart_sell} - ${item?.trading_chart_sell}`}</div>
+													<StyledToggleButton
 														style={{
 															backgroundColor: item?.is_block_sell
 																? '#a24022'
@@ -661,14 +794,12 @@ const Form: FC<IFormProps> = ({
 																!item?.is_block_sell,
 															);
 														}}>
-														{/* {isLoadingStatus && (
-															<Spinner isSmall inButton />
-														)} */}
 														{item?.is_block_sell ? 'OFF' : 'ON'}
-													</Button>
+													</StyledToggleButton>
 												</th>
 												<th>
-													<Button
+													<div>{item?.trading_chart_buy}</div>
+													<StyledToggleButton
 														icon={isLoading ? undefined : 'Run'}
 														style={{
 															backgroundColor: item?.is_buy_hand
@@ -691,10 +822,11 @@ const Form: FC<IFormProps> = ({
 														}}>
 														{isLoading && <Spinner isSmall inButton />}
 														{item?.is_buy_hand ? 'ON' : 'OFF'}
-													</Button>
+													</StyledToggleButton>
 												</th>
 												<th>
-													<Button
+													<div>{item?.trading_chart_sell}</div>
+													<StyledToggleButton
 														icon={isLoading ? undefined : 'Run'}
 														style={{
 															backgroundColor: item?.is_sell_hand
@@ -717,7 +849,7 @@ const Form: FC<IFormProps> = ({
 														}}>
 														{isLoading && <Spinner isSmall inButton />}
 														{item?.is_sell_hand ? 'ON' : 'OFF'}
-													</Button>
+													</StyledToggleButton>
 												</th>
 
 												<th>

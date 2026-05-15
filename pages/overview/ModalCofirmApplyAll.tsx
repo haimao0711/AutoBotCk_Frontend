@@ -16,6 +16,7 @@ type StockItem = {
 	stock_id: string;
 	stock_name: string;
 	level: string;
+	current_price: string;
 };
 
 const ConfirmApplyAllModal: React.FC<Props> = ({
@@ -58,9 +59,9 @@ const ConfirmApplyAllModal: React.FC<Props> = ({
 					setSelectedSymbols={setSelectedSymbols}
 				/>
 				<div className='mt-3'>
-					Bạn có chắc chắn muốn áp dụng cấu hình hiện tại cho biểu đồ
+					Áp dụng cấu hình hiện tại cho cấu hình
 					<strong>{mode === 'following' ? ' theo dõi ' : ' hành động '}</strong>
-					của tất cả các mã cổ phiếu đã chọn không?
+					của tất cả các mã đã chọn ?
 				</div>
 
 				<div className='d-flex justify-content-center gap-3 mt-4'>

@@ -1,9 +1,7 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable @next/next/no-img-element */
 import type { NextPage } from 'next';
-import next, { GetStaticProps } from 'next';
 import Head from 'next/head';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import PageWrapper from '../../layout/PageWrapper/PageWrapper';
 import Icon from '../../components/icon/Icon';
@@ -50,9 +48,12 @@ const Index: NextPage = () => {
 		totalEquity,
 		cashAvailable,
 		totalMarketValue,
+		gainLossValue,
+		gainLossOneDayValue,
 		accountName,
 		accountNum,
 		limitNumberStocks,
+		limitTotalMarketValue,
 	} = useContext(AuthContext);
 	const profile = {
 		userName,
@@ -60,9 +61,12 @@ const Index: NextPage = () => {
 		totalEquity,
 		cashAvailable,
 		totalMarketValue,
+		gainLossValue,
+		gainLossOneDayValue,
 		accountName,
 		accountNum,
 		limitNumberStocks,
+		limitTotalMarketValue,
 		src: 'https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg',
 		color: 'danger',
 	};
@@ -153,12 +157,57 @@ const Index: NextPage = () => {
 								</span>
 							</div>
 						)}
+						{profile.gainLossValue !== undefined && profile.gainLossValue !== '' && (
+							<div className='text-secondary'>
+								<Icon icon='TrendingUp' className='btn-icon' />
+								<span className='font-medium'>Lãi/lỗ danh mục:</span>
+								<span
+									className='ml-2'
+									style={{
+										color: Number(profile?.gainLossValue) >= 0 ? '#5FD068' : '#a24022',
+									}}>
+									<strong>
+										{Number(profile?.gainLossValue).toLocaleString('vi-VN') +
+											' '}
+									</strong>
+									VND
+								</span>
+							</div>
+						)}
+						{profile.gainLossOneDayValue !== undefined && profile.gainLossOneDayValue !== '' && (
+							<div className='text-secondary'>
+								<Icon icon='TrendingUp' className='btn-icon' />
+								<span className='font-medium'>Lãi/lỗ trong ngày:</span>
+								<span
+									className='ml-2'
+									style={{
+										color: Number(profile?.gainLossOneDayValue) >= 0 ? '#5FD068' : '#a24022',
+									}}>
+									<strong>
+										{Number(profile?.gainLossOneDayValue).toLocaleString('vi-VN') +
+											' '}
+									</strong>
+									VND
+								</span>
+							</div>
+						)}
 						{profile?.limitNumberStocks && (
 							<div className='text-secondary'>
 								<Icon icon='ShoppingCart' className='btn-icon' /> Giới hạn số cổ
 								phiếu tối đa:
 								<span className='font-bold text-danger ps-3'>
 									<strong> {profile?.limitNumberStocks}</strong>
+								</span>
+							</div>
+						)}
+						{profile?.limitTotalMarketValue && (
+							<div className='text-secondary'>
+								<Icon icon='MonetizationOn' className='btn-icon' /> Giới hạn tổng giá trị mua tối đa:
+								<span className='font-bold text-danger ps-3'>
+									<strong>
+										{Number(profile?.limitTotalMarketValue).toLocaleString('vi-VN') + ' '}
+									</strong>
+									VND
 								</span>
 							</div>
 						)}
@@ -174,12 +223,4 @@ const Index: NextPage = () => {
 		</PageWrapper>
 	);
 };
-
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-	props: {
-		// @ts-ignore
-		...(await serverSideTranslations(locale, ['common', 'menu'])),
-	},
-});
-
 export default Index;

@@ -1,12 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import type { NextPage } from 'next';
-import { GetStaticProps } from 'next';
 import Head from 'next/head';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import PageWrapper from '../../layout/PageWrapper/PageWrapper';
 import Page from '../../layout/Page/Page';
 import useDarkMode from '../../hooks/useDarkMode';
-import { useGetTemplateConfig } from '@hooks/useGetCreateConfig';
+import { getTemplateConfigApi } from '@hooks/useGetCreateConfig';
 import DeleteConfig from './DeleteConfigModal';
 import FormConfig from '@components/FormConfig';
 import ModalConfirm from '../overview/ModalCofirmOTP';
@@ -18,10 +16,10 @@ const TemplateConfiguration: NextPage = () => {
 	const [toggleModal, setToggleModal] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 	const [refetch, setRefetch] = useState(false);
-	const getTemplate = useGetTemplateConfig();
+	// const getTemplate = useGetTemplateConfig();
 
 	const fetchData = useCallback(async () => {
-		const template = await getTemplate;
+		const template = await getTemplateConfigApi();
 
 		const data = transformBaseConfig(template);
 		setConfig(Object.keys(template).length ? data : undefined);
@@ -60,11 +58,5 @@ const TemplateConfiguration: NextPage = () => {
 		</PageWrapper>
 	);
 };
-
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-	props: {
-		...(await serverSideTranslations(locale || '', ['common', 'menu'])),
-	},
-});
 
 export default TemplateConfiguration;

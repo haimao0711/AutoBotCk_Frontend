@@ -10,8 +10,6 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { atomOneLight } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
-import SyntaxHighlighter from 'react-syntax-highlighter';
 import TagWrapper from '../TagWrapper';
 import Icon from '../icon/Icon';
 import Button from './Button';
@@ -24,11 +22,11 @@ interface ICardLabelProps extends HTMLAttributes<HTMLElement> {
 	tag?: string | null;
 	className?: string;
 	children:
-		| ReactElement<ICardTitleProps>
-		| ReactElement<ICardTitleProps>[]
-		| ReactElement<ICardSubTitleProps>
-		| ReactElement<ICardSubTitleProps>[]
-		| ReactNode;
+	| ReactElement<ICardTitleProps>
+	| ReactElement<ICardTitleProps>[]
+	| ReactElement<ICardSubTitleProps>
+	| ReactElement<ICardSubTitleProps>[]
+	| ReactNode;
 	icon?: TIcons;
 	iconColor?: null | TColor;
 	pre?: ReactNode;
@@ -176,11 +174,11 @@ interface ICardHeaderProps extends HTMLAttributes<HTMLElement> {
 	tag?: string | null;
 	className?: string;
 	children:
-		| ReactElement<ICardLabelProps>
-		| ReactElement<ICardLabelProps>[]
-		| ReactElement<ICardActionsProps>
-		| ReactElement<ICardActionsProps>[]
-		| ReactNode;
+	| ReactElement<ICardLabelProps>
+	| ReactElement<ICardLabelProps>[]
+	| ReactElement<ICardActionsProps>
+	| ReactElement<ICardActionsProps>[]
+	| ReactNode;
 	size?: TCardSize;
 	borderSize?: TCardBorderSize;
 	borderColor?: null | TColor;
@@ -293,21 +291,17 @@ export const CardCodeView: FC<ICardCodeViewProps> = memo(
 			);
 		}
 		return (
-			<SyntaxHighlighter
-				language={language}
-				style={atomOneLight}
-				customStyle={{
+			<pre
+				className={classNames('shadow-sm', className)}
+				style={{
 					borderRadius: 13,
 					backgroundColor: 'var(--bs-light)',
 					fontSize: '1rem',
 					padding: '1.5rem 2rem',
 					...customStyle,
-				}}
-				wrapLongLines
-				PreTag='code'
-				className={classNames('shadow-sm', className)}>
-				{children}
-			</SyntaxHighlighter>
+				}}>
+				<code>{children}</code>
+			</pre>
 		);
 	},
 );
@@ -389,10 +383,10 @@ interface ICardFooterProps extends HTMLAttributes<HTMLElement> {
 	tag?: string | null;
 	className?: string;
 	children:
-		| ReactElement<ICardFooterLeftProps>
-		| ReactElement<ICardFooterLeftProps>[]
-		| ReactElement<ICardFooterRightProps>
-		| ReactElement<ICardFooterRightProps>[];
+	| ReactElement<ICardFooterLeftProps>
+	| ReactElement<ICardFooterLeftProps>[]
+	| ReactElement<ICardFooterRightProps>
+	| ReactElement<ICardFooterRightProps>[];
 	size?: TCardSize;
 	borderSize?: TCardBorderSize;
 	borderColor?: null | TColor;

@@ -76,19 +76,22 @@ const updateOtp = async (body: any) => {
 			err
 				? err
 				: {
-						...err,
-						status_code: 500,
-				  },
+					...err,
+					status_code: 500,
+				},
 		);
 	return listOTP;
 };
-const getConfig = async () => {
+const getStocks = async () => {
 	const stocks = await fetchWrapper.get(`${apiBaseUrl}/api/stock`).then((data) => {
 		if (data) {
 			return data?.data;
 		}
 	});
+	return stocks;
+};
 
+const getConfig = async () => {
 	const configs = await fetchWrapper.get(`${apiBaseUrl}/api/config/stock`).then((data) => {
 		if (data) {
 			return data;
@@ -96,7 +99,6 @@ const getConfig = async () => {
 	});
 	const userConfigs = configs;
 	return {
-		stocks,
 		userConfigs,
 	};
 };
@@ -140,7 +142,7 @@ const getStockBalance = async () => {
 	return stockBalance;
 };
 const getIsTrading = async () => {
-	const respon = await fetchWrapper.get(`${apiBaseUrl}/api/trading/is_trading`).then((data) => {
+	const respon = await fetchWrapper.get(`${apiBaseUrl}/api/trading/is_trading/`).then((data) => {
 		if (data) {
 			return data;
 		}
@@ -163,6 +165,17 @@ const openBlockTrading = async (body: any) => {
 		.then((res) => {
 			if (res && res?.data) {
 				// console.log('check data openBlockTrading: ', res?.data);
+				return res?.data;
+			}
+		});
+	return respon;
+};
+const resetBotTrading = async (body: any) => {
+	const respon = await fetchWrapper
+		.post(`${apiBaseUrl}/api/account/reset_bot`, body)
+		.then((res) => {
+			if (res && res?.data) {
+				// console.log('check data resetBotTrading: ', res?.data);
 				return res?.data;
 			}
 		});
@@ -205,6 +218,7 @@ const getToken = () => {
 export default {
 	token: getToken(),
 	authData: getAuthData(),
+	getStocks,
 	getConfig,
 	getUserConfigs,
 	getStockBalance,
@@ -219,4 +233,5 @@ export default {
 	getIsTrading,
 	getIsBlockBuy,
 	openBlockTrading,
+	resetBotTrading,
 };

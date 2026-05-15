@@ -21,11 +21,12 @@ import ConfirmApplyAllModal from '../../overview/ModalCofirmApplyAll';
 import VNIndex from '@components/FormConfig/vnindex';
 import Stock from '@components/FormConfig/stock';
 import CustomConfig from '@components/FormConfig/custom';
+import CustomFollowingConfig from '@components/FormConfig/customFollowing';
 import ModalPrioritize from '@components/FormConfig/prioritize';
 import { IBaseConfig, IErrorBaseConfig, IPriorityBase } from '@components/FormConfig/interface';
 import { initialValuesBaseConfig } from '../../../utils/initialValue';
 import { transformConfigData } from '../../../utils//transform';
-import { times } from '../../overview/form';
+import { times, times_second } from '../../overview/form';
 
 const FormStyled = styled.div`
 	.rc-time-picker-panel,
@@ -56,7 +57,7 @@ const FormStyled = styled.div`
 `;
 
 const BoxShadowStyled = styled.div`
-	padding: 24px;
+	padding: 12px;
 	border-radius: 12px;
 	box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px,
 		rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px,
@@ -72,10 +73,12 @@ const ButtonBack = styled.div`
 		}
 	}
 `;
+
 type StockItem = {
 	stock_id: string;
 	stock_name: string;
 	level: string;
+	current_price: string;
 };
 type FormType = {
 	title: string;
@@ -105,8 +108,16 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 
 	const handleSubmitFormik = useCallback(
 		(values: IBaseConfig) => {
-			const data = transformConfigData(values);
-			console.log('data update:', data);
+			// Đảm bảo giá trị mặc định 'OFF' cho chart_second và chart_sell_second
+			const valuesWithDefaults = {
+				...values,
+				base: {
+					...values.base,
+					chart_second: values.base.chart_second || 'OFF',
+					chart_sell_second: values.base.chart_sell_second || 'OFF',
+				},
+			};
+			const data = transformConfigData(valuesWithDefaults);
 			if (!config) return;
 			setIsLoading(true);
 			const onSuccess = (data: any) => {
@@ -181,7 +192,6 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 		[formik],
 	);
 
-	console.log('selectedSymbols:', selectedSymbols);
 	return (
 		<div className='d-flex flex-wrap'>
 			{(submitMode === 'following' || submitMode === 'trading') && (
@@ -209,27 +219,49 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 					(formik?.values?.base.config_is_sell &&
 						(formik?.values?.base.config_is_use_vnindex_config ||
 							formik?.values?.base.config_is_use_stock_config))
-						? 'col-xl-9  col-12'
+						? 'col-xl-8  col-12'
 						: 'col-12'
 				}>
 				<Card>
 					<CardHeader>
-						<CardLabel icon='Edit' iconColor='warning'>
-							<ButtonBack>
-								<CardTitle>
-									{title}{' '}
+						<ButtonBack>
+							<CardTitle>
+								<div className='d-flex flex-column flex-sm-row justify-content-center align-items-center w-100 gap-3'>
+									<CardLabel icon='Edit' iconColor='warning'>
+										<div className='mb-1'>
+											{`CHỈNH SỬA CẤU HÌNH ${
+												slug === 'following' ? 'THEO DÕI' : 'HÀNH ĐỘNG'
+											}`}
+										</div>
+									</CardLabel>
 									<Button
-										className='ml-3 button-absolute'
 										isLight
 										color={'warning'}
-										style={{ top: '18px', width: '172px' }}
+										style={{
+											width: '172px',
+										}}
 										isDisable={isLoading}
 										onClick={() => router.push('/overview')}>
 										Quay lại trang chủ
 									</Button>
-								</CardTitle>
-							</ButtonBack>
-						</CardLabel>{' '}
+									<Button
+										isLight
+										color={'warning'}
+										style={{ width: '172px' }}
+										isDisable={isLoading}
+										onClick={() => {
+											router.push(
+												`/edit-config/${
+													slug === 'following' ? 'trading' : 'following'
+												}?id=` + id,
+											);
+										}}>
+										Cấu hình
+										{slug === 'following' ? ' hành động' : ' theo dõi'}
+									</Button>
+								</div>
+							</CardTitle>
+						</ButtonBack>
 					</CardHeader>
 					<FormStyled>
 						<CardBody className='abc'>
@@ -281,6 +313,67 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 											})}
 										</Select>
 									</FormGroup>
+									<FormGroup
+										label={`SỬ DỤNG CHART ${
+											slug === 'following' ? 'THEO DÕI' : 'HÀNH ĐỘNG'
+										} THỨ HAI`}
+										className='col-lg-3 col-6 mb-4'>
+										<Checks
+											id='base.config_is_use_candle_second'
+											type='switch'
+											label='Active'
+											onChange={formik.handleChange}
+											checked={
+												formik?.values.base.config_is_use_candle_second
+											}
+											ariaLabel='status'
+										/>
+									</FormGroup>
+									{formik?.values.base.config_is_use_candle_second && (
+										<>
+											<FormGroup
+												className='col-lg-3 col-12 mb-4'
+												label='CHỌN CHART MUA THỨ HAI'>
+												<Select
+													id='base.chart_second'
+													ariaLabel='Board select'
+													placeholder='Chọn chart'
+													onChange={formik.handleChange}
+													value={
+														formik.values.base.chart_second || 'OFF'
+													}>
+													{times_second?.map((item: any) => {
+														return (
+															<Option key={item} value={item}>
+																{item}
+															</Option>
+														);
+													})}
+												</Select>
+											</FormGroup>
+											<FormGroup
+												className='col-lg-3 col-12 mb-4'
+												label='CHỌN CHART BÁN THỨ HAI'>
+												<Select
+													id='base.chart_sell_second'
+													ariaLabel='Board select'
+													placeholder='Chọn chart'
+													onChange={formik.handleChange}
+													value={
+														formik.values.base.chart_sell_second ||
+														'OFF'
+													}>
+													{times_second?.map((item: any) => {
+														return (
+															<Option key={item} value={item}>
+																{item}
+															</Option>
+														);
+													})}
+												</Select>
+											</FormGroup>
+										</>
+									)}
 								</div>
 
 								<BoxShadowStyled>
@@ -368,14 +461,18 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 										<CustomConfig formik={formik} />
 									</BoxShadowStyled>
 								)}
+								{slug === 'following' && (
+									<BoxShadowStyled>
+										<CustomFollowingConfig formik={formik} />
+									</BoxShadowStyled>
+								)}
 							</div>
 
-							<div className='d-flex justify-content-end mt-3'>
+							<div className='d-flex justify-content-end mt-3 gap-3'>
 								<Button
-									className='ml-3'
 									icon={isLoading ? undefined : 'Save'}
 									isLight
-									color={'success'}
+									color={'warning'}
 									isDisable={isLoading}
 									onClick={formik?.handleSubmit}>
 									{isLoading && <Spinner isSmall inButton />}
@@ -384,10 +481,9 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 										: 'Thêm'}
 								</Button>
 								<Button
-									className='ml-3'
 									icon={isLoading ? undefined : 'Save'}
 									isLight
-									color={'success'}
+									color={'warning'}
 									isDisable={isLoading}
 									onClick={() => {
 										const chartType = config?.base?.chart_type;
@@ -405,25 +501,68 @@ const FormConfig = ({ title, config, setRefetch }: FormType) => {
 										: 'Cập nhật cho các mã khác'}
 								</Button>
 							</div>
+							<ButtonBack>
+								<CardTitle>
+									<div className='d-flex flex-sm-row  align-items-center w-100 gap-3 mt-3'>
+										<Button
+											isLight
+											color={'warning'}
+											style={{
+												width: '172px',
+											}}
+											isDisable={isLoading}
+											onClick={() => router.push('/overview')}>
+											Quay lại trang chủ
+										</Button>
+										<Button
+											isLight
+											color={'warning'}
+											style={{ width: '172px' }}
+											isDisable={isLoading}
+											onClick={() => {
+												router.push(
+													`/edit-config/${
+														slug === 'following'
+															? 'trading'
+															: slug === 'trading'
+															? 'following'
+															: 'overview'
+													}?id=` + id,
+												);
+											}}>
+											Cấu hình
+											{slug === 'following' ? ' hành động' : ' theo dõi'}
+										</Button>
+									</div>
+								</CardTitle>
+							</ButtonBack>
 						</CardBody>
 					</FormStyled>
 				</Card>
 			</div>
-			<div className='col-xl-3 col-12'>
-				{(config?.base.config_is_buy &&
-					config?.base.config_is_sell &&
-					config?.base.config_is_use_vnindex_config &&
-					config?.base.config_is_use_stock_config) ||
-				(formik?.values?.base.config_is_buy &&
-					(formik?.values?.base.config_is_use_vnindex_config ||
-						formik?.values?.base.config_is_use_stock_config)) ||
-				(formik?.values?.base.config_is_sell &&
-					(formik?.values?.base.config_is_use_vnindex_config ||
-						formik?.values?.base.config_is_use_stock_config)) ? (
-					<ModalPrioritize formik={formik} />
-				) : (
-					<></>
-				)}
+			<div className='col-xl-4 col-12'>
+				<div
+					style={{
+						position: 'sticky',
+						top: '20px',
+						maxHeight: '80vh',
+						overflow: 'auto',
+					}}>
+					{(config?.base.config_is_buy &&
+						config?.base.config_is_sell &&
+						config?.base.config_is_use_vnindex_config &&
+						config?.base.config_is_use_stock_config) ||
+					(formik?.values?.base.config_is_buy &&
+						(formik?.values?.base.config_is_use_vnindex_config ||
+							formik?.values?.base.config_is_use_stock_config)) ||
+					(formik?.values?.base.config_is_sell &&
+						(formik?.values?.base.config_is_use_vnindex_config ||
+							formik?.values?.base.config_is_use_stock_config)) ? (
+						<ModalPrioritize formik={formik} />
+					) : (
+						<></>
+					)}
+				</div>
 			</div>
 		</div>
 	);

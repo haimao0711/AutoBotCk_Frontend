@@ -25,15 +25,18 @@ export interface IConfig {
 	stock_name?: string;
 	chart?: string;
 	chart_sell?: string;
+	chart_second?: string;
+	chart_sell_second?: string;
 	chart_type?: string;
 	config_stock_id?: string;
 	config_is_buy: boolean;
 	config_is_sell: boolean;
 	config_is_use_vnindex_config: boolean;
 	config_is_use_stock_config: boolean;
+	config_is_use_candle_second: boolean;
 }
 
-export interface IErrorConfig extends Omit<IConfig, 'name' | 'config_id'> {}
+export interface IErrorConfig extends Omit<IConfig, 'name' | 'config_id'> { }
 
 export interface IVNIndexBuyConfig {
 	vnindex_config_min_vnindex_buy: number;
@@ -56,11 +59,18 @@ export interface IVNIndexBuyConfig {
 	vnindex_config_use_stoch_rsi_increase: boolean;
 
 	vnindex_config_use_macd_to_buy: boolean;
+	vnindex_config_use_histogram_to_buy: boolean;
 	vnindex_config_use_macd_obl_to_buy: boolean;
+	vnindex_config_use_histogram_obl_to_buy: boolean;
+	vnindex_config_use_macd_obl_increase: boolean;
+	vnindex_config_use_sma_obl_increase: boolean;
 	vnindex_config_use_macd_reversed_increase: boolean;
 	vnindex_config_value_macd_to_buy: number;
+	vnindex_config_value_histogram_to_buy: number;
 	vnindex_config_value_macd_obl_to_buy: number;
+	vnindex_config_value_histogram_obl_to_buy: number;
 	vnindex_config_use_macd_increase: boolean;
+	vnindex_config_use_sma_increase: boolean;
 
 	vnindex_config_use_histogram_reversed_increase: boolean;
 	vnindex_config_use_histogram_increase: boolean;
@@ -85,9 +95,12 @@ export interface IVNIndexSellConfig {
 	vnindex_config_use_stoch_rsi_decrease: boolean;
 
 	vnindex_config_use_macd_to_sell: boolean;
+	vnindex_config_use_histogram_to_sell: boolean;
 	vnindex_config_use_macd_reversed_decrease: boolean;
 	vnindex_config_value_macd_to_sell: number;
+	vnindex_config_value_histogram_to_sell: number;
 	vnindex_config_use_macd_decrease: boolean;
+	vnindex_config_use_sma_decrease: boolean;
 
 	vnindex_config_use_histogram_reversed_decrease: boolean;
 	vnindex_config_use_histogram_decrease: boolean;
@@ -116,11 +129,15 @@ export interface IVNIndexBuyPriorityConfig {
 	vnindex_config_stoch_rsi_increase_sufficient_condition: boolean;
 
 	vnindex_config_macd_to_buy_necessary_condition: boolean;
+	vnindex_config_histogram_to_buy_necessary_condition: boolean;
 	vnindex_config_macd_to_buy_sufficient_condition: boolean;
+	vnindex_config_histogram_to_buy_sufficient_condition: boolean;
 	vnindex_config_macd_reversed_increase_necessary_condition: boolean;
 	vnindex_config_macd_reversed_increase_sufficient_condition: boolean;
 	vnindex_config_macd_increase_necessary_condition: boolean;
+	vnindex_config_sma_increase_necessary_condition: boolean;
 	vnindex_config_macd_increase_sufficient_condition: boolean;
+	vnindex_config_sma_increase_sufficient_condition: boolean;
 
 	vnindex_config_histogram_reversed_increase_necessary_condition: boolean;
 	vnindex_config_histogram_reversed_increase_sufficient_condition: boolean;
@@ -155,11 +172,15 @@ export interface IVNIndexSellPriorityConfig {
 	vnindex_config_stoch_rsi_decrease_sufficient_condition: boolean;
 
 	vnindex_config_macd_to_sell_necessary_condition: boolean;
+	vnindex_config_histogram_to_sell_necessary_condition: boolean;
 	vnindex_config_macd_to_sell_sufficient_condition: boolean;
+	vnindex_config_histogram_to_sell_sufficient_condition: boolean;
 	vnindex_config_macd_reversed_decrease_necessary_condition: boolean;
 	vnindex_config_macd_reversed_decrease_sufficient_condition: boolean;
 	vnindex_config_macd_decrease_necessary_condition: boolean;
+	vnindex_config_sma_decrease_necessary_condition: boolean;
 	vnindex_config_macd_decrease_sufficient_condition: boolean;
+	vnindex_config_sma_decrease_sufficient_condition: boolean;
 
 	vnindex_config_histogram_reversed_decrease_necessary_condition: boolean;
 	vnindex_config_histogram_reversed_decrease_sufficient_condition: boolean;
@@ -186,15 +207,24 @@ export interface IStockBuyConfig {
 	stock_config_use_stoch_rsi_increase: boolean;
 
 	stock_config_use_macd_to_buy: boolean;
+	stock_config_use_histogram_to_buy: boolean;
 	stock_config_use_macd_obl_to_buy: boolean;
+	stock_config_use_histogram_obl_to_buy: boolean;
+	stock_config_use_macd_obl_increase: boolean;
+	stock_config_use_sma_obl_increase: boolean;
 	stock_config_use_buy_up_obl_to_buy: boolean;
 	stock_config_use_buy_foreign_obl_to_buy: boolean;
+	stock_config_use_volume_trade_obl_to_buy: boolean;
 	stock_config_use_macd_reversed_increase: boolean;
 	stock_config_value_macd_to_buy: number;
+	stock_config_value_histogram_to_buy: number;
 	stock_config_value_macd_obl_to_buy: number;
+	stock_config_value_histogram_obl_to_buy: number;
 	stock_config_value_buy_up_obl_to_buy: number;
 	stock_config_value_buy_foreign_obl_to_buy: number;
+	stock_config_value_volume_trade_obl_to_buy: number;
 	stock_config_use_macd_increase: boolean;
+	stock_config_use_sma_increase: boolean;
 
 	stock_config_use_histogram_reversed_increase: boolean;
 	stock_config_use_histogram_increase: boolean;
@@ -214,9 +244,12 @@ export interface IStockSellConfig {
 	stock_config_use_stoch_rsi_decrease: boolean;
 
 	stock_config_use_macd_to_sell: boolean;
+	stock_config_use_histogram_to_sell: boolean;
 	stock_config_use_macd_reversed_decrease: boolean;
 	stock_config_value_macd_to_sell: number;
+	stock_config_value_histogram_to_sell: number;
 	stock_config_use_macd_decrease: boolean;
+	stock_config_use_sma_decrease: boolean;
 
 	stock_config_use_histogram_reversed_decrease: boolean;
 	stock_config_use_histogram_decrease: boolean;
@@ -240,11 +273,15 @@ export interface IStockBuyPriorityConfig {
 	stock_config_stoch_rsi_increase_sufficient_condition: boolean;
 
 	stock_config_macd_to_buy_necessary_condition: boolean;
+	stock_config_histogram_to_buy_necessary_condition: boolean;
 	stock_config_macd_to_buy_sufficient_condition: boolean;
+	stock_config_histogram_to_buy_sufficient_condition: boolean;
 	stock_config_macd_reversed_increase_necessary_condition: boolean;
 	stock_config_macd_reversed_increase_sufficient_condition: boolean;
 	stock_config_macd_increase_necessary_condition: boolean;
+	stock_config_sma_increase_necessary_condition: boolean;
 	stock_config_macd_increase_sufficient_condition: boolean;
+	stock_config_sma_increase_sufficient_condition: boolean;
 
 	stock_config_histogram_reversed_increase_necessary_condition: boolean;
 	stock_config_histogram_reversed_increase_sufficient_condition: boolean;
@@ -271,11 +308,15 @@ export interface IStockSellPriorityConfig {
 	stock_config_stoch_rsi_decrease_sufficient_condition: boolean;
 
 	stock_config_macd_to_sell_necessary_condition: boolean;
+	stock_config_histogram_to_sell_necessary_condition: boolean;
 	stock_config_macd_to_sell_sufficient_condition: boolean;
+	stock_config_histogram_to_sell_sufficient_condition: boolean;
 	stock_config_macd_reversed_decrease_necessary_condition: boolean;
 	stock_config_macd_reversed_decrease_sufficient_condition: boolean;
 	stock_config_macd_decrease_necessary_condition: boolean;
+	stock_config_sma_decrease_necessary_condition: boolean;
 	stock_config_macd_decrease_sufficient_condition: boolean;
+	stock_config_sma_decrease_sufficient_condition: boolean;
 
 	stock_config_histogram_reversed_decrease_necessary_condition: boolean;
 	stock_config_histogram_reversed_decrease_sufficient_condition: boolean;
@@ -304,11 +345,20 @@ export interface IStockOtherConfig {
 	stock_config_percent_stop_loss_sell_second: number;
 
 	stock_config_use_take_profit_first_part: boolean;
+	stock_config_use_stoch_rsi_to_take_profit: boolean;
+	stock_config_use_rsi_decrease_to_take_profit: boolean;
+	stock_config_use_take_profit_first_part_two: boolean;
 	stock_config_percent_take_profit_sell_first: number;
+	stock_config_value_stoch_rsi_to_take_profit: number;
+	stock_config_percent_take_profit_sell_first_two: number;
 	stock_config_use_take_profit_trigger: boolean;
 	stock_config_take_profit_percent: number;
 	stock_config_use_take_profit_second_part: boolean;
+	stock_config_use_take_profit_second_part_two: boolean;
 	stock_config_percent_take_profit_sell_second: number;
+	stock_config_percent_stoch_rsi_to_take_profit: number;
+	stock_config_percent_rsi_decrease_to_take_profit: number;
+	stock_config_percent_take_profit_sell_second_two: number;
 	stock_config_use_bolinger_to_take_profit: boolean;
 	stock_config_use_bolinger_a_part_to_take_profit: boolean;
 	stock_config_percent_bolinger_a_part_to_take_profit: number;
@@ -326,11 +376,21 @@ export interface IStockOtherConfig {
 	stock_config_percent_first_buy: number;
 
 	stock_config_is_use_time_to_buy: boolean;
+	stock_config_is_use_time_to_buy_first: boolean;
+	stock_config_is_use_time_to_buy_second: boolean;
 	stock_config_time_start_buy: string;
+	stock_config_time_start_buy_second: string;
 	stock_config_time_end_buy: string;
+	stock_config_time_end_buy_second: string;
+	stock_config_days_buy: string;
 	stock_config_is_use_time_to_sell: boolean;
+	stock_config_is_use_time_to_sell_first: boolean;
+	stock_config_is_use_time_to_sell_second: boolean;
 	stock_config_time_start_sell: string;
+	stock_config_time_start_sell_second: string;
 	stock_config_time_end_sell: string;
+	stock_config_time_end_sell_second: string;
+	stock_config_days_sell: string;
 }
 
 export interface IVNIndexBase {

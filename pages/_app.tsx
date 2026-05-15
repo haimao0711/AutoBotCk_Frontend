@@ -11,12 +11,11 @@ import { getOS } from '../helpers/helpers';
 import { ThemeProvider } from 'react-jss';
 import { ToastProvider } from 'react-toast-notifications';
 import { Toast, ToastContainer } from '../components/bootstrap/Toasts';
-import { TourProvider } from '@reactour/tour';
-import steps, { styles } from '../steps';
 import Portal from '../layout/Portal/Portal';
 import { ReactNotifications } from 'react-notifications-component';
 import Wrapper from '../layout/Wrapper/Wrapper';
 import { appWithTranslation } from 'next-i18next';
+import nextI18NextConfig from '../next-i18next.config';
 import App from '../layout/App/App';
 import AsideRoutes from '../layout/Aside/AsideRoutes';
 import { CookiesProvider } from 'react-cookie';
@@ -51,27 +50,21 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }: AppProps) =>
 					<ConfigContextProvider>
 						<ToastProvider components={{ ToastContainer, Toast }}>
 							<CookiesProvider>
-								<TourProvider
-									steps={steps}
-									styles={styles}
-									showNavigation={false}
-									showBadge={false}>
-									<App>
-										{isLoading && (
-											<div className='position-fixed w-100 h-100 bg-white d-flex justify-content-center align-items-center z-index-spinner'>
-												<Spinner isGrow color='primary' />
-											</div>
-										)}
-										<AsideRoutes />
-										<Wrapper>
-											{/* eslint-disable-next-line react/jsx-props-no-spreading */}
-											<Component {...pageProps} />
-										</Wrapper>
-									</App>
-									<Portal id='portal-notification'>
-										<ReactNotifications />
-									</Portal>
-								</TourProvider>
+								<App>
+									{isLoading && (
+										<div className='position-fixed w-100 h-100 bg-white d-flex justify-content-center align-items-center z-index-spinner'>
+											<Spinner isGrow color='primary' />
+										</div>
+									)}
+									<AsideRoutes />
+									<Wrapper>
+										{/* eslint-disable-next-line react/jsx-props-no-spreading */}
+										<Component {...pageProps} />
+									</Wrapper>
+								</App>
+								<Portal id='portal-notification'>
+									<ReactNotifications />
+								</Portal>
 							</CookiesProvider>
 						</ToastProvider>
 					</ConfigContextProvider>
@@ -81,4 +74,4 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }: AppProps) =>
 	);
 };
 
-export default appWithTranslation(MyApp /*, nextI18NextConfig */);
+export default appWithTranslation(MyApp, nextI18NextConfig);

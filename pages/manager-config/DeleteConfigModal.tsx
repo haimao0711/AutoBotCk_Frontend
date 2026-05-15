@@ -106,7 +106,8 @@ const DeleteConfig: FC<IDeleteConfigProps> = ({ config, isOpen, setIsOpen }) => 
 	// Selected Event
 	useEffect(() => {
 		async function fetchData() {
-			const { stocks, userConfigs } = await authService.getConfig();
+			const { userConfigs } = await authService.getConfig();
+			const stocks = await authService.getStocks();
 			const formatConfig =
 				userConfigs?.length > 0 &&
 				userConfigs?.map((config: any) => {

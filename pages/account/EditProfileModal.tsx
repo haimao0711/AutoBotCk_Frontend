@@ -24,7 +24,17 @@ interface IValidate {
 
 const EditProfileModal: FC<IAddAccountModalProps> = ({ isOpen, setIsOpen }) => {
 	const { addToast } = useToasts();
-	const { userName, accountName, accountNum, limitNumberStocks } = useContext(AuthContext);
+	const {
+		userName,
+		accountName,
+		accountNum,
+		limitNumberStocks,
+		limitTotalMarketValue,
+		setAccountName,
+		setAccountNum,
+		setLimitNumberStocks,
+		setLimitTotalMarketValue,
+	} = useContext(AuthContext);
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const togglePassword = () => setShowPassword((prev) => !prev);
@@ -34,6 +44,7 @@ const EditProfileModal: FC<IAddAccountModalProps> = ({ isOpen, setIsOpen }) => {
 		accountName: string;
 		accountNum: string;
 		limitNumberStocks: number;
+		limitTotalMarketValue: number;
 		accountPassword?: string;
 		confirmPassword?: string;
 	}
@@ -43,6 +54,7 @@ const EditProfileModal: FC<IAddAccountModalProps> = ({ isOpen, setIsOpen }) => {
 			accountName: accountName,
 			accountNum: accountNum,
 			limitNumberStocks: limitNumberStocks,
+			limitTotalMarketValue: limitTotalMarketValue,
 			accountPassword: '',
 			confirmPassword: '',
 		},
@@ -65,6 +77,7 @@ const EditProfileModal: FC<IAddAccountModalProps> = ({ isOpen, setIsOpen }) => {
 				name: values?.accountName,
 				account_num: values?.accountNum,
 				limit_number_stocks: values?.limitNumberStocks,
+				limit_total_market_value: values?.limitTotalMarketValue,
 				account_password: md5(values.accountPassword).toString(),
 			};
 
@@ -78,8 +91,12 @@ const EditProfileModal: FC<IAddAccountModalProps> = ({ isOpen, setIsOpen }) => {
 						</Toasts>,
 						{ autoDismiss: true },
 					);
+					setAccountName(values.accountName);
+					setAccountNum(values.accountNum);
+					setLimitNumberStocks(values.limitNumberStocks.toString());
+					setLimitTotalMarketValue(values.limitTotalMarketValue.toString());
 					setTimeout(() => {
-						setIsOpen;
+						setIsOpen();
 					}, 500);
 				} else {
 					addToast(
@@ -107,10 +124,11 @@ const EditProfileModal: FC<IAddAccountModalProps> = ({ isOpen, setIsOpen }) => {
 			accountName: accountName || '',
 			accountNum: accountNum || '',
 			limitNumberStocks: limitNumberStocks || '0',
+			limitTotalMarketValue: limitTotalMarketValue || '500000000',
 			accountPassword: '',
 			confirmPassword: '',
 		});
-	}, [userName, accountName, accountNum, limitNumberStocks, setValues]);
+	}, [userName, accountName, accountNum, limitNumberStocks, limitTotalMarketValue, setValues]);
 
 	return (
 		<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg'>
@@ -174,6 +192,29 @@ const EditProfileModal: FC<IAddAccountModalProps> = ({ isOpen, setIsOpen }) => {
 								isValid={formik?.isValid}
 								isTouched={formik?.touched.limitNumberStocks}
 								invalidFeedback={formik?.errors.limitNumberStocks}
+								validFeedback='Looks good!'
+							/>
+						</FormGroup>
+					</div>
+					<div className='col-md-6'>
+						<FormGroup label='Giới hạn tổng giá trị mua tối đa'>
+							<Input
+								id='limitTotalMarketValue'
+								name='limitTotalMarketValue'
+								component='NumberFormat'
+								thousandSeparator='.'
+								decimalSeparator=','
+								suffix=' VNĐ'
+								placeholder='Nhập tổng giá trị mua tối đa'
+								autoComplete='additional-name'
+								onValueChange={(values: any) => {
+									formik.setFieldValue('limitTotalMarketValue', values.value);
+								}}
+								onBlur={formik?.handleBlur}
+								value={formik?.values.limitTotalMarketValue}
+								isValid={formik?.isValid}
+								isTouched={formik?.touched.limitTotalMarketValue}
+								invalidFeedback={formik?.errors.limitTotalMarketValue}
 								validFeedback='Looks good!'
 							/>
 						</FormGroup>

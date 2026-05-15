@@ -11,11 +11,17 @@ export const MAPING_NAME_ATTR: ConditionMappingTypes = {
 	vnindex_config_use_macd_to_buy: {
 		name: 'MUA - MACD<= (VNI)',
 	},
+	vnindex_config_use_histogram_to_buy: {
+		name: 'MUA - HISTOGRAM<= (VNI)',
+	},
 	vnindex_config_use_macd_reversed_increase: {
 		name: 'MUA - MACD ĐẢO CHIỀU TĂNG (VNI)',
 	},
 	vnindex_config_use_macd_increase: {
 		name: 'MUA - MACD TĂNG (VNI)',
+	},
+	vnindex_config_use_sma_increase: {
+		name: 'MUA - SMA TĂNG (VNI)',
 	},
 	vnindex_config_use_histogram_reversed_increase: {
 		name: 'MUA - HISTOGRAM ĐẢO CHIỀU TĂNG (VNI)',
@@ -59,10 +65,13 @@ export const MAPING_NAME_ATTR: ConditionMappingTypes = {
 	vnindex_config_use_macd_to_sell: {
 		name: 'BÁN - MACD>= (VNI)',
 	},
+	vnindex_config_use_histogram_to_sell: {
+		name: 'BÁN - HISTOGRAM>= (VNI)',
+	},
 	vnindex_config_use_macd_reversed_decrease: {
 		name: 'BÁN - MACD ĐẢO CHIỀU GIẢM  (VNI)',
 	},
-	vnindex_config_use_macd_decrease: {
+	vnindex_config_use_: {
 		name: 'BÁN - MACD GIẢM  (VNI)',
 	},
 	vnindex_config_use_histogram_reversed_decrease: {
@@ -97,11 +106,17 @@ export const MAPING_NAME_ATTR: ConditionMappingTypes = {
 	stock_config_use_macd_to_buy: {
 		name: 'MUA - MACD<= (CP)',
 	},
+	stock_config_use_histogram_to_buy: {
+		name: 'MUA - HISTOGRAM<= (CP)',
+	},
 	stock_config_use_macd_reversed_increase: {
 		name: 'MUA - MACD ĐẢO CHIỀU TĂNG(CP)',
 	},
 	stock_config_use_macd_increase: {
 		name: 'MUA - MACD TĂNG(CP)',
+	},
+	stock_config_use_sma_increase: {
+		name: 'MUA - SMA TĂNG(CP)',
 	},
 	stock_config_use_histogram_reversed_increase: {
 		name: 'MUA - HISTOGRAM ĐẢO CHIỀU TĂNG(CP)',
@@ -151,11 +166,17 @@ export const MAPING_NAME_ATTR: ConditionMappingTypes = {
 	stock_config_use_macd_to_sell: {
 		name: 'BÁN - MACD >=(CP)',
 	},
+	stock_config_use_histogram_to_sell: {
+		name: 'BÁN - HISTOGRAM >=(CP)',
+	},
 	stock_config_use_macd_reversed_decrease: {
 		name: 'BÁN - MACD ĐẢO CHIỀU GIẢM(CP)',
 	},
 	stock_config_use_macd_decrease: {
 		name: 'BÁN - MACD GIẢM(CP)',
+	},
+	stock_config_use_sma_decrease: {
+		name: 'BÁN - SMA GIẢM(CP)',
 	},
 	stock_config_use_histogram_reversed_decrease: {
 		name: 'BÁN - HISTOGRAM ĐẢO CHIỀU GIẢM (CP)',

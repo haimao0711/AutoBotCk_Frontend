@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useState } from 'react';
+import { useMemo, useCallback, useState, useEffect } from 'react';
 
 import Checks from '@components/bootstrap/forms/Checks';
 import styled from 'styled-components';
@@ -42,19 +42,19 @@ const generateSelectRenders = (
 			{
 				key: `stock_config_use_rsi_reversed_${trend}`,
 				label: `RSI ĐẢO CHIỀU ${vieTrend}`,
-				name: `${vieSide} - RSI ĐẢO CHIỀU ${vieTrend} (VNI)`,
+				name: `${vieSide} - RSI ĐẢO CHIỀU ${vieTrend} (CP)`,
 				isRender: true,
 			},
 			{
 				key: `stock_config_use_rsi_${trend}`,
 				label: `RSI ${vieTrend}`,
-				name: `${vieSide} - RSI ${vieTrend} (VNI)`,
+				name: `${vieSide} - RSI ${vieTrend} (CP)`,
 				isRender: true,
 			},
 			{
 				key: `stock_config_use_rsi_to_${side}`,
 				label: `RSI ${comparasionOperator}`,
-				name: `${vieSide} - RSI ${comparasionOperator} (VNI)`,
+				name: `${vieSide} - RSI ${comparasionOperator} (CP)`,
 				isRender: true,
 			},
 		],
@@ -62,19 +62,19 @@ const generateSelectRenders = (
 			{
 				key: `stock_config_use_stoch_rsi_reversed_${trend}`,
 				label: `STOCH RSI ĐẢO CHIỀU ${vieTrend}`,
-				name: `${vieSide} - STOCH RSI ĐẢO CHIỀU ${vieTrend} (VNI)`,
+				name: `${vieSide} - STOCH RSI ĐẢO CHIỀU ${vieTrend} (CP)`,
 				isRender: true,
 			},
 			{
 				key: `stock_config_use_stoch_rsi_${trend}`,
 				label: `STOCH RSI ${vieTrend}`,
-				name: `${vieSide} - STOCH RSI ${vieTrend} (VNI)`,
+				name: `${vieSide} - STOCH RSI ${vieTrend} (CP)`,
 				isRender: true,
 			},
 			{
 				key: `stock_config_use_stoch_rsi_to_${side}`,
 				label: `STOCH RSI ${comparasionOperator}`,
-				name: `${vieSide} - STOCH RSI <= (VNI)`,
+				name: `${vieSide} - STOCH RSI <= (CP)`,
 				isRender: true,
 			},
 		],
@@ -82,19 +82,19 @@ const generateSelectRenders = (
 			{
 				key: `stock_config_use_macd_reversed_${trend}`,
 				label: `MACD ĐẢO CHIỀU ${vieTrend}`,
-				name: `${vieSide} - MACD ĐẢO CHIỀU ${vieTrend} (VNI)`,
+				name: `${vieSide} - MACD ĐẢO CHIỀU ${vieTrend} (CP)`,
 				isRender: true,
 			},
 			{
 				key: `stock_config_use_macd_${trend}`,
 				label: `MACD ${vieTrend}`,
-				name: `${vieSide} - MACD ${vieTrend} (VNI)`,
+				name: `${vieSide} - MACD ${vieTrend} (CP)`,
 				isRender: true,
 			},
 			{
-				key: `stock_config_use_macd_to_${side}`,
-				label: `MACD ${comparasionOperator}`,
-				name: `${vieSide} - MACD <= (VNI)`,
+				key: `stock_config_use_histogram_to_${side}`,
+				label: `HISTOGRAM ${comparasionOperator}`,
+				name: `${vieSide} - HISTOGRAM <= (CP)`,
 				isRender: true,
 			},
 		],
@@ -102,24 +102,22 @@ const generateSelectRenders = (
 			{
 				key: `stock_config_use_histogram_reversed_${trend}`,
 				label: `HISTOGRAM ĐẢO CHIỀU ${vieTrend}`,
-				name: `${vieSide} - HISTOGRAM ĐẢO CHIỀU ${vieTrend} (VNI)`,
+				name: `${vieSide} - HISTOGRAM ĐẢO CHIỀU ${vieTrend} (CP)`,
+				isRender: true,
+			},
+			{
+				key: `stock_config_use_sma_${trend}`,
+				label: `SMA ${vieTrend}`,
+				name: `${vieSide} - SMA ${vieTrend} (CP)`,
 				isRender: true,
 			},
 			{
 				key: `stock_config_use_histogram_${trend}`,
 				label: `HISTOGRAM ${vieTrend}`,
-				name: `${vieSide} - HISTOGRAM ${vieTrend} (VNI)`,
+				name: `${vieSide} - HISTOGRAM ${vieTrend} (CP)`,
 				isRender: true,
 			},
 		],
-		// [
-		// 	{
-		// 		key: `stock_config_use_volume_to_${side}`,
-		// 		label: `VOLUME>VOLUME MA`,
-		// 		name: `${vieSide} - VOLUME>VOLUME MA (VNI)`,
-		// 		isRender: type === 'Buy',
-		// 	},
-		// ],
 	];
 	const rendersObl = [
 		[
@@ -140,26 +138,42 @@ const generateSelectRenders = (
 		],
 		[
 			{
-				key: `stock_config_use_macd_obl_to_${side}`,
-				label: `MACD(CP) ${comparasionOperator}`,
-				name: `${vieSide} - MACD <= (CP)`,
+				key: `stock_config_use_histogram_obl_to_${side}`,
+				label: `HISTOGRAM (CP) ${comparasionOperator}`,
+				name: `${vieSide} - HISTOGRAM <= (CP)`,
 				isRender: true,
 			},
 		],
-		// [
-		// 	{
-		// 		key: `stock_config_use_buy_up_obl_to_${side}`,
-		// 		label: `% Mua chủ động >=`,
-		// 		name: `${vieSide} - BuyUp >= (CP)`,
-		// 		isRender: slug === 'following',
-		// 	},
-		// ],
 		[
 			{
 				key: `stock_config_use_buy_foreign_obl_to_${side}`,
 				label: `% Mua nước ngoài >=`,
 				name: `${vieSide} - Buyforeign >= (CP)`,
 				isRender: slug !== 'trading',
+			},
+		],
+		[
+			{
+				key: `stock_config_use_volume_trade_obl_to_${side}`,
+				label: `% KL đã về >=`,
+				name: `${vieSide} - VolumeTrade >= (CP)`,
+				isRender: slug !== 'trading',
+			},
+		],
+		[
+			{
+				key: `stock_config_use_macd_obl_increase`,
+				label: `MACD (CP) tăng`,
+				name: `${vieSide} - MACD tăng (CP)`,
+				isRender: true,
+			},
+		],
+		[
+			{
+				key: `stock_config_use_sma_obl_increase`,
+				label: `SMA (CP) tăng`,
+				name: `${vieSide} - SMA tăng (CP)`,
+				isRender: true,
 			},
 		],
 	];
@@ -183,8 +197,8 @@ const generateTypeRenders = (
 			label: 'Nhập chỉ số',
 		},
 		{
-			keyRender: `stock_config_use_macd_to_${side}`,
-			key: `stock_config_value_macd_to_${side}`,
+			keyRender: `stock_config_use_histogram_to_${side}`,
+			key: `stock_config_value_histogram_to_${side}`,
 			label: 'Nhập chỉ số',
 		},
 		{
@@ -211,8 +225,8 @@ const generateTypeRenders = (
 			label: 'Nhập chỉ số',
 		},
 		{
-			keyRender: `stock_config_use_macd_obl_to_${side}`,
-			key: `stock_config_value_macd_obl_to_${side}`,
+			keyRender: `stock_config_use_histogram_obl_to_${side}`,
+			key: `stock_config_value_histogram_obl_to_${side}`,
 			label: 'Nhập chỉ số',
 		},
 		{
@@ -220,6 +234,22 @@ const generateTypeRenders = (
 			key: `stock_config_value_buy_foreign_obl_to_${side}`,
 			label: 'Nhập chỉ số',
 			isRender: slug !== 'trading',
+		},
+		{
+			keyRender: `stock_config_use_volume_trade_obl_to_${side}`,
+			key: `stock_config_value_volume_trade_obl_to_${side}`,
+			label: 'Nhập chỉ số',
+			isRender: slug !== 'trading',
+		},
+		{
+			keyRender: `stock_config_use_max_stock_${side}`,
+			key: `stock_config_max_stock_${side}`,
+			label: 'Nhập chỉ số',
+		},
+		{
+			keyRender: `stock_config_use_max_stock_${side}`,
+			key: `stock_config_max_stock_${side}`,
+			label: 'Nhập chỉ số',
 		},
 	];
 
@@ -286,10 +316,24 @@ const TypeItem: React.FC<TypeItemProps> = ({
 };
 
 const Module = (props: ModuleProps) => {
-	const columnStyle = {
-		flex: '0 0 20%',
-		maxWidth: '20%',
-	};
+	const [columnStyle, setColumnStyle] = useState({ flex: '0 0 50%', maxWidth: '50%' });
+	useEffect(() => {
+		const updateStyle = () => {
+			if (window.innerWidth < 500) {
+				setColumnStyle({ flex: '0 0 50%', maxWidth: '50%' });
+			} else if (window.innerWidth < 992) {
+				// Tablet: 3 cột
+				setColumnStyle({ flex: '0 0 33.3333%', maxWidth: '33.3333%' });
+			} else {
+				// Desktop: 5 cột
+				setColumnStyle({ flex: '0 0 20%', maxWidth: '20%' });
+			}
+		};
+
+		updateStyle();
+		window.addEventListener('resize', updateStyle);
+		return () => window.removeEventListener('resize', updateStyle);
+	}, []);
 	const { type, label, setValues, formik, slug } = props;
 	const { values } = formik;
 	// console.log('check value Module Obl: ', values);
@@ -297,13 +341,16 @@ const Module = (props: ModuleProps) => {
 	const selectRenders = generateSelectRenders(type, slug);
 	const typeRenders = generateTypeRenders(type, slug);
 	return (
-		<FormGroup className='col-12 border-b border-gray-300 p-6 mb-6' label={label}>
-			<div className='d-flex flex-wrap justify-content-between container p-4'>
-				<div className='row w-100'>
+		<FormGroup
+			className='col-12 border-b border-gray-300 py-3 px-1 mb-6'
+			label={label}
+			labelClassName='fw-bold text-gray-500'>
+			<div className='d-flex flex-wrap justify-content-between container py-4 px-2'>
+				<div className='row w-100' style={{ marginLeft: 0, marginRight: 0 }}>
 					{selectRenders.map((selectRender, idRow) => {
 						const itemId = typeRenders[idRow].keyRender;
 						return (
-							<div className='mb-4 gap-4 col' key={idRow} style={columnStyle}>
+							<div className='mb-2 gap-1 col' key={idRow} style={columnStyle}>
 								{selectRender.map((item, idCol) => (
 									<div
 										key={item.key}
@@ -313,7 +360,7 @@ const Module = (props: ModuleProps) => {
 										}}>
 										{
 											<SwitchItem
-												className='p-4'
+												className='py-4'
 												formik={formik}
 												label={item.label}
 												id={`stock.${
@@ -338,7 +385,7 @@ const Module = (props: ModuleProps) => {
 								] &&
 									typeRenders[idRow]?.isRender !== false && (
 										<TypeItem
-											className='p-4'
+											className='py-4'
 											formik={formik}
 											label={typeRenders[idRow].label}
 											id={`stock.${

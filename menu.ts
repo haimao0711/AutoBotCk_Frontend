@@ -6,20 +6,6 @@ export const dashboardPagesMenu = {
 		icon: 'Dashboard',
 		subMenu: null,
 	},
-	// feeAndRule: {
-	// 	id: 'feeAndRule',
-	// 	text: 'Cài đặt cấu hình',
-	// 	path: 'create-config',
-	// 	icon: 'Assignment',
-	// 	subMenu: null,
-	// },
-	// bot: {
-	// 	id: 'bot',
-	// 	text: 'Quản lí bot',
-	// 	path: 'manager-bot',
-	// 	icon: 'DesktopMac',
-	// 	subMenu: null,
-	// },
 	user: {
 		id: 'user',
 		text: 'Quản lí cấu hình',
@@ -27,35 +13,6 @@ export const dashboardPagesMenu = {
 		icon: 'AccountBalanceWallet',
 		subMenu: null,
 	},
-	// transactions: {
-	// 	id: 'transactions',
-	// 	text: 'Quản lí giao dịch',
-	// 	path: 'transactions',
-	// 	icon: 'MonetizationOn',
-	// 	subMenu: null,
-	// },
-
-	// account: {
-	// 	id: 'account',
-	// 	text: 'Quản lí tài khoản',
-	// 	path: 'account',
-	// 	icon: 'Person',
-	// 	subMenu: null,
-	// },
-	// templateMail: {
-	// 	id: 'template-mail',
-	// 	text: 'Quản lí Template mail',
-	// 	path: 'template-mail',
-	// 	icon: 'Email',
-	// 	subMenu: null,
-	// },
-	// liquidity: {
-	// 	id: 'liquidity',
-	// 	text: 'Quản lí LP',
-	// 	path: 'liquidity',
-	// 	icon: 'AccountBalanceWallet',
-	// 	subMenu: null,
-	// },
 };
 
 export const authPagesMenu = {

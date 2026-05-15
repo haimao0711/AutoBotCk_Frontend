@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import type { NextPage } from 'next';
-import { GetStaticProps } from 'next';
 import Head from 'next/head';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import PageWrapper from '../../layout/PageWrapper/PageWrapper';
 import Page from '../../layout/Page/Page';
 import useDarkMode from '../../hooks/useDarkMode';
@@ -20,18 +18,28 @@ import { authService } from '@services/index';
 import { useToasts } from 'react-toast-notifications';
 import Toasts from '@components/bootstrap/Toasts';
 import AuthContext from '@context/authContext';
+import styled from 'styled-components';
 
-const buttonStyle = {
-	backgroundColor: '#4CAF50',
-	color: 'white',
-	padding: '10px 20px',
-	border: 'none',
-	borderRadius: '5px',
-	fontSize: '16px',
-	cursor: 'pointer',
-	transition: 'background-color 0.3s ease',
-	outline: 'none',
-};
+const StyledActionButton = styled(Button)`
+	background-color: #4caf50;
+	color: white;
+	padding: 10px 14px 10px 8px;
+	border: none;
+	border-radius: 5px;
+	font-size: 16px;
+	cursor: pointer;
+	transition: all 0.2s ease-in-out;
+	outline: none;
+
+	&:hover {
+		filter: brightness(1.2); /* Make it 20% brighter */
+		box-shadow: 0 0 8px rgba(76, 175, 80, 0.4); /* Add subtle glow */
+	}
+
+	&:active {
+		filter: brightness(0.9);
+	}
+`;
 const Index: NextPage = () => {
 	const { userName, email } = useUserLogin();
 	const { darkModeStatus, setDarkModeStatus } = useDarkMode();
@@ -48,12 +56,16 @@ const Index: NextPage = () => {
 		isSell: false,
 		isTrade: false,
 	});
+	const [userConfigs, setUserConfigs] = useState<any[]>([]);
 	const [isTrading, setIsTrading] = useState(false);
 	const {
 		isLogin,
 		setLimitNumberStocks,
+		setLimitTotalMarketValue,
 		setCashAvailable,
 		setTotalMarketValue,
+		setGainLossValue,
+		setGainLossOneDayValue,
 		setAccountName,
 		setAccountNum,
 		setTotalEquity,
@@ -68,15 +80,15 @@ const Index: NextPage = () => {
 		const data =
 			type === 'B'
 				? {
-						is_block_buy: !isBlockBuy,
-						is_block_sell: isBlockSell,
-						type: 'B',
-				  }
+					is_block_buy: !isBlockBuy,
+					is_block_sell: isBlockSell,
+					type: 'B',
+				}
 				: {
-						is_block_buy: isBlockBuy,
-						is_block_sell: !isBlockSell,
-						type: 'S',
-				  };
+					is_block_buy: isBlockBuy,
+					is_block_sell: !isBlockSell,
+					type: 'S',
+				};
 		const response = await authService.openBlockTrading(data);
 		if (response) {
 			setIsBlockBuy(response?.is_block_buy);
@@ -100,6 +112,28 @@ const Index: NextPage = () => {
 			);
 		}
 	};
+	const handleResetBot = async () => {
+		const response = await authService.resetBotTrading({});
+		if (response) {
+			addToast(
+				<Toasts title='Create notifications' iconColor='success' icon='TaskAlt' isDismiss>
+					{`Reset Bot thành công!`}
+				</Toasts>,
+				{
+					autoDismiss: true,
+				},
+			);
+		} else {
+			addToast(
+				<Toasts title='Create notifications' iconColor='danger' icon='Error' isDismiss>
+					{`Reset Bot không thành công!`}
+				</Toasts>,
+				{
+					autoDismiss: true,
+				},
+			);
+		}
+	};
 	useEffect(() => {
 		async function checkIsTrading() {
 			try {
@@ -110,9 +144,12 @@ const Index: NextPage = () => {
 					setTotalEquity(response.total_equity);
 					setCashAvailable(response.cash_available);
 					setTotalMarketValue(response.total_market_value);
+					setGainLossValue(response.gain_loss_value);
+					setGainLossOneDayValue(response.gain_loss_oneday_value);
 					setAccountName(response.account_name);
 					setAccountNum(response.account_num);
 					setLimitNumberStocks(response.limit_number_stocks);
+					setLimitTotalMarketValue(response.limit_total_market_value || '500000000');
 				} else {
 					setIsTrading(false);
 				}
@@ -122,7 +159,7 @@ const Index: NextPage = () => {
 			}
 		}
 		checkIsTrading();
-		const intervalId = setInterval(checkIsTrading, 5000);
+		const intervalId = setInterval(checkIsTrading, 2000);
 		return () => clearInterval(intervalId);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -139,6 +176,21 @@ const Index: NextPage = () => {
 			}
 		}
 		getIsBlockBuy();
+	}, []);
+
+	const fetchConfigs = async () => {
+		try {
+			const { userConfigs } = await authService.getConfig();
+			setUserConfigs(userConfigs);
+		} catch (error) {
+			console.error('fetchConfigs error:', error);
+		}
+	};
+
+	useEffect(() => {
+		fetchConfigs();
+		const intervalId = setInterval(fetchConfigs, 3000);
+		return () => clearInterval(intervalId);
 	}, []);
 
 	return (
@@ -160,11 +212,17 @@ const Index: NextPage = () => {
 				setIsOpen={setIsOpenDelete}
 				options={isOptions}
 				setIsOptions={setIsOptions}
+				getData={fetchConfigs}
 			/>
 			<Page>
 				<div className='containerProfile'>
 					<div className='wrap-profile'>
-						<Profile />
+						<Profile
+							totalStocksPurchased={
+								userConfigs?.filter((item: any) => Number(item.volume_buy) > 0)
+									.length || 0
+							}
+						/>
 					</div>
 					<div
 						style={{
@@ -183,37 +241,30 @@ const Index: NextPage = () => {
 							<span>( Click để thay đổi trạng thái)</span>
 						</div>
 						<div className='topBuySell' style={{ display: 'flex', gap: '10px' }}>
-							<Button
-								style={{ ...buttonStyle }} // Thêm khoảng cách bên dưới
-								onClick={(e) => {
+							<StyledActionButton
+								style={{ backgroundColor: !isTrading ? '#f44336' : '#4caf50' }}
+								onClick={(e: any) => {
 									setIsOpen(!isOpen);
 								}}>
-								{!isTrading ? 'Đang Dừng Bot' : 'Đang Chạy Bot'}
-							</Button>
-							<Button
-								style={{
-									...buttonStyle,
-									transition: 'transform 0.1s ease',
-								}}
-								onMouseDown={(e) =>
-									(e.currentTarget.style.transform = 'scale(0.9)')
-								}
-								onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+								{!isTrading ? '🛑 Đang Dừng Bot' : '⚡ Đang Chạy Bot'}
+							</StyledActionButton>
+							<StyledActionButton
+								style={{ backgroundColor: isBlockBuy ? '#f44336' : '#4caf50' }}
 								onClick={() => handleStopTrade('B')}>
-								{isBlockBuy ? 'Đang chặn MUA' : 'Đang MUA'}
-							</Button>
-							<Button
-								style={{
-									...buttonStyle,
-									transition: 'transform 0.1s ease',
-								}}
-								onMouseDown={(e) =>
-									(e.currentTarget.style.transform = 'scale(0.9)')
-								}
-								onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+								{isBlockBuy ? '🛑 Đang chặn MUA' : '⚡ Đang MUA'}
+							</StyledActionButton>
+							<StyledActionButton
+								style={{ backgroundColor: isBlockSell ? '#f44336' : '#4caf50' }}
 								onClick={() => handleStopTrade('S')}>
-								{isBlockSell ? 'Đang chặn BÁN' : 'Đang BÁN'}
-							</Button>
+								{isBlockSell ? '🛑 Đang chặn BÁN' : '⚡ Đang BÁN'}
+							</StyledActionButton>
+						</div>
+						<div style={{ marginTop: '10px' }}>
+							<StyledActionButton
+								style={{ backgroundColor: '#f57c00' }}
+								onClick={() => handleResetBot()}>
+								🔄 RESET BOT
+							</StyledActionButton>
 						</div>
 					</div>
 				</div>
@@ -229,6 +280,7 @@ const Index: NextPage = () => {
 						setIsOpenDelete={setIsOpenDelete}
 						isOptions={isOptions}
 						setIsOptions={setIsOptions}
+						userConfigs={userConfigs}
 					/>
 				</div>
 				<div className='wrap-statics'>
@@ -242,6 +294,7 @@ const Index: NextPage = () => {
 						setIsOpenDelete={setIsOpenDelete}
 						isOptions={isOptions}
 						setIsOptions={setIsOptions}
+						userConfigs={userConfigs}
 					/>
 				</div>
 				{/* <div className='wrap-statics'>
@@ -261,12 +314,5 @@ const Index: NextPage = () => {
 		</PageWrapper>
 	);
 };
-
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-	props: {
-		// @ts-ignore
-		...(await serverSideTranslations(locale, ['common', 'menu'])),
-	},
-});
 
 export default Index;

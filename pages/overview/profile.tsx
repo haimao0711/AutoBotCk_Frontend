@@ -17,7 +17,7 @@ import ChangePassBotModal from '../account/ChangePassBotModal';
 import Cookies from 'js-cookie';
 import { API_BASE_URL, AuthCache } from '@constants/index';
 
-const Profile = () => {
+const Profile = ({ totalStocksPurchased = 0 }: { totalStocksPurchased?: number }) => {
 	const { mobileDesign } = useContext(ThemeContext);
 	const config = useContext(ConfigContext);
 	const router = useRouter();
@@ -31,9 +31,12 @@ const Profile = () => {
 		totalEquity,
 		cashAvailable,
 		totalMarketValue,
+		gainLossValue,
+		gainLossOneDayValue,
 		accountName,
 		accountNum,
 		limitNumberStocks,
+		limitTotalMarketValue,
 	} = useContext(AuthContext);
 
 	const profile = {
@@ -42,9 +45,12 @@ const Profile = () => {
 		totalEquity,
 		cashAvailable,
 		totalMarketValue,
+		gainLossValue,
+		gainLossOneDayValue,
 		accountName,
 		accountNum,
 		limitNumberStocks,
+		limitTotalMarketValue,
 		src: 'https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg',
 		color: 'danger',
 	};
@@ -76,7 +82,7 @@ const Profile = () => {
 						{authTokenCache && (
 							<Dropdown isOpen={dropdownOpen} direction='down'>
 								<DropdownToggle>
-									<div className='flex items-center justify-center text-blue-500 hover:text-blue-700'>
+									<div className='flex items-center justify-center text-blue-500 hover:text-blue-700 cursor-pointer'>
 										<Icon
 											icon='edit'
 											size='md'
@@ -152,12 +158,52 @@ const Profile = () => {
 								VND
 							</span>
 						</div>
+						<div className='text-secondary'>
+							<Icon icon='TrendingUp' className='btn-icon' />
+							<span className='font-medium'>Lãi/lỗ danh mục:</span>
+							<span
+								className={Number(profile?.gainLossValue) < 0 ? 'ml-2 text-danger' : 'ml-2'}
+								style={Number(profile?.gainLossValue) >= 0 ? { color: '#5FD068' } : undefined}>
+								<strong>
+									{Number(profile?.gainLossValue).toLocaleString('vi-VN') + ' '}
+								</strong>
+								VND
+							</span>
+						</div>
+						<div className='text-secondary'>
+							<Icon icon='TrendingUp' className='btn-icon' />
+							<span className='font-medium'>Lãi/lỗ trong ngày:</span>
+							<span
+								className={Number(profile?.gainLossOneDayValue) < 0 ? 'ml-2 text-danger' : 'ml-2'}
+								style={Number(profile?.gainLossOneDayValue) >= 0 ? { color: '#5FD068' } : undefined}>
+								<strong>
+									{Number(profile?.gainLossOneDayValue).toLocaleString('vi-VN') + ' '}
+								</strong>
+								VND
+							</span>
+						</div>
+						<div className='text-secondary'>
+							<Icon icon='ShoppingCart' className='btn-icon' /> Số cổ phiếu đã mua:
+							<span className='font-bold text-success ps-3'>
+								<strong> {totalStocksPurchased}</strong>
+							</span>
+						</div>
 						{profile?.limitNumberStocks && (
 							<div className='text-secondary'>
-								<Icon icon='ShoppingCart' className='btn-icon' /> Giới hạn số cổ
-								phiếu tối đa:
+								<Icon icon='ShoppingCart' className='btn-icon' /> Giới hạn số cổ phiếu tối đa:
 								<span className='font-bold text-danger ps-3'>
 									<strong> {profile?.limitNumberStocks}</strong>
+								</span>
+							</div>
+						)}
+						{profile?.limitTotalMarketValue && (
+							<div className='text-secondary'>
+								<Icon icon='MonetizationOn' className='btn-icon' /> Giới hạn giá trị cổ phiếu tối đa:
+								<span className='font-bold text-danger ps-3'>
+									<strong>
+										{Number(profile?.limitTotalMarketValue).toLocaleString('vi-VN') + ' '}
+									</strong>
+									VND
 								</span>
 							</div>
 						)}
@@ -177,7 +223,10 @@ const Profile = () => {
 									borderRadius: '5px',
 								}}
 								className='w-100 fw-semibold'
-								onClick={() => router.push('/auth/login')}>
+								onClick={() =>
+								(window.location.href =
+									'https://autobotchungkhoan.pro.vn/auth/login')
+								}>
 								Đăng nhập ngay
 							</Button>
 						</CardBody>

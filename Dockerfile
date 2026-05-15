@@ -1,16 +1,36 @@
-# Stage 1, based on Node.js, to build and compile the react app
-FROM node:16-alpine as build
+# Stage 1: Build
+FROM node:16-alpine AS build
 
-RUN mkdir -p /app
 WORKDIR /app
-COPY package*.json /app/
-RUN apk add --update \
-  git \
-  openssh-client
-  
-COPY ./ /app/
 
-RUN yarn \
-    && yarn build
+RUN apk add --no-cache git openssh-client
 
-CMD [ "yarn", "start"]
+# Copy package.json & yarn.lock
+COPY package*.json yarn.lock ./
+
+# Install dependencies with retry logic and increased network timeout
+RUN yarn config set network-timeout 600000 && \
+    yarn install --frozen-lockfile --network-timeout 600000 || \
+    (echo "Retry 1..." && sleep 10 && yarn install --frozen-lockfile --network-timeout 600000) || \
+    (echo "Retry 2..." && sleep 15 && yarn install --frozen-lockfile --network-timeout 600000)
+
+# Copy source code & env.production
+COPY . .
+COPY .env.production .env
+
+# Build using .env.production
+RUN yarn build
+
+# Stage 2: Production
+FROM node:16-alpine AS production
+
+WORKDIR /app
+
+COPY --from=build /app/package*.json ./
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/.next ./.next
+COPY --from=build /app/public ./public
+COPY .env.production .env
+
+EXPOSE 3000
+CMD ["yarn", "start"]

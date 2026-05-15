@@ -19,7 +19,7 @@ import { compactBalance } from '@helpers/helpers';
 import { useRouter } from 'next/router';
 import ConfigContext from '@context/configContext';
 import { authService } from '@services/index';
-import { useGetTemplateConfig } from '@hooks/useGetCreateConfig';
+import { getTemplateConfigApi } from '@hooks/useGetCreateConfig';
 
 const TableUser = () => {
 	const router = useRouter();
@@ -28,7 +28,7 @@ const TableUser = () => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [perPage, setPerPage] = useState<number>(PER_COUNT['10']);
 	const [arrTemplate, setArrayTemplate] = useState<any>([]);
-	const getTemplate = useGetTemplateConfig();
+	// const getTemplate = useGetTemplateConfig();
 	const [filterMenu, setFilterMenu] = useState(false);
 	const formik = useFormik({
 		initialValues: {
@@ -42,10 +42,11 @@ const TableUser = () => {
 	});
 	useEffect(() => {
 		async function fetchData() {
-			const { stocks, userConfigs } = await authService.getConfig();
+			const stocks = await authService.getStocks();
+			const { userConfigs } = await authService.getConfig();
 			setArrayStocks(stocks);
 
-			const template = await getTemplate;
+			const template = await getTemplateConfigApi();
 			const formatConfig = userConfigs?.map((config: any) => {
 				const stock = stocks.find((item: any) => {
 					return config?.stock_id == item?.id;
@@ -61,7 +62,7 @@ const TableUser = () => {
 
 	useEffect(() => {
 		async function fetchData() {
-			const template = await getTemplate;
+			const template = await getTemplateConfigApi();
 			setArrayTemplate(template?.data);
 		}
 		fetchData();

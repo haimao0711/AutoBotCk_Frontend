@@ -38,7 +38,7 @@ interface ModuleProps {
 const SwichItem = (props: SwitchItemProps) => {
 	const { className, label, id, onChange, checked } = props;
 	return (
-		<div className={className}>
+		<div className={className} style={{ minHeight: '120px' }}>
 			<FormGroup label={label}>
 				<Checks
 					id={id}
@@ -59,7 +59,7 @@ const InputItem = (props: InputItemProps) => {
 
 	if (onChange) {
 		return (
-			<div className={className}>
+			<div className={className} style={{ minHeight: '120px' }}>
 				<FormGroup label={label}>
 					<Input
 						type='text'
@@ -71,10 +71,10 @@ const InputItem = (props: InputItemProps) => {
 						value={
 							value
 								? parseFloat(
-										values.stock.other[
-											id as keyof IStockOtherConfig
-										]?.toString(),
-								  ) * value
+									values.stock.other[
+										id as keyof IStockOtherConfig
+									]?.toString(),
+								) * value
 								: values.stock.other[id as keyof IStockOtherConfig]?.toString()
 						}
 						min={0}
@@ -88,7 +88,7 @@ const InputItem = (props: InputItemProps) => {
 	}
 
 	return (
-		<div className={className}>
+		<div className={className} style={{ minHeight: '120px' }}>
 			<FormGroup label={label}>
 				<Input
 					type='text'
@@ -109,28 +109,47 @@ const InputItem = (props: InputItemProps) => {
 };
 
 const Module = (props: ModuleProps) => {
+	const [columnStyle, setColumnStyle] = useState({ flex: '0 0 50%', maxWidth: '50%' });
+	useEffect(() => {
+		const updateStyle = () => {
+			if (window.innerWidth < 768) {
+				setColumnStyle({ flex: '0 0 50%', maxWidth: '50%' });
+			} else if (window.innerWidth < 992) {
+				// Tablet: 3 cột
+				setColumnStyle({ flex: '0 0 33.3333%', maxWidth: '33.3333%' });
+			} else {
+				// Desktop: 5 cột
+				setColumnStyle({ flex: '0 0 20%', maxWidth: '20%' });
+			}
+		};
+
+		updateStyle();
+		window.addEventListener('resize', updateStyle);
+		return () => window.removeEventListener('resize', updateStyle);
+	}, []);
 	const { type, label, itemRenders, formik } = props;
-	const columnStyle = {
-		flex: '0 0 25%',
-		maxWidth: '25%',
-	};
 	return (
-		<FormGroup className='col-12 border-b border-gray-300 p-6 mb-6' label={label}>
-			<div className='d-flex flex-wrap justify-content-between container p-4'>
-				<div className='row'>
+		<FormGroup
+			className='col-12 border-b border-gray-300 py-3 px-1 mb-6'
+			label={label}
+			labelClassName='fw-bold text-gray-500'>
+			<div className='d-flex flex-wrap justify-content-between container py-4 px-2'>
+				<div
+					className='row w-100 align-items-start'
+					style={{ marginLeft: 0, marginRight: 0 }}>
 					{itemRenders.map((itemRender, idRow) => {
 						return (
-							<div className='mb-4 gap-4 col' key={idRow} style={columnStyle}>
+							<div className='mb-2 gap-4 col' key={idRow} style={columnStyle}>
 								{itemRender.map((item, idCol) => (
 									<div
 										key={idCol}
-										className='grid-item'
+										className='grid-item d-flex flex-column'
 										style={{
 											visibility: item.isRender ? 'visible' : 'hidden',
 										}}>
 										{item.type === 'Switch' ? (
 											<SwichItem
-												className='p-4'
+												className='py-4 flex-grow-0 d-flex flex-column justify-content-between align-items-start'
 												label={item.label}
 												id={`stock.other.${item.id}`}
 												onChange={item.onChange}
@@ -138,7 +157,7 @@ const Module = (props: ModuleProps) => {
 											/>
 										) : (
 											<InputItem
-												className='p-4'
+												className='py-4 flex-grow-0 d-flex flex-column justify-content-between align-items-start'
 												label={item.label}
 												id={item.id}
 												formik={formik}
@@ -347,7 +366,7 @@ const CustomConfig = ({ formik }: CustomConfigProps) => {
 						onChange: (e: any) => formikHandleChange(e),
 						checked:
 							values.stock.other[
-								`stock_config_is_mode_sensitive_${side}` as keyof IStockOtherConfig
+							`stock_config_is_mode_sensitive_${side}` as keyof IStockOtherConfig
 							],
 						type: 'Switch',
 						isRender: true,
@@ -429,191 +448,16 @@ const CustomConfig = ({ formik }: CustomConfigProps) => {
 			<>
 				{BuyModule}
 				{SellModule}
-				<div className='p-4'>
-					{/* <FormGroup className='col-12 ' label='CÀI ĐẶT SÔ NGƯỜI CHƠI '>
-						<div className='d-flex flex-wrap justify-content-between'>
-							<div className='mb-4 col-lg-12 col-12 '>
-								<div className='col-12 d-flex flex-wrap gap-3 justify-content-start flex-wrap '>
-									<div className='col-xl-3 col-lg-5 col-12 mb-4'>
-										<FormGroup label='SỐ NGƯỜI CHƠI TRONG 1 MÃ CP (NGƯỜI)'>
-											<Input
-												type='text'
-												id='stock.other.stock_config_num_player'
-												placeholder='Nhập chỉ số'
-												autoComplete='volume'
-												onChange={(e: any) => handleChange(e, formik)}
-												onBlur={formik?.handleBlur}
-												value={values.stock.other.stock_config_num_player}
-												min={0}
-												isValid={formik?.isValid}
-												validFeedback='Looks good!'
-											/>
-										</FormGroup>
-									</div>
-								</div>
-							</div>
-						</div>
-					</FormGroup> */}
-					{/* <FormGroup className='col-12 ' label='KỊCH BẢN CẮT lỖ'>
-						<div className='d-flex col-12 flex-wrap '>
-							<div className='mb-4 col-12 '>
-								<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
-									<div className='col-xl-3 col-lg-5 col-12 '>
-										<FormGroup label='ĐIỂM CUT LOSS KH LÀ SO VỚI GIÁ VỐN GIẢM'>
-											<Checks
-												id='stock.other.stock_config_use_stop_loss_first_part'
-												type='switch'
-												label='Active'
-												style={{
-													display: 'flex',
-													alignItems: 'center',
-												}}
-												onChange={(e: any) => handleChange(e, formik)}
-												checked={
-													values.stock.other
-														.stock_config_use_stop_loss_first_part
-												}
-												ariaLabel='status'
-											/>
-										</FormGroup>
-									</div>
-
-									<div className='col-xl-2 col-lg-5 col-12'>
-										{values.stock.other
-											.stock_config_use_stop_loss_first_part && (
-											<FormGroup label='Phần trăm CP(%)'>
-												<Input
-													type='text'
-													placeholder='Nhập chỉ số'
-													autoComplete='volume'
-													id='stock.other.stock_config_percent_stop_loss_sell_first'
-													onChange={(e: any) => {
-														handlePrecentageChange(
-															e,
-															'stock.other.stock_config_percent_stop_loss_sell_first',
-														);
-													}}
-													onBlur={formik?.handleBlur}
-													value={
-														values.stock.other
-															.stock_config_percent_stop_loss_sell_first *
-														100
-													}
-													min={0}
-													isValid={formik?.isValid}
-													validFeedback='Looks good!'
-												/>
-											</FormGroup>
-										)}
-									</div>
-
-									<div className='col-xl-3 col-lg-5 col-12'>
-										<FormGroup label='KHI CHẠM ĐIỂM CUT LOSS BÁN LƯỢNG CP <=>'>
-											<Checks
-												id='stock.other.stock_config_use_stop_loss_second_part'
-												type='switch'
-												label='Active'
-												style={{
-													display: 'flex',
-													alignItems: 'center',
-												}}
-												onChange={(e: any) => handleChange(e, formik)}
-												checked={
-													values.stock.other
-														.stock_config_use_stop_loss_second_part
-												}
-												ariaLabel='status'
-											/>
-										</FormGroup>
-									</div>
-
-									<div className='col-xl-2 col-lg-5 col-12'>
-										{values.stock.other
-											.stock_config_use_stop_loss_second_part && (
-											<FormGroup label='Phần trăm CP (%)'>
-												<Input
-													type='text'
-													placeholder='Nhập chỉ số'
-													autoComplete='volume'
-													id='stock.other.stock_config_percent_stop_loss_sell_second'
-													onChange={(e: any) => {
-														handlePrecentageChange(
-															e,
-															'stock.other.stock_config_percent_stop_loss_sell_second',
-														);
-													}}
-													onBlur={formik?.handleBlur}
-													value={
-														values.stock.other
-															.stock_config_percent_stop_loss_sell_second *
-														100
-													}
-													min={0}
-													isValid={formik?.isValid}
-													validFeedback='Looks good!'
-												/>
-											</FormGroup>
-										)}
-									</div>
-								</div>
-								<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
-									<div className='col-xl-3 col-lg-5 col-12 mb-4 '>
-										<FormGroup label='BÁN HẾT KHI GIÁ HIỆN TẠI GIẢM SO VƠÍ GIÁ VỐN'>
-											<Checks
-												id='stock.other.stock_config_use_stop_loss_trigger'
-												type='switch'
-												label='Active'
-												style={{
-													display: 'flex',
-													alignItems: 'center',
-												}}
-												onChange={(e: any) => handleChange(e, formik)}
-												checked={
-													values.stock.other
-														.stock_config_use_stop_loss_trigger
-												}
-												ariaLabel='status'
-											/>
-										</FormGroup>
-									</div>
-
-									<div className='col-xl-2 col-lg-5 col-12 mb-4'>
-										{values.stock.other.stock_config_use_stop_loss_trigger && (
-											<FormGroup label='Phần trăm CP (%)'>
-												<Input
-													type='text'
-													placeholder='Nhập chỉ số'
-													autoComplete='volume'
-													id='stock.other.stock_config_stop_loss_percent'
-													onChange={(e: any) => {
-														handlePrecentageChange(
-															e,
-															'stock.other.stock_config_stop_loss_percent',
-														);
-													}}
-													onBlur={formik?.handleBlur}
-													value={
-														values.stock.other
-															.stock_config_stop_loss_percent * 100
-													}
-													min={0}
-													isValid={formik?.isValid}
-													validFeedback='Looks good!'
-												/>
-											</FormGroup>
-										)}
-									</div>
-								</div>
-							</div>
-						</div>
-					</FormGroup> */}
-
-					<FormGroup className='col-12 ' label='KỊCH BẢN CHỐT LỜI'>
-						<div className='d-flex col-12 flex-wrap ms-5 '>
+				<div className='py-4 px-2'>
+					<FormGroup
+						className='col-12 '
+						label='KỊCH BẢN CHỐT LỜI'
+						labelClassName='fw-bold text-gray-500'>
+						<div className='d-flex col-12 flex-wrap ms-2'>
 							<div className='mb-4 col-12 '>
 								<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
 									<div className='col-xl-3 col-lg-5 col-12  '>
-										<FormGroup label='BÁN MỘT PHẦN KHI GIÁ HIỆN TẠI TĂNG SO VỚI GIÁ VỐN '>
+										<FormGroup label='BÁN LẦN 1 KHI GIÁ HIỆN TẠI TĂNG SO VỚI GIÁ VỐN '>
 											<Checks
 												id='stock.other.stock_config_use_take_profit_first_part'
 												type='switch'
@@ -631,62 +475,310 @@ const CustomConfig = ({ formik }: CustomConfigProps) => {
 											/>
 										</FormGroup>
 									</div>
-
 									<div className='col-xl-2 col-lg-5 col-12 '>
 										{values.stock.other
 											.stock_config_use_take_profit_first_part && (
-											<FormGroup label='Khi mức giá tăng (%)'>
-												<Input
-													type='text'
-													placeholder='Nhập chỉ số'
-													autoComplete='volume'
-													id='stock.other.stock_config_percent_take_profit_sell_first'
-													onChange={(e: any) => {
-														handlePrecentageChange(
-															e,
-															'stock.other.stock_config_percent_take_profit_sell_first',
-														);
-													}}
-													onBlur={formik?.handleBlur}
-													value={
-														values.stock.other
-															.stock_config_percent_take_profit_sell_first *
-														100
-													}
-													min={0}
-													isValid={formik?.isValid}
-													validFeedback='Looks good!'
-												/>
-											</FormGroup>
-										)}
+												<FormGroup label='Khi mức giá tăng (%)'>
+													<Input
+														type='text'
+														placeholder='Nhập chỉ số'
+														autoComplete='volume'
+														id='stock.other.stock_config_percent_take_profit_sell_first'
+														onChange={(e: any) => {
+															handlePrecentageChange(
+																e,
+																'stock.other.stock_config_percent_take_profit_sell_first',
+															);
+														}}
+														onBlur={formik?.handleBlur}
+														value={
+															values.stock.other
+																.stock_config_percent_take_profit_sell_first *
+															100
+														}
+														min={0}
+														isValid={formik?.isValid}
+														validFeedback='Looks good!'
+													/>
+												</FormGroup>
+											)}
 									</div>
 									<div className='col-xl-2 col-lg-5 col-12 '>
 										{values.stock.other
 											.stock_config_use_take_profit_first_part && (
-											<FormGroup label='Lượng CP bán (%)'>
-												<Input
-													type='text'
-													placeholder='Nhập chỉ số'
-													autoComplete='volume'
-													id='stock.other.stock_config_percent_take_profit_sell_second'
-													onChange={(e: any) => {
-														handlePrecentageChange(
-															e,
-															'stock.other.stock_config_percent_take_profit_sell_second',
-														);
-													}}
-													onBlur={formik?.handleBlur}
-													value={
-														values.stock.other
-															.stock_config_percent_take_profit_sell_second *
-														100
-													}
-													min={0}
-													isValid={formik?.isValid}
-													validFeedback='Looks good!'
-												/>
-											</FormGroup>
-										)}
+												<FormGroup label='Lượng CP bán (%)'>
+													<Input
+														type='text'
+														placeholder='Nhập chỉ số'
+														autoComplete='volume'
+														id='stock.other.stock_config_percent_take_profit_sell_second'
+														onChange={(e: any) => {
+															handlePrecentageChange(
+																e,
+																'stock.other.stock_config_percent_take_profit_sell_second',
+															);
+														}}
+														onBlur={formik?.handleBlur}
+														value={
+															values.stock.other
+																.stock_config_percent_take_profit_sell_second *
+															100
+														}
+														min={0}
+														isValid={formik?.isValid}
+														validFeedback='Looks good!'
+													/>
+												</FormGroup>
+											)}
+									</div>
+								</div>
+								<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
+									<div className='col-xl-3 col-lg-5 col-12  '>
+										<FormGroup label='BÁN LẦN 1 KHI STOCH RSI >='>
+											<Checks
+												id='stock.other.stock_config_use_stoch_rsi_to_take_profit'
+												type='switch'
+												label='Active'
+												style={{
+													display: 'flex',
+													alignItems: 'center',
+												}}
+												onChange={formik.handleChange}
+												checked={
+													values.stock.other
+														.stock_config_use_stoch_rsi_to_take_profit
+												}
+												ariaLabel='status'
+											/>
+										</FormGroup>
+									</div>
+									<div className='col-xl-2 col-lg-5 col-12 '>
+										{values.stock.other
+											.stock_config_use_stoch_rsi_to_take_profit && (
+												<FormGroup label='Khi Stoch RSI (>=)'>
+													<Input
+														type='text'
+														placeholder='Nhập chỉ số'
+														autoComplete='volume'
+														id='stock.other.stock_config_value_stoch_rsi_to_take_profit'
+														onChange={formik.handleChange}
+														onBlur={formik?.handleBlur}
+														value={
+															values.stock.other
+																.stock_config_value_stoch_rsi_to_take_profit
+														}
+														min={0}
+														isValid={formik?.isValid}
+														validFeedback='Looks good!'
+													/>
+												</FormGroup>
+											)}
+									</div>
+									<div className='col-xl-2 col-lg-5 col-12 '>
+										{values.stock.other
+											.stock_config_use_stoch_rsi_to_take_profit && (
+												<FormGroup label='Lượng CP bán (%)'>
+													<Input
+														type='text'
+														placeholder='Nhập chỉ số'
+														autoComplete='volume'
+														id='stock.other.stock_config_percent_stoch_rsi_to_take_profit'
+														onChange={(e: any) => {
+															handlePrecentageChange(
+																e,
+																'stock.other.stock_config_percent_stoch_rsi_to_take_profit',
+															);
+														}}
+														onBlur={formik?.handleBlur}
+														value={
+															values.stock.other
+																.stock_config_percent_stoch_rsi_to_take_profit *
+															100
+														}
+														min={0}
+														isValid={formik?.isValid}
+														validFeedback='Looks good!'
+													/>
+												</FormGroup>
+											)}
+									</div>
+								</div>
+								<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
+									<div className='col-xl-3 col-lg-5 col-12  '>
+										<FormGroup label='BÁN LẦN 1 KHI RSI giảm'>
+											<Checks
+												id='stock.other.stock_config_use_rsi_decrease_to_take_profit'
+												type='switch'
+												label='Active'
+												style={{
+													display: 'flex',
+													alignItems: 'center',
+												}}
+												onChange={formik.handleChange}
+												checked={
+													values.stock.other
+														.stock_config_use_rsi_decrease_to_take_profit
+												}
+												ariaLabel='status'
+											/>
+										</FormGroup>
+									</div>
+									<div className='col-xl-2 col-lg-5 col-12 '>
+										{values.stock.other
+											.stock_config_use_rsi_decrease_to_take_profit && (
+												<FormGroup label='Lượng CP bán (%)'>
+													<Input
+														type='text'
+														placeholder='Nhập chỉ số'
+														autoComplete='volume'
+														id='stock.other.stock_config_percent_rsi_decrease_to_take_profit'
+														onChange={(e: any) => {
+															handlePrecentageChange(
+																e,
+																'stock.other.stock_config_percent_rsi_decrease_to_take_profit',
+															);
+														}}
+														onBlur={formik?.handleBlur}
+														value={
+															values.stock.other
+																.stock_config_percent_rsi_decrease_to_take_profit *
+															100
+														}
+														min={0}
+														isValid={formik?.isValid}
+														validFeedback='Looks good!'
+													/>
+												</FormGroup>
+											)}
+									</div>
+								</div>
+								<div className='col-12 mb-5 d-flex gap-4 flex-wrap'>
+									<div className='col-xl-3 col-lg-5 col-12  '>
+										<FormGroup label='BÁN LẦN 1 KHI GIÁ HIỆN TẠI CHẠM CẠNH TRÊN BOLLINGER (CHART THEO DÕI) '>
+											<Checks
+												id='stock.other.stock_config_use_bolinger_a_part_to_take_profit'
+												type='switch'
+												label='Active'
+												style={{
+													display: 'flex',
+													alignItems: 'center',
+												}}
+												onChange={formik.handleChange}
+												checked={
+													values.stock.other
+														.stock_config_use_bolinger_a_part_to_take_profit
+												}
+												ariaLabel='status'
+											/>
+										</FormGroup>
+									</div>
+									<div className='col-xl-2 col-lg-5 col-12 '>
+										{values.stock.other
+											.stock_config_use_bolinger_a_part_to_take_profit && (
+												<FormGroup label='Lượng CP bán (%)'>
+													<Input
+														type='text'
+														placeholder='Nhập chỉ số'
+														autoComplete='volume'
+														id='stock.other.stock_config_percent_bolinger_a_part_to_take_profit'
+														onChange={(e: any) => {
+															handlePrecentageChange(
+																e,
+																'stock.other.stock_config_percent_bolinger_a_part_to_take_profit',
+															);
+														}}
+														onBlur={formik?.handleBlur}
+														value={
+															values.stock.other
+																.stock_config_percent_bolinger_a_part_to_take_profit *
+															100
+														}
+														min={0}
+														isValid={formik?.isValid}
+														validFeedback='Looks good!'
+													/>
+												</FormGroup>
+											)}
+									</div>
+								</div>
+							</div>
+							<div className='mb-4 col-12 '>
+								<div className='col-12 mb-5  d-flex gap-4 flex-wrap'>
+									<div className='col-xl-3 col-lg-5 col-12  '>
+										<FormGroup label='BÁN LẦN 2 KHI GIÁ HIỆN TẠI TĂNG SO VỚI GIÁ VỐN '>
+											<Checks
+												id='stock.other.stock_config_use_take_profit_first_part_two'
+												type='switch'
+												label='Active'
+												style={{
+													display: 'flex',
+													alignItems: 'center',
+												}}
+												onChange={formik.handleChange}
+												checked={
+													values.stock.other
+														.stock_config_use_take_profit_first_part_two
+												}
+												ariaLabel='status'
+											/>
+										</FormGroup>
+									</div>
+
+									<div className='col-xl-2 col-lg-5 col-12 '>
+										{values.stock.other
+											.stock_config_use_take_profit_first_part_two && (
+												<FormGroup label='Khi mức giá tăng (%)'>
+													<Input
+														type='text'
+														placeholder='Nhập chỉ số'
+														autoComplete='volume'
+														id='stock.other.stock_config_percent_take_profit_sell_first_two'
+														onChange={(e: any) => {
+															handlePrecentageChange(
+																e,
+																'stock.other.stock_config_percent_take_profit_sell_first_two',
+															);
+														}}
+														onBlur={formik?.handleBlur}
+														value={
+															values.stock.other
+																.stock_config_percent_take_profit_sell_first_two *
+															100
+														}
+														min={0}
+														isValid={formik?.isValid}
+														validFeedback='Looks good!'
+													/>
+												</FormGroup>
+											)}
+									</div>
+									<div className='col-xl-2 col-lg-5 col-12 '>
+										{values.stock.other
+											.stock_config_use_take_profit_first_part_two && (
+												<FormGroup label='Lượng CP bán (%)'>
+													<Input
+														type='text'
+														placeholder='Nhập chỉ số'
+														autoComplete='volume'
+														id='stock.other.stock_config_percent_take_profit_sell_second_two'
+														onChange={(e: any) => {
+															handlePrecentageChange(
+																e,
+																'stock.other.stock_config_percent_take_profit_sell_second_two',
+															);
+														}}
+														onBlur={formik?.handleBlur}
+														value={
+															values.stock.other
+																.stock_config_percent_take_profit_sell_second_two *
+															100
+														}
+														min={0}
+														isValid={formik?.isValid}
+														validFeedback='Looks good!'
+													/>
+												</FormGroup>
+											)}
 									</div>
 								</div>
 								<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
@@ -713,224 +805,30 @@ const CustomConfig = ({ formik }: CustomConfigProps) => {
 									<div className='col-xl-2 col-lg-5 col-12 mb-4'>
 										{values.stock.other
 											.stock_config_use_take_profit_trigger && (
-											<FormGroup label='Khi mức giá tăng (%)'>
-												<Input
-													type='text'
-													placeholder='Nhập chỉ số'
-													autoComplete='volume'
-													id='stock.other.stock_config_take_profit_percent'
-													onChange={(e: any) => {
-														handlePrecentageChange(
-															e,
-															'stock.other.stock_config_take_profit_percent',
-														);
-													}}
-													onBlur={formik?.handleBlur}
-													value={
-														values.stock.other
-															.stock_config_take_profit_percent * 100
-													}
-													min={0}
-													isValid={formik?.isValid}
-													validFeedback='Looks good!'
-												/>
-											</FormGroup>
-										)}
-									</div>
-								</div>
-
-								<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
-									<div className='col-xl-3 col-lg-5 col-12  '>
-										<FormGroup label='BÁN MỘT PHẦN KHI GIÁ HIỆN TẠI CHẠM CẠNH TRÊN BOLLINGER (CHART THEO DÕI) '>
-											<Checks
-												id='stock.other.stock_config_use_bolinger_a_part_to_take_profit'
-												type='switch'
-												label='Active'
-												style={{
-													display: 'flex',
-													alignItems: 'center',
-												}}
-												onChange={formik.handleChange}
-												checked={
-													values.stock.other
-														.stock_config_use_bolinger_a_part_to_take_profit
-												}
-												ariaLabel='status'
-											/>
-										</FormGroup>
-									</div>
-									<div className='col-xl-2 col-lg-5 col-12 '>
-										{values.stock.other
-											.stock_config_use_bolinger_a_part_to_take_profit && (
-											<FormGroup label='Lượng CP bán (%)'>
-												<Input
-													type='text'
-													placeholder='Nhập chỉ số'
-													autoComplete='volume'
-													id='stock.other.stock_config_percent_bolinger_a_part_to_take_profit'
-													onChange={(e: any) => {
-														handlePrecentageChange(
-															e,
-															'stock.other.stock_config_percent_bolinger_a_part_to_take_profit',
-														);
-													}}
-													onBlur={formik?.handleBlur}
-													value={
-														values.stock.other
-															.stock_config_percent_bolinger_a_part_to_take_profit *
-														100
-													}
-													min={0}
-													isValid={formik?.isValid}
-													validFeedback='Looks good!'
-												/>
-											</FormGroup>
-										)}
-									</div>
-								</div>
-								{/* <div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
-									<div className='col-xl-3 col-lg-5 col-12 mb-4'>
-										<FormGroup label='BÁN HẾT KHI GIÁ HIỆN TẠI CHẠM CẠNH TRÊN BOLLINGER (CHART THEO DÕI) '>
-											<Checks
-												id='stock.other.stock_config_use_bolinger_to_take_profit'
-												type='switch'
-												label='Active'
-												style={{
-													display: 'flex',
-													alignItems: 'center',
-												}}
-												onChange={(e: any) => handleChange(e, formik)}
-												checked={
-													values.stock.other
-														.stock_config_use_bolinger_to_take_profit
-												}
-												ariaLabel='status'
-											/>
-										</FormGroup>
-									</div>
-								</div> */}
-							</div>
-						</div>
-					</FormGroup>
-
-					<FormGroup>
-						<div className='col-12 d-flex flex-wrap gap-4'>
-							<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
-								<div className='col-xl-3 col-lg-5 col-12 mb-4'>
-									<FormGroup label='SỬ DỤNG THỜI GIAN MUA '>
-										<Checks
-											id='stock.other.stock_config_is_use_time_to_buy'
-											type='switch'
-											label='Active'
-											style={{
-												display: 'flex',
-												alignItems: 'center',
-											}}
-											onChange={(e: any) => handleChange(e, formik)}
-											checked={
-												values.stock.other.stock_config_is_use_time_to_buy
-											}
-											ariaLabel='status'
-										/>
-									</FormGroup>
-								</div>
-								<>
-									<div className='col-xl-3 col-lg-5 col-12 mb-4'>
-										{values.stock.other.stock_config_is_use_time_to_buy && (
-											<>
-												<FormGroup label='Bắt đầu'>
+												<FormGroup label='Khi mức giá tăng (%)'>
 													<Input
-														type='time'
-														autoComplete='volume'
-														id='stock.other.stock_config_time_start_buy'
-														onChange={formik?.handleChange}
-														onBlur={formik?.handleBlur}
-														value={
-															values.stock.other
-																.stock_config_time_start_buy
-														}
-														isValid={formik?.isValid}
-														validFeedback='Looks good!'
-													/>
-												</FormGroup>
-												<FormGroup label='Kết thúc'>
-													<Input
-														type='time'
+														type='text'
 														placeholder='Nhập chỉ số'
 														autoComplete='volume'
-														id='stock.other.stock_config_time_end_buy'
-														onChange={formik?.handleChange}
+														id='stock.other.stock_config_take_profit_percent'
+														onChange={(e: any) => {
+															handlePrecentageChange(
+																e,
+																'stock.other.stock_config_take_profit_percent',
+															);
+														}}
 														onBlur={formik?.handleBlur}
 														value={
 															values.stock.other
-																.stock_config_time_end_buy
+																.stock_config_take_profit_percent * 100
 														}
 														min={0}
 														isValid={formik?.isValid}
 														validFeedback='Looks good!'
 													/>
 												</FormGroup>
-											</>
-										)}
+											)}
 									</div>
-								</>
-							</div>
-							<div className='col-12 mb-4 d-flex gap-4 flex-wrap'>
-								<div className='col-xl-3 col-lg-5 col-12 mb-4'>
-									<FormGroup label='SỬ DỤNG THỜI GIAN BÁN '>
-										<Checks
-											id='stock.other.stock_config_is_use_time_to_sell'
-											type='switch'
-											label='Active'
-											style={{
-												display: 'flex',
-												alignItems: 'center',
-											}}
-											onChange={(e: any) => handleChange(e, formik)}
-											checked={
-												values.stock.other.stock_config_is_use_time_to_sell
-											}
-											ariaLabel='status'
-										/>
-									</FormGroup>
-								</div>
-								<div className='col-xl-3 col-lg-5 col-12 mb-4'>
-									{values.stock.other.stock_config_is_use_time_to_sell && (
-										<>
-											<FormGroup label='Bắt đầu'>
-												<Input
-													type='time'
-													autoComplete='volume'
-													id='stock.other.stock_config_time_start_sell'
-													onChange={formik?.handleChange}
-													onBlur={formik?.handleBlur}
-													value={
-														values.stock.other
-															.stock_config_time_start_sell
-													}
-													isValid={formik?.isValid}
-													validFeedback='Looks good!'
-												/>
-											</FormGroup>
-											<FormGroup label='Kết thúc'>
-												<Input
-													type='time'
-													placeholder='Nhập chỉ số'
-													autoComplete='volume'
-													id='stock.other.stock_config_time_end_sell'
-													onChange={formik?.handleChange}
-													onBlur={formik?.handleBlur}
-													value={
-														values.stock.other
-															.stock_config_time_end_sell
-													}
-													min={0}
-													isValid={formik?.isValid}
-													validFeedback='Looks good!'
-												/>
-											</FormGroup>
-										</>
-									)}
 								</div>
 							</div>
 						</div>
