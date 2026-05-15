@@ -147,16 +147,17 @@ const Form: FC<IFormProps> = ({
 				return item?.volume_to_buy == keyStockSearch;
 			} else if (searchType === 'level') {
 				return item?.level == keyStockSearch;
+			} else if (searchType === 'is_buy_hand') {
+				return !!item?.is_buy_hand;
 			}
 		});
 		setArraySearch(newArr);
-		keyStockSearch
-			? setArrayRender(newArr?.slice((currentPage - 1) * perPage, currentPage * perPage))
-			: setArrayRender(arrConfig?.slice((currentPage - 1) * perPage, currentPage * perPage));
+		setArrayRender(newArr?.slice(0, perPage));
 		setIsSearch(true);
 	};
 	const handleRefresh = () => {
 		setKeyStockSearch('');
+		setSearchType('symbol');
 		setIsSearch(false);
 		setArraySearch([]);
 		setArrayRender(arrConfig?.slice(0, perPage));
@@ -176,6 +177,14 @@ const Form: FC<IFormProps> = ({
 			if (['level', 'current_price'].includes(sortKey)) {
 				return Number(valA) - Number(valB);
 			}
+
+			if (sortKey === 'is_buy_hand') {
+				if (!!valA === !!valB) {
+					return String(a.stock_name).localeCompare(String(b.stock_name), 'vi', { sensitivity: 'base' });
+				}
+				return Number(!!valB) - Number(!!valA);
+			}
+
 			if (['current_profit'].includes(sortKey)) {
 				return (
 					Number(String(valB).replace(/%$/, '')) - Number(String(valA).replace(/%$/, ''))
@@ -383,6 +392,8 @@ const Form: FC<IFormProps> = ({
 						return item?.volume_to_buy == keyStockSearch;
 					} else if (searchType === 'level') {
 						return item?.level == keyStockSearch;
+					} else if (searchType === 'is_buy_hand') {
+						return !!item?.is_buy_hand;
 					}
 				});
 				setArraySearch(newArr);
@@ -491,6 +502,7 @@ const Form: FC<IFormProps> = ({
 								className='form-select form-select-sm'
 								style={{ minWidth: '180px', width: 'auto' }}>
 								<option value='stock_name'>ABC</option>
+								<option value='is_buy_hand'>Danh sách mua tay</option>
 								<option value='level'>Level</option>
 								<option value='volume_to_buy'>Khối lượng mua dự kiến</option>
 								<option value='volume_buy'>Khối lượng đã mua</option>
@@ -505,49 +517,58 @@ const Form: FC<IFormProps> = ({
 									className='form-select cursor-pointer'
 									style={{ height: '48px' }}
 									value={searchType}
-									onChange={(e) => setSearchType(e.target.value)}>
+									onChange={(e) => {
+										setSearchType(e.target.value);
+										if (e.target.value === 'is_buy_hand') {
+											setIsSearch(true);
+											setCurrentPage(1);
+										}
+									}}>
 									<option value='symbol'>Mã cổ phiếu</option>
 									<option value='volume'>Khối lượng mua dự kiến</option>
 									<option value='level'>Level</option>
+									<option value='is_buy_hand'>Các mã đang mua tay</option>
 								</select>
 							</FormItem>
 						</div>
 
-						<div className='col-8 col-md-3 col-lg-3'>
-							<FormItem
-								label={
-									searchType === 'symbol'
-										? 'Mã cổ phiếu'
-										: searchType === 'volume'
-											? 'Khối lượng'
-											: 'Level'
-								}>
-								<Input
-									id='search'
-									type={searchType === 'symbol' ? 'text' : 'number'}
-									placeholder={
+						{searchType !== 'is_buy_hand' && (
+							<div className='col-8 col-md-3 col-lg-3'>
+								<FormItem
+									label={
 										searchType === 'symbol'
-											? 'Chọn mã cổ phiếu'
+											? 'Mã cổ phiếu'
 											: searchType === 'volume'
-												? 'Chọn khối lượng'
-												: 'Chọn level'
-									}
-									autoComplete='search'
-									value={keyStockSearch}
-									onChange={(e: any) => setKeyStockSearch(e.target.value)}
-									style={{ minHeight: '48px' }}
-									onFocus={() => {
-										formik.setErrors({});
-									}}
-									onKeyDown={(e: any) => {
-										if (e.key === 'Enter') {
-											e.preventDefault();
-											handleSearch();
+												? 'Khối lượng'
+												: 'Level'
+									}>
+									<Input
+										id='search'
+										type={searchType === 'symbol' ? 'text' : 'number'}
+										placeholder={
+											searchType === 'symbol'
+												? 'Chọn mã cổ phiếu'
+												: searchType === 'volume'
+													? 'Chọn khối lượng'
+													: 'Chọn level'
 										}
-									}}
-								/>
-							</FormItem>
-						</div>
+										autoComplete='search'
+										value={keyStockSearch}
+										onChange={(e: any) => setKeyStockSearch(e.target.value)}
+										style={{ minHeight: '48px' }}
+										onFocus={() => {
+											formik.setErrors({});
+										}}
+										onKeyDown={(e: any) => {
+											if (e.key === 'Enter') {
+												e.preventDefault();
+												handleSearch();
+											}
+										}}
+									/>
+								</FormItem>
+							</div>
+						)}
 
 						<div className='col-6 col-md-3 col-lg-2 d-flex align-self-end justify-content-md-end '>
 							<FormGroup className='w-100'>
